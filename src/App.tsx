@@ -102,7 +102,7 @@ function App() {
   return (
     <StoreProvider>
       <MantineProvider theme={theme}>
-        <Router>
+        <Router basename={import.meta.env.DEV ? '' : '/my-alias/'}>
           <AppWithHeaderControl />
         </Router>
       </MantineProvider>
