@@ -1,0 +1,47 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Game Mechanics
+
+Alias is a word-guessing game where players explain words to teammates without using the word itself.
+
+## Core Mechanics
+- Players are organized into teams
+- Each round, one player describes words to teammates
+- Teams gain points for correctly guessed words
+- Teams lose points for skipped words
+- Rounds are timed
+- Teams take turns playing rounds
+- The team with the highest score at the end wins
+
+## Implementation
+- Game state is stored in [imports/api/GamesCollection.ts](mdc:imports/api/GamesCollection.ts)
+- Word management in [imports/api/WordsCollection.ts](mdc:imports/api/WordsCollection.ts)
+- Game setup logic in [imports/ui/GameSetup.tsx](mdc:imports/ui/GameSetup.tsx)
+- Main gameplay in [imports/ui/GamePlay.tsx](mdc:imports/ui/GamePlay.tsx)
+- Game results in [imports/ui/GameSummary.tsx](mdc:imports/ui/GameSummary.tsx)
+
+## Game Flow
+1. User starts a new game from the HomePage
+2. Teams are created and game settings configured in GameSetup
+3. Gameplay occurs in GamePlay with words presented, timer running, and score tracking
+4. After all rounds complete, results are shown in GameSummary
+
+## Data Flow
+The game uses Meteor's reactivity to keep all clients synchronized with the current game state. Publications and methods provide the interface between client and server.
+
+## Input Validation
+- Team names must be non-empty strings
+- Round time must be between 30 and 300 seconds
+- Score limit must be at least 1
+- At least 2 teams are required
+- Word indexes are validated before processing
+
+## Error Handling
+- All method calls include proper error handling
+- Client-side displays appropriate error messages
+- Server methods validate all parameters
+- Edge cases (e.g., score can't go below 0) are properly handled
+- Object access patterns use proper validation

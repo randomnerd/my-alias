@@ -1,0 +1,50 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Development Workflow
+
+## Technology Stack
+- Meteor.js for full-stack JavaScript
+- React for UI components
+- TypeScript for type safety
+- MongoDB for data storage
+- Mantine UI for component library
+
+## Running the Application
+1. Install Meteor if not already installed
+2. Run `meteor npm install` to install dependencies
+3. Run `meteor` to start the development server
+4. Access the application at http://localhost:3000
+
+## Core Patterns
+- Use TypeScript interfaces for type definitions
+- Follow React functional component patterns with hooks
+- Use Meteor methods for server-side operations
+- Use Meteor publications/subscriptions for data access
+- Implement UI using Mantine components
+- Follow responsive design patterns
+
+## Type Safety & Error Handling
+- Use TypeScript interfaces for all data models
+- Add parameter validation using Meteor's check package
+- Implement proper error handling for all Meteor method calls
+- Use try/catch blocks for async operations
+- Add meaningful error messages and codes
+- Prevent memory leaks with proper useEffect cleanup
+
+## UI Development
+- Use Mantine component library for consistent UI
+- Implement responsive layouts with Container and Grid components
+- Follow color system defined in App.tsx theme
+- Use appropriate spacing and typography
+- Maintain consistent component usage patterns
+
+## Code Quality Practices
+- Use useCallback for functions in dependency arrays
+- Add proper validation before accessing nested objects
+- Simplify complex logic into smaller, maintainable functions
+- Follow consistent patterns for state management
+- Add helpful comments for complex business logic
+- Handle edge cases explicitly

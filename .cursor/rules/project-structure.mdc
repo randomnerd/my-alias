@@ -1,0 +1,31 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Structure
+
+This is a Meteor.js application for an Alias word guessing game built with React, TypeScript, and Mantine UI.
+
+## Main Entry Points
+- Client entry: [client/main.tsx](mdc:client/main.tsx)
+- Server entry: [server/main.ts](mdc:server/main.ts) 
+- Main app component: [imports/ui/App.tsx](mdc:imports/ui/App.tsx)
+
+## Data Layer
+- Games collection: [imports/api/GamesCollection.ts](mdc:imports/api/GamesCollection.ts)
+- Words collection: [imports/api/WordsCollection.ts](mdc:imports/api/WordsCollection.ts)
+
+## UI Components
+- App layout: [imports/ui/App.tsx](mdc:imports/ui/App.tsx)
+- Home page: [imports/ui/HomePage.tsx](mdc:imports/ui/HomePage.tsx)
+- Game setup: [imports/ui/GameSetup.tsx](mdc:imports/ui/GameSetup.tsx)
+- Game play: [imports/ui/GamePlay.tsx](mdc:imports/ui/GamePlay.tsx)
+- Game summary: [imports/ui/GameSummary.tsx](mdc:imports/ui/GameSummary.tsx)
+
+## Game Flow
+The game follows this component sequence:
+1. [imports/ui/HomePage.tsx](mdc:imports/ui/HomePage.tsx) - Initial landing page
+2. [imports/ui/GameSetup.tsx](mdc:imports/ui/GameSetup.tsx) - Team and game configuration
+3. [imports/ui/GamePlay.tsx](mdc:imports/ui/GamePlay.tsx) - Actual gameplay
+4. [imports/ui/GameSummary.tsx](mdc:imports/ui/GameSummary.tsx) - Results and scoring
