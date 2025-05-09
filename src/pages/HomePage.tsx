@@ -89,7 +89,6 @@ export const HomePage: React.FC = () => {
         {(styles) => (
           <Card shadow="sm" padding="md" radius="md" withBorder mb="md" style={styles}>
             <Title order={3} mb="md">Game Rules</Title>
-            
             <List spacing="sm" size="md" mb="md">
               <List.Item>Players are organized into teams</List.Item>
               <List.Item>Each round, one player explains words to teammates</List.Item>
