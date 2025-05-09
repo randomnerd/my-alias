@@ -4,11 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../stores/RootStore';
 import { 
-  Container, 
   Title, 
   Text, 
   Button, 
-  Card, 
   TextInput, 
   SimpleGrid, 
   Slider, 
@@ -23,7 +21,7 @@ import {
   rem,
   useMantineTheme
 } from '@mantine/core';
-import { IconUsers, IconClock, IconTarget, IconAdjustments, IconArrowLeft, IconCirclePlus, IconCircleMinus } from '@tabler/icons-react';
+import { IconUsers, IconClock, IconTarget, IconAdjustments, IconArrowLeft, IconCirclePlus, IconCircleMinus, IconPlayerPlay } from '@tabler/icons-react';
 
 // Define a more specific type for error handling
 interface SetupError {
@@ -127,11 +125,9 @@ export const GameSetup: React.FC = observer(() => {
   };
   
   return (
-    <Container size="sm" py="md">
-      <Card shadow="md" padding="md" radius="lg" withBorder>
         <form onSubmit={handleSubmit}>
           <Stack gap="xl">
-            <Title order={2} ta="center">Game Setup</Title>
+            <Title order={2} ta="center" mt="lg">Game Setup</Title>
             
             <Paper withBorder p="md" radius="md" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f8faff 100%)' }}>
               <Stack gap="md">
@@ -312,7 +308,7 @@ export const GameSetup: React.FC = observer(() => {
                 variant="light" 
                 onClick={() => navigate('/')}
                 leftSection={<IconArrowLeft size={18} />}
-                size="md"
+                size="lg"
               >
                 Back
               </Button>
@@ -321,17 +317,16 @@ export const GameSetup: React.FC = observer(() => {
                 variant="gradient" 
                 gradient={{ from: 'blue', to: 'cyan', deg: 45 }}
                 size="lg"
+                rightSection={<IconPlayerPlay size={18} />}
                 radius="md"
                 style={{
                   boxShadow: '0 4px 14px rgba(34, 139, 230, 0.25)',
                 }}
               >
-                Start Game
+                Start
               </Button>
             </Group>
           </Stack>
         </form>
-      </Card>
-    </Container>
   );
 }); 

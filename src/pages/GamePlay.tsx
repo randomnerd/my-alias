@@ -396,7 +396,7 @@ export const GamePlay: React.FC = observer(() => {
     return (
       <Transition mounted={true} transition={pageTransition} duration={300}>
         {(styles) => (
-          <Container size="sm" py="md" style={styles}>
+          <Container size="sm" py="md" style={styles} mt="xs">
             <ScoreLimitBanner />
             
             <SimpleGrid cols={{ base: 2, sm: 4 }} spacing="md" mb="lg">
@@ -451,6 +451,18 @@ export const GamePlay: React.FC = observer(() => {
                 <Title order={2} ta="center">
                   {isFirstRound ? 'Game Ready!' : 'Round Ended'}
                 </Title>
+
+                {!isFirstRound && (
+                    <Button
+                      variant="light"
+                      color="teal"
+                      w="100%"
+                      size="sm"
+                      onClick={() => setShowRoundSummary(true)}
+                    >
+                      Review Last Round
+                    </Button>
+                  )}
                 
                 <Paper p="md" radius="md" withBorder w="100%" shadow="sm">
                   <Flex justify="space-between" align="center">
@@ -472,45 +484,31 @@ export const GamePlay: React.FC = observer(() => {
                   }}
                 >
                   <Stack gap="xs">
-                    <Text ta="center" fw={500}>
-                      Get ready! The player who will explain the words should take the device.
-                    </Text>
                     <Text ta="center">
                       You will have <Text span fw={700}>{game.roundTime} seconds</Text> to explain as many words as possible.
-                    </Text>
-                    <Text ta="center" fw={700} c="red">
-                      Remember: don't use the word itself or its parts!
                     </Text>
                   </Stack>
                 </Paper>
                 
                 <Group justify="space-between" w="100%" mt="md">
                   <Button 
-                    variant="light" 
+                    variant="light"
+                    size="md"
                     onClick={() => navigate('/')}
                     leftSection={<IconHome size={18} />}
                   >
-                    Exit Game
+                    Exit
                   </Button>
-                  {!isFirstRound && (
-                    <Button
-                      variant="light"
-                      color="teal"
-                      onClick={() => setShowRoundSummary(true)}
-                    >
-                      Review Last Round
-                    </Button>
-                  )}
                   <Button 
                     variant="gradient" 
                     gradient={{ from: teamColor, to: 'cyan', deg: 45 }}
-                    size="lg"
+                    size="md"
                     radius="md" 
                     onClick={startRound}
                     rightSection={<IconPlayerPlay size={18} />}
                     style={{ boxShadow: `0 4px 14px ${theme.colors[teamColor][3]}80` }}
                   >
-                    {isFirstRound ? 'Start Game' : 'Start Round'}
+                    Start
                   </Button>
                 </Group>
               </Stack>
@@ -688,6 +686,7 @@ export const GamePlay: React.FC = observer(() => {
                     shadow="lg" 
                     padding="xl" 
                     radius="lg" 
+                    
                     withBorder 
                     style={{ 
                       ...cardStyles,
@@ -695,6 +694,8 @@ export const GamePlay: React.FC = observer(() => {
                       fontSize: rem(36),
                       fontWeight: 700,
                       minHeight: rem(160),
+                      paddingLeft: rem(20),
+                      paddingRight: rem(20),
                       width: '100%',
                       display: 'flex',
                       alignItems: 'center',
@@ -717,7 +718,6 @@ export const GamePlay: React.FC = observer(() => {
                 size="xl"
                 radius="md"
                 h={80}
-                leftSection={<IconCircleX size={24} />}
                 onClick={() => handleWordResult('skipped')}
                 styles={{
                   root: {
@@ -729,7 +729,7 @@ export const GamePlay: React.FC = observer(() => {
                   }
                 }}
               >
-                Skip
+                <IconCircleX size={48} />
               </Button>
               
               <Button 
@@ -738,7 +738,6 @@ export const GamePlay: React.FC = observer(() => {
                 size="xl"
                 radius="md"
                 h={80}
-                leftSection={<IconCircleCheck size={24} />}
                 onClick={() => handleWordResult('correct')}
                 styles={{
                   root: {
@@ -750,7 +749,7 @@ export const GamePlay: React.FC = observer(() => {
                   }
                 }}
               >
-                Correct
+                <IconCircleCheck size={48} />
               </Button>
             </SimpleGrid>
             
