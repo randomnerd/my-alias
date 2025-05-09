@@ -13,13 +13,19 @@ import {
   Group,
   ThemeIcon,
   Transition,
+  Collapse,
+  Box,
+  rem,
+  useMantineTheme,
 } from '@mantine/core';
-import { IconVocabulary, IconUsers, IconClock } from '@tabler/icons-react';
+import { IconVocabulary, IconUsers, IconClock, IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
+  const theme = useMantineTheme();
   const [loadedItems, setLoadedItems] = useState<boolean[]>([false, false, false]);
   const [loadedFeatures, setLoadedFeatures] = useState<boolean[]>([false, false, false]);
+  const [rulesExpanded, setRulesExpanded] = useState(true);
 
   // Sequential animation for the sections
   useEffect(() => {
@@ -33,7 +39,7 @@ export const HomePage: React.FC = () => {
           updated[index] = true;
           return updated;
         });
-      }, 200 + (index * 200)); // Stagger by 200ms
+      }, 150 + (index * 150)); // Faster staggering (150ms)
       
       timers.push(timer);
     });
@@ -48,26 +54,49 @@ export const HomePage: React.FC = () => {
             updated[index] = true;
             return updated;
           });
-        }, 800 + (index * 100)); // Stagger by 100ms
+        }, 300 + (index * 80)); // Faster staggering (80ms)
         
         timers.push(timer);
       });
-    }, 800);
+    }, 300);
     
     timers.push(featuresTimer);
     
     return () => timers.forEach(timer => clearTimeout(timer));
-  }, [loadedItems, loadedFeatures]);
+  }, []); // Remove unnecessary dependencies to prevent re-triggering animations
+
+  // On small screens, collapse rules by default
+  useEffect(() => {
+    const handleResize = () => {
+      setRulesExpanded(window.innerWidth >= 768);
+    };
+    
+    handleResize(); // Set initial state
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
-    <Container size="xs" py="md">
+    <Container py="md">
       <Transition mounted={loadedItems[0]} transition="fade" duration={400}>
         {(styles) => (
-          <Card shadow="sm" padding="md" radius="md" withBorder mb="md" style={styles}>
+          <Card shadow="md" padding="md" radius="lg" withBorder mb="md" style={styles}>
             <Stack gap="md">
-              <Title order={2} ta="center">Welcome to Alias</Title>
+              <Title order={2} ta="center" 
+                style={{ 
+                  fontSize: theme.other.isMobile ? rem(24) : rem(28),
+                  background: 'linear-gradient(45deg, #228be6 0%, #40c4ff 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent'
+                }}
+              >
+                Welcome to Alias
+              </Title>
               <Text ta="center" size="lg" c="dimmed">
-                Alias is a word-guessing game where players explain words to teammates without using the word itself. Perfect for gatherings with friends, family, or colleagues.
+                A word-guessing game perfect for gatherings with friends and family.
               </Text>
               
               <Group justify="center" mt="md">
@@ -75,7 +104,17 @@ export const HomePage: React.FC = () => {
                   size="lg" 
                   onClick={() => navigate('/setup')}
                   variant="gradient" 
-                  gradient={{ from: 'blue', to: 'cyan' }}
+                  gradient={{ from: 'blue', to: 'cyan', deg: 45 }}
+                  radius="md"
+                  style={{
+                    boxShadow: '0 4px 14px rgba(34, 139, 230, 0.25)',
+                    transform: 'translateY(0)',
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                    ':hover': {
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 6px 20px rgba(34, 139, 230, 0.3)'
+                    }
+                  }}
                 >
                   Start New Game
                 </Button>
@@ -87,34 +126,58 @@ export const HomePage: React.FC = () => {
       
       <Transition mounted={loadedItems[1]} transition="fade" duration={400}>
         {(styles) => (
-          <Card shadow="sm" padding="md" radius="md" withBorder mb="md" style={styles}>
-            <Title order={3} mb="md">Game Rules</Title>
-            <List spacing="sm" size="md" mb="md">
-              <List.Item>Players are organized into teams</List.Item>
-              <List.Item>Each round, one player explains words to teammates</List.Item>
-              <List.Item>Teams gain points for correctly guessed words</List.Item>
-              <List.Item>Teams lose points for skipped words <b>(optional setting)</b></List.Item>
-              <List.Item>Rounds are timed</List.Item>
-              <List.Item>The game continues until a team reaches the score limit</List.Item>
-              <List.Item>When a team reaches the score limit, all teams finish the current round</List.Item>
-              <List.Item>The team with the highest score at the end of that round wins</List.Item>
-            </List>
+          <Card shadow="md" padding="md" radius="lg" withBorder mb="md" style={styles}>
+            <Group justify="space-between" mb="md">
+              <Title order={3}>Game Rules</Title>
+              <Button 
+                variant="subtle" 
+                size="sm"
+                onClick={() => setRulesExpanded(!rulesExpanded)}
+                rightSection={rulesExpanded ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
+                styles={{
+                  root: {
+                    '@media (min-width: 768px)': {
+                      display: 'none',
+                    }
+                  }
+                }}
+              >
+                {rulesExpanded ? 'Hide' : 'Show'}
+              </Button>
+            </Group>
+            
+            <Collapse in={rulesExpanded}>
+              <List spacing="sm" size="md" mb="xs" styles={{ item: { fontSize: rem(15) } }}>
+                <List.Item>Players are organized into teams</List.Item>
+                <List.Item>Each round, one player explains words to teammates</List.Item>
+                <List.Item>Teams gain points for correctly guessed words</List.Item>
+                <List.Item>Teams lose points for skipped words <b>(optional setting)</b></List.Item>
+                <List.Item>Rounds are timed</List.Item>
+                <List.Item>The game continues until a team reaches the score limit</List.Item>
+                <List.Item>When a team reaches the score limit, all teams finish the current round</List.Item>
+                <List.Item>The team with the highest score at the end of that round wins</List.Item>
+              </List>
+            </Collapse>
           </Card>
         )}
       </Transition>
       
       <Transition mounted={loadedItems[2]} transition="fade" duration={400}>
         {(styles) => (
-          <Card shadow="sm" padding="md" radius="md" withBorder style={styles}>
+          <Card shadow="md" padding="md" radius="lg" withBorder style={styles}>
             <Title order={3} mb="md" ta="center">Why Play Alias?</Title>
             <Grid>
-              <Grid.Col span={{ base: 12, sm: 4 }}>
+              <Grid.Col span={{ base: 12, xs: 12, sm: 4 }}>
                 <Transition mounted={loadedFeatures[0]} transition="slide-up" duration={400}>
                   {(cardStyles) => (
-                    <Paper p="md" radius="md" withBorder style={cardStyles}>
+                    <Paper p="md" radius="md" withBorder style={{
+                      ...cardStyles,
+                      height: '100%',
+                      background: 'linear-gradient(180deg, #ffffff 0%, #f8faff 100%)'
+                    }}>
                       <Stack align="center" gap="sm">
-                        <ThemeIcon size={48} radius="xl" color="blue">
-                          <IconVocabulary size={24} />
+                        <ThemeIcon size={60} radius="xl" color="blue" styles={{ root: { boxShadow: '0 4px 8px rgba(34, 139, 230, 0.2)' } }}>
+                          <IconVocabulary size={36} />
                         </ThemeIcon>
                         <Title order={4}>Improve Vocabulary</Title>
                         <Text ta="center" c="dimmed">Enhance your language skills by finding creative ways to describe words</Text>
@@ -124,13 +187,17 @@ export const HomePage: React.FC = () => {
                 </Transition>
               </Grid.Col>
               
-              <Grid.Col span={{ base: 12, sm: 4 }}>
+              <Grid.Col span={{ base: 12, xs: 12, sm: 4 }}>
                 <Transition mounted={loadedFeatures[1]} transition="slide-up" duration={400}>
                   {(cardStyles) => (
-                    <Paper p="md" radius="md" withBorder style={cardStyles}>
+                    <Paper p="md" radius="md" withBorder style={{
+                      ...cardStyles,
+                      height: '100%',
+                      background: 'linear-gradient(180deg, #ffffff 0%, #f0fcff 100%)'
+                    }}>
                       <Stack align="center" gap="sm">
-                        <ThemeIcon size={48} radius="xl" color="cyan">
-                          <IconUsers size={24} />
+                        <ThemeIcon size={60} radius="xl" color="cyan" styles={{ root: { boxShadow: '0 4px 8px rgba(34, 195, 230, 0.2)' } }}>
+                          <IconUsers size={36} />
                         </ThemeIcon>
                         <Title order={4}>Perfect for Groups</Title>
                         <Text ta="center" c="dimmed">Designed for friends, family gatherings, or team-building events</Text>
@@ -140,13 +207,17 @@ export const HomePage: React.FC = () => {
                 </Transition>
               </Grid.Col>
               
-              <Grid.Col span={{ base: 12, sm: 4 }}>
+              <Grid.Col span={{ base: 12, xs: 12, sm: 4 }}>
                 <Transition mounted={loadedFeatures[2]} transition="slide-up" duration={400}>
                   {(cardStyles) => (
-                    <Paper p="md" radius="md" withBorder style={cardStyles}>
+                    <Paper p="md" radius="md" withBorder style={{
+                      ...cardStyles,
+                      height: '100%',
+                      background: 'linear-gradient(180deg, #ffffff 0%, #f3f0ff 100%)'
+                    }}>
                       <Stack align="center" gap="sm">
-                        <ThemeIcon size={48} radius="xl" color="indigo">
-                          <IconClock size={24} />
+                        <ThemeIcon size={60} radius="xl" color="indigo" styles={{ root: { boxShadow: '0 4px 8px rgba(92, 73, 216, 0.2)' } }}>
+                          <IconClock size={36} />
                         </ThemeIcon>
                         <Title order={4}>Quick Rounds</Title>
                         <Text ta="center" c="dimmed">Fast-paced gameplay keeps everyone engaged and entertained</Text>
@@ -156,6 +227,22 @@ export const HomePage: React.FC = () => {
                 </Transition>
               </Grid.Col>
             </Grid>
+            
+            <Box mt="xl" ta="center">
+              <Button 
+                onClick={() => navigate('/setup')} 
+                variant="light" 
+                color="blue" 
+                size="lg"
+                radius="md"
+                style={{
+                  width: '100%',
+                  maxWidth: '320px'
+                }}
+              >
+                Get Started
+              </Button>
+            </Box>
           </Card>
         )}
       </Transition>

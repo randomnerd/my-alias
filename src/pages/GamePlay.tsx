@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../stores/RootStore';
@@ -10,7 +10,6 @@ import {
   Card, 
   Group, 
   Stack,
-  Grid,
   Paper,
   Progress,
   Badge,
@@ -21,14 +20,22 @@ import {
   Flex,
   rem,
   Table,
-  Transition
+  Transition,
+  ThemeIcon,
+  useMantineTheme,
+  SimpleGrid,
+  Divider,
 } from '@mantine/core';
 import { 
   IconAlertTriangle, 
   IconPlayerPlay, 
-  IconCheck, 
+  IconCircleCheck, 
   IconPlayerSkipForward,
   IconHome,
+  IconCircleX,
+  IconClock,
+  IconInfoCircle,
+  IconChevronRight,
 } from '@tabler/icons-react';
 
 interface GamePlayParams {
@@ -40,11 +47,11 @@ interface TeamType {
   score: number;
 }
 
-// Define custom card animation
+// Define custom card animation with enhanced effects
 const wordCardAnimation = {
-  in: { opacity: 1, transform: 'translateY(0)' },
-  out: { opacity: 0, transform: 'translateY(-20px)' },
-  common: { transformOrigin: 'top' },
+  in: { opacity: 1, transform: 'translateY(0) scale(1)' },
+  out: { opacity: 0, transform: 'translateY(-20px) scale(0.95)' },
+  common: { transformOrigin: 'center', transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)' },
   transitionProperty: 'transform, opacity',
 };
 
@@ -60,6 +67,7 @@ export const GamePlay: React.FC = observer(() => {
   const { gameId } = useParams<keyof GamePlayParams>() as GamePlayParams;
   const navigate = useNavigate();
   const { gameStore } = useStores();
+  const theme = useMantineTheme();
   
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
@@ -69,6 +77,7 @@ export const GamePlay: React.FC = observer(() => {
   const [showRoundSummary, setShowRoundSummary] = useState(false);
   const [wordTransition, setWordTransition] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [showCorrectAnimation, setShowCorrectAnimation] = useState(false);
   
   // Set the current game in the store
   useEffect(() => {
@@ -82,10 +91,16 @@ export const GamePlay: React.FC = observer(() => {
   const game = gameStore.currentGame;
 
   // Helper function to get team colors consistently throughout the component
-  const getTeamColor = (index: number) => {
+  const getTeamColor = useCallback((index: number) => {
     const colors = ['blue', 'teal', 'grape', 'orange', 'pink'];
     return colors[index % colors.length];
-  };
+  }, []);
+
+  // Calculate timer percentage for better visualization
+  const timerPercentage = useMemo(() => {
+    if (!game) return 0;
+    return (timeLeft / game.roundTime) * 100;
+  }, [timeLeft, game]);
 
   // Define endRound using useCallback before it's used in other effects
   const endRound = useCallback(async () => {
@@ -131,7 +146,7 @@ export const GamePlay: React.FC = observer(() => {
   }, [timerActive, timeLeft, endRound]);
 
   // Handle starting the round
-  const startRound = async () => {
+  const startRound = useCallback(async () => {
     setShowRoundSummary(false);
     try {
       await gameStore.startRound();
@@ -142,23 +157,25 @@ export const GamePlay: React.FC = observer(() => {
       setLastAction(null);
       setWordTransition(true);
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error('Error starting round:', error);
-        alert(`Failed to start round: ${error.message}`);
-      } else {
-        console.error('Error starting round:', error);
-        alert('Failed to start round: Unknown error');
-      }
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('Error starting round:', errorMessage);
+      alert(`Failed to start round: ${errorMessage}`);
     }
-  };
+  }, [game, gameStore]);
 
   // Handle word result (correct or skip)
-  const handleWordResult = async (status: 'correct' | 'skipped') => {
+  const handleWordResult = useCallback(async (status: 'correct' | 'skipped') => {
     if (!game || !roundStarted) return;
     
     const currentWord = game.rounds[game.currentRound]?.words[currentWordIndex];
     if (currentWord) {
       setLastAction({ type: status, word: currentWord.text });
+    }
+    
+    // Show correct animation
+    if (status === 'correct') {
+      setShowCorrectAnimation(true);
+      setTimeout(() => setShowCorrectAnimation(false), 500);
     }
     
     // Trigger exit animation
@@ -178,18 +195,14 @@ export const GamePlay: React.FC = observer(() => {
           // End of words, end the round
           endRound();
         }
-      }, 200);
+      }, 250);
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(`Error marking word as ${status}:`, error);
-        alert(`Failed to update word status: ${error.message}`);
-      } else {
-        console.error(`Error marking word as ${status}:`, error);
-        alert('Failed to update word status: Unknown error');
-      }
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error(`Error marking word as ${status}:`, errorMessage);
+      alert(`Failed to update word status: ${errorMessage}`);
       setWordTransition(true); // Ensure the word is visible in case of error
     }
-  };
+  }, [game, roundStarted, currentWordIndex, gameStore, endRound]);
 
   // Handle toggling word status in round summary
   const toggleWordStatus = async (wordIndex: number, currentStatus: 'correct' | 'skipped') => {
@@ -199,13 +212,9 @@ export const GamePlay: React.FC = observer(() => {
     try {
       gameStore.updateWordStatusInRound(game.currentRound, wordIndex, newStatus);
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error('Error toggling word status:', error);
-        alert(`Failed to update word status: ${error.message}`);
-      } else {
-        console.error('Error toggling word status:', error);
-        alert('Failed to update word status: Unknown error');
-      }
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('Error toggling word status:', errorMessage);
+      alert(`Failed to update word status: ${errorMessage}`);
     }
   };
 
@@ -217,11 +226,11 @@ export const GamePlay: React.FC = observer(() => {
 
   if (isLoading) {
     return (
-      <Container size="xs" py="md">
+      <Container size="sm" py="md">
         <Center style={{ height: '50vh' }}>
           <Stack align="center" gap="md">
-            <Loader size="xl" />
-            <Text>Loading game...</Text>
+            <Loader size="xl" color="blue" />
+            <Text size="lg">Loading game...</Text>
           </Stack>
         </Center>
       </Container>
@@ -230,18 +239,24 @@ export const GamePlay: React.FC = observer(() => {
 
   if (!game) {
     return (
-      <Container size="xs" py="md">
-        <Alert 
-          icon={<IconAlertTriangle size={24} />} 
-          title="Game not found"
-          color="red"
-          radius="md"
-        >
-          <Text mb="md">The game you're looking for doesn't exist or has been removed.</Text>
-          <Button onClick={() => navigate('/')} leftSection={<IconHome size={18} />}>
-            Return to Home
-          </Button>
-        </Alert>
+      <Container size="sm" py="md">
+        <Card shadow="md" withBorder p="lg" radius="lg">
+          <Stack align="center" gap="md">
+            <ThemeIcon size={60} radius="xl" color="red">
+              <IconAlertTriangle size={32} />
+            </ThemeIcon>
+            <Title order={2}>Game not found</Title>
+            <Text mb="md">The game you're looking for doesn't exist or has been removed.</Text>
+            <Button 
+              onClick={() => navigate('/')} 
+              leftSection={<IconHome size={18} />}
+              size="md"
+              variant="light"
+            >
+              Return to Home
+            </Button>
+          </Stack>
+        </Card>
       </Container>
     );
   }
@@ -249,12 +264,12 @@ export const GamePlay: React.FC = observer(() => {
   // Display score limit at the top of the gameplay screen
   const ScoreLimitBanner = () => (
     <Box mb="md" style={{ textAlign: 'center' }}>
-      <Badge color="grape" size="lg" radius="sm" variant="filled">
+      <Badge color="grape" size="lg" radius="md" variant="filled">
         Score Limit: {game.scoreLimit} points
       </Badge>
       {game.scoreLimitReached && (
         <Box mt="xs">
-          <Badge color="yellow" size="lg" radius="sm" variant="filled">
+          <Badge color="yellow" size="lg" radius="md" variant="filled">
             Score limit reached! Game will end after this round.
           </Badge>
         </Box>
@@ -275,10 +290,12 @@ export const GamePlay: React.FC = observer(() => {
     
     return (
       <Card shadow="md" padding="md" radius="lg" withBorder mb="md">
-        <Stack>
+        <Stack gap="md">
           <Title order={3} ta="center">Round Summary</Title>
           
-          <Paper p="md" radius="md" withBorder>
+          <Paper p="md" radius="md" withBorder style={{
+            background: `linear-gradient(45deg, ${theme.colors[teamColor][0]} 0%, rgba(255, 255, 255, 0.8) 100%)`
+          }}>
             <Group justify="space-between">
               <Text fw={500} size="lg" style={{ color: `var(--mantine-color-${teamColor}-6)` }}>
                 {currentTeam.name}
@@ -295,56 +312,68 @@ export const GamePlay: React.FC = observer(() => {
             </Text>
             
             {game.losePointOnSkip && (
-              <Alert color="yellow" radius="md" mb="md">
-                <Text size="sm">
-                  <b>Scoring changes:</b>
+              <Alert 
+                color="yellow" 
+                radius="md" 
+                mb="md"
+                icon={<IconInfoCircle size={16} />}
+                title="Scoring changes:"
+              >
+                <Text size="sm" mt="xs">
+                  • Changing from <b>correct → skipped</b> will deduct 2 points
                 </Text>
                 <Text size="sm" mt="xs">
-                  • Changing from <b>correct → skipped</b> will deduct 2 points (1 for removing the correct guess + 1 penalty point)
-                </Text>
-                <Text size="sm" mt="xs">
-                  • Changing from <b>skipped → correct</b> will add 2 points (1 for the correct guess + returning 1 penalty point)
+                  • Changing from <b>skipped → correct</b> will add 2 points
                 </Text>
               </Alert>
             )}
           </div>
           
-          <Table striped>
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Word</Table.Th>
-                <Table.Th style={{ textAlign: 'center' }}>Status</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              {filteredWords.map((word, index) => (
-                <Table.Tr key={index}>
-                  <Table.Td>{word.text}</Table.Td>
-                  <Table.Td style={{ textAlign: 'center' }}>
-                    <Button
-                      size="sm"
-                      color={word.status === 'correct' ? 'green' : 'gray'}
-                      variant={word.status === 'correct' ? 'filled' : 'light'}
-                      leftSection={
-                        word.status === 'correct' 
-                          ? <IconCheck size={16} /> 
-                          : <IconPlayerSkipForward size={16} />
-                      }
-                      onClick={() => toggleWordStatus(index, word.status as 'correct' | 'skipped')}
-                    >
-                      {word.status === 'correct' ? 'Correct' : 'Skipped'}
-                    </Button>
-                  </Table.Td>
+          <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+            <Table striped highlightOnHover>
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th>Word</Table.Th>
+                  <Table.Th style={{ textAlign: 'center' }}>Status</Table.Th>
                 </Table.Tr>
-              ))}
-            </Table.Tbody>
-          </Table>
+              </Table.Thead>
+              <Table.Tbody>
+                {filteredWords.map((word, index) => (
+                  <Table.Tr key={index}>
+                    <Table.Td>
+                      <Text fw={500}>{word.text}</Text>
+                    </Table.Td>
+                    <Table.Td style={{ textAlign: 'center' }}>
+                      <Button
+                        size="sm"
+                        color={word.status === 'correct' ? 'green' : 'gray'}
+                        variant={word.status === 'correct' ? 'filled' : 'light'}
+                        radius="lg"
+                        leftSection={
+                          word.status === 'correct' 
+                            ? <IconCircleCheck size={16} /> 
+                            : <IconPlayerSkipForward size={16} />
+                        }
+                        onClick={() => toggleWordStatus(index, word.status as 'correct' | 'skipped')}
+                      >
+                        {word.status === 'correct' ? 'Correct' : 'Skipped'}
+                      </Button>
+                    </Table.Td>
+                  </Table.Tr>
+                ))}
+              </Table.Tbody>
+            </Table>
+          </div>
           
           <Group justify="center" mt="md">
             <Button 
               variant="gradient" 
-              gradient={{ from: 'blue', to: 'cyan' }}
+              gradient={{ from: 'blue', to: 'cyan', deg: 45 }}
+              size="lg"
+              radius="md"
+              rightSection={<IconChevronRight size={18} />}
               onClick={() => setShowRoundSummary(false)}
+              style={{ boxShadow: '0 4px 14px rgba(34, 139, 230, 0.25)' }}
             >
               Continue to Next Round
             </Button>
@@ -362,72 +391,110 @@ export const GamePlay: React.FC = observer(() => {
     
     const teamName = game.teams[currentTeam]?.name || `Team ${currentTeam + 1}`;
     const isFirstRound = game.status === 'setup';
+    const teamColor = getTeamColor(currentTeam);
     
     return (
       <Transition mounted={true} transition={pageTransition} duration={300}>
         {(styles) => (
-          <Container size="xs" py="md" style={styles}>
+          <Container size="sm" py="md" style={styles}>
             <ScoreLimitBanner />
-            <Grid mb="md">
+            
+            <SimpleGrid cols={{ base: 2, sm: 4 }} spacing="md" mb="lg">
               {game.teams.map((team: TeamType, index: number) => (
-                <Grid.Col key={index} span={{ base: 6, md: 3 }}>
-                  <Paper p="md" radius="md" withBorder>
-                    <Stack align="center" gap="xs">
-                      <Text fw={500} size="lg" style={{ color: `var(--mantine-color-${getTeamColor(index)}-6)` }}>
-                        {team.name}
-                      </Text>
-                      <Title order={2}>{team.score}</Title>
-                    </Stack>
-                  </Paper>
-                </Grid.Col>
-              ))}
-            </Grid>
-
-            <Card shadow="md" padding="md" radius="lg" withBorder>
-              <Stack align="center" gap="lg">
-                <Box 
-                  style={{ 
-                    fontSize: rem(48),
-                    marginBottom: rem(10) 
+                <Paper 
+                  key={index} 
+                  p="md" 
+                  radius="md" 
+                  withBorder
+                  style={{
+                    background: index === currentTeam 
+                      ? `linear-gradient(45deg, ${theme.colors[getTeamColor(index)][0]} 0%, rgba(255, 255, 255, 0.8) 100%)` 
+                      : undefined,
+                    borderColor: index === currentTeam ? theme.colors[getTeamColor(index)][5] : undefined,
+                    borderWidth: index === currentTeam ? '2px' : '1px',
                   }}
                 >
-                  {isFirstRound ? '🎮' : '🔄'}
-                </Box>
+                  <Stack align="center" gap="xs">
+                    <Text 
+                      fw={600} 
+                      size="md" 
+                      style={{ 
+                        color: `var(--mantine-color-${getTeamColor(index)}-6)`,
+                        textAlign: 'center',
+                      }}
+                    >
+                      {team.name}
+                    </Text>
+                    <Title order={2}>{team.score}</Title>
+                  </Stack>
+                </Paper>
+              ))}
+            </SimpleGrid>
+
+            <Card shadow="md" padding="lg" radius="lg" withBorder>
+              <Stack align="center" gap="lg">
+                <ThemeIcon 
+                  size={80} 
+                  radius={100} 
+                  color={teamColor}
+                  style={{
+                    boxShadow: `0 4px 14px ${theme.colors[teamColor][3]}80`,
+                  }}
+                >
+                  {isFirstRound ? (
+                    <IconPlayerPlay size={40} />
+                  ) : (
+                    <IconClock size={40} />
+                  )}
+                </ThemeIcon>
                 
                 <Title order={2} ta="center">
                   {isFirstRound ? 'Game Ready!' : 'Round Ended'}
                 </Title>
                 
-                <Paper p="md" radius="md" withBorder w="100%">
+                <Paper p="md" radius="md" withBorder w="100%" shadow="sm">
                   <Flex justify="space-between" align="center">
                     <Text size="lg" fw={500}>
                       {isFirstRound ? 'First Team:' : 'Next Team:'}
                     </Text>
-                    <Badge size="xl" color={getTeamColor(currentTeam)} variant="filled" radius="sm">
+                    <Badge size="xl" color={teamColor} variant="filled" radius="md">
                       {teamName}
                     </Badge>
                   </Flex>
                 </Paper>
                 
-                <Box>
-                  <Text ta="center" mb="xs">
-                    Get ready! The player who will explain the words should take the device.
-                  </Text>
-                  <Text ta="center" mb="xs">
-                    You will have <Text span fw={700}>{game.roundTime} seconds</Text> to explain as many words as possible.
-                  </Text>
-                  <Text ta="center" fw={700} c="red">
-                    Remember: don't use the word itself or its parts!
-                  </Text>
-                </Box>
+                <Paper 
+                  p="md" 
+                  radius="md" 
+                  withBorder 
+                  style={{
+                    background: 'rgba(250, 250, 250, 0.7)',
+                  }}
+                >
+                  <Stack gap="xs">
+                    <Text ta="center" fw={500}>
+                      Get ready! The player who will explain the words should take the device.
+                    </Text>
+                    <Text ta="center">
+                      You will have <Text span fw={700}>{game.roundTime} seconds</Text> to explain as many words as possible.
+                    </Text>
+                    <Text ta="center" fw={700} c="red">
+                      Remember: don't use the word itself or its parts!
+                    </Text>
+                  </Stack>
+                </Paper>
                 
                 <Group justify="space-between" w="100%" mt="md">
-                  <Button variant="outline" onClick={() => navigate('/')}>
+                  <Button 
+                    variant="light" 
+                    onClick={() => navigate('/')}
+                    leftSection={<IconHome size={18} />}
+                  >
                     Exit Game
                   </Button>
                   {!isFirstRound && (
                     <Button
-                      variant="outline"
+                      variant="light"
                       color="teal"
                       onClick={() => setShowRoundSummary(true)}
                     >
@@ -436,10 +503,12 @@ export const GamePlay: React.FC = observer(() => {
                   )}
                   <Button 
                     variant="gradient" 
-                    gradient={{ from: 'blue', to: 'cyan' }}
-                    size="lg" 
+                    gradient={{ from: teamColor, to: 'cyan', deg: 45 }}
+                    size="lg"
+                    radius="md" 
                     onClick={startRound}
                     rightSection={<IconPlayerPlay size={18} />}
+                    style={{ boxShadow: `0 4px 14px ${theme.colors[teamColor][3]}80` }}
                   >
                     {isFirstRound ? 'Start Game' : 'Start Round'}
                   </Button>
@@ -457,22 +526,36 @@ export const GamePlay: React.FC = observer(() => {
     return (
       <Transition mounted={true} transition={pageTransition} duration={300}>
         {(styles) => (
-          <Container size="xs" py="md" style={styles}>
+          <Container size="sm" py="md" style={styles}>
             <ScoreLimitBanner />
-            <Grid mb="md">
+            
+            <SimpleGrid cols={{ base: 2, sm: 4 }} spacing="md" mb="lg">
               {game.teams.map((team: TeamType, index: number) => (
-                <Grid.Col key={index} span={{ base: 6, md: 3 }}>
-                  <Paper p="md" radius="md" withBorder>
-                    <Stack align="center" gap="xs">
-                      <Text fw={500} size="lg" style={{ color: `var(--mantine-color-${getTeamColor(index)}-6)` }}>
-                        {team.name}
-                      </Text>
-                      <Title order={2}>{team.score}</Title>
-                    </Stack>
-                  </Paper>
-                </Grid.Col>
+                <Paper 
+                  key={index} 
+                  p="md" 
+                  radius="md" 
+                  withBorder
+                  style={{
+                    background: `linear-gradient(45deg, ${theme.colors[getTeamColor(index)][0]} 0%, rgba(255, 255, 255, 0.8) 100%)`,
+                  }}
+                >
+                  <Stack align="center" gap="xs">
+                    <Text 
+                      fw={600} 
+                      size="md"
+                      style={{ 
+                        color: `var(--mantine-color-${getTeamColor(index)}-6)`,
+                        textAlign: 'center',
+                      }}
+                    >
+                      {team.name}
+                    </Text>
+                    <Title order={2}>{team.score}</Title>
+                  </Stack>
+                </Paper>
               ))}
-            </Grid>
+            </SimpleGrid>
             
             <RoundSummary />
           </Container>
@@ -494,18 +577,29 @@ export const GamePlay: React.FC = observer(() => {
       return (
         <Transition mounted={true} transition={pageTransition} duration={300}>
           {(styles) => (
-            <Container size="xs" py="md" style={styles}>
-              <Card shadow="md" padding="md" radius="lg" withBorder>
+            <Container size="sm" py="md" style={styles}>
+              <Card shadow="md" padding="lg" radius="lg" withBorder>
                 <Stack align="center" gap="lg">
-                  <Box style={{ fontSize: rem(48) }}>🎯</Box>
+                  <ThemeIcon 
+                    size={80} 
+                    radius={100} 
+                    color={teamColor}
+                    style={{
+                      boxShadow: `0 4px 14px ${theme.colors[teamColor][3]}80`,
+                    }}
+                  >
+                    <IconPlayerPlay size={40} />
+                  </ThemeIcon>
                   <Title order={2}>Get Ready!</Title>
                   <Title order={3} c={teamColor}>It's {currentTeam.name}'s turn</Title>
                   <Button 
                     size="xl" 
                     variant="gradient" 
-                    gradient={{ from: teamColor, to: 'cyan' }}
+                    gradient={{ from: teamColor, to: 'cyan', deg: 45 }}
                     rightSection={<IconPlayerPlay size={24} />}
+                    radius="md"
                     onClick={startRound}
+                    style={{ boxShadow: `0 4px 14px ${theme.colors[teamColor][3]}80` }}
                   >
                     Start Round
                   </Button>
@@ -520,124 +614,193 @@ export const GamePlay: React.FC = observer(() => {
     return (
       <Transition mounted={true} transition={pageTransition} duration={300}>
         {(styles) => (
-          <Container size="xs" py="md" style={styles}>
-            <Card shadow="sm" padding="md" radius="md" withBorder mb="md">
-              <Group justify="space-between" mb="md">
+          <Container size="sm" py="md" style={styles}>
+            <Card 
+              shadow="md" 
+              padding="md" 
+              radius="lg" 
+              withBorder 
+              mb="md"
+              style={{
+                background: `linear-gradient(45deg, ${theme.colors[teamColor][0]} 0%, rgba(255, 255, 255, 0.8) 100%)`,
+                overflow: 'hidden',
+              }}
+            >
+              <Group justify="space-between" align="center" mb="md">
                 <Stack gap={0}>
-                  <Text fw={500} size="lg" style={{ color: `var(--mantine-color-${teamColor}-6)` }}>
+                  <Text fw={600} size="lg" style={{ color: `var(--mantine-color-${teamColor}-6)` }}>
                     {currentTeam.name}
                   </Text>
                   <Text>Score: {currentTeam.score}</Text>
                 </Stack>
                 
-                <Box>
-                  <Text fw={700} size="xl" ta="right" mb={5} 
-                    style={{ color: `var(--mantine-color-${getTimerColor()}-6)` }}
-                  >
+                <Stack align="flex-end" gap={0}>
+                  <Text fw={700} size="xl" ta="right" style={{ color: `var(--mantine-color-${getTimerColor()}-6)` }}>
                     {timeLeft}s
                   </Text>
                   <Progress 
-                    value={(timeLeft / game.roundTime) * 100} 
+                    value={timerPercentage} 
                     color={getTimerColor()} 
                     size="lg" 
                     radius="xl"
                     w={150}
+                    striped={timeLeft <= 10}
+                    animated={timeLeft <= 10}
                   />
-                </Box>
+                </Stack>
               </Group>
             </Card>
             
-            <Transition 
-              mounted={wordTransition} 
-              transition={wordCardAnimation} 
-              duration={300}
-            >
-              {(cardStyles) => (
-                <Card 
-                  shadow="md" 
-                  padding="md" 
-                  radius="md" 
-                  withBorder 
-                  mb="md"
-                  style={{ 
-                    ...cardStyles,
-                    textAlign: 'center',
-                    fontSize: rem(32),
-                    fontWeight: 700,
-                    minHeight: rem(120),
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: `var(--mantine-color-${teamColor}-0)`
+            <div style={{ 
+              position: 'relative', 
+              margin: '10px 0 30px', 
+              minHeight: rem(180),
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              {showCorrectAnimation && (
+                <ThemeIcon 
+                  size={100} 
+                  radius={100} 
+                  color="green" 
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 10,
+                    opacity: 0.9,
+                    animation: 'pulse 0.5s infinite alternate',
                   }}
                 >
-                  {currentWord.text}
-                </Card>
+                  <IconCircleCheck size={60} />
+                </ThemeIcon>
               )}
-            </Transition>
+              
+              <Transition 
+                mounted={wordTransition} 
+                transition={wordCardAnimation} 
+                duration={300}
+              >
+                {(cardStyles) => (
+                  <Card 
+                    shadow="lg" 
+                    padding="xl" 
+                    radius="lg" 
+                    withBorder 
+                    style={{ 
+                      ...cardStyles,
+                      textAlign: 'center',
+                      fontSize: rem(36),
+                      fontWeight: 700,
+                      minHeight: rem(160),
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: `linear-gradient(135deg, ${theme.colors[teamColor][0]} 0%, white 100%)`,
+                      border: `2px solid ${theme.colors[teamColor][3]}`,
+                      boxShadow: `0 8px 20px ${theme.colors[teamColor][1]}`,
+                    }}
+                  >
+                    {currentWord.text}
+                  </Card>
+                )}
+              </Transition>
+            </div>
             
-            <Group gap="md" grow>
+            <SimpleGrid cols={2} spacing="md" mb="md">
               <Button 
-                variant="outline" 
+                variant="light" 
                 color="red" 
-                size="lg"
-                leftSection={<IconPlayerSkipForward size={20} />}
+                size="xl"
+                radius="md"
+                h={80}
+                leftSection={<IconCircleX size={24} />}
                 onClick={() => handleWordResult('skipped')}
+                styles={{
+                  root: {
+                    borderWidth: 2,
+                    borderColor: theme.colors.red[3],
+                    ':hover': {
+                      backgroundColor: theme.colors.red[0],
+                    }
+                  }
+                }}
               >
                 Skip
               </Button>
               
               <Button 
-                variant="outline" 
+                variant="light" 
                 color="teal" 
-                size="lg"
-                leftSection={<IconCheck size={20} />}
+                size="xl"
+                radius="md"
+                h={80}
+                leftSection={<IconCircleCheck size={24} />}
                 onClick={() => handleWordResult('correct')}
+                styles={{
+                  root: {
+                    borderWidth: 2,
+                    borderColor: theme.colors.teal[3],
+                    ':hover': {
+                      backgroundColor: theme.colors.teal[0],
+                    }
+                  }
+                }}
               >
                 Correct
               </Button>
-            </Group>
+            </SimpleGrid>
             
             {lastAction && (
               <Card 
                 withBorder 
                 radius="md" 
-                mt="md" 
-                p="sm"
+                p="md"
+                mb="md"
                 style={{
                   backgroundColor: lastAction.type === 'correct' 
-                    ? 'var(--mantine-color-teal-0)' 
-                    : 'var(--mantine-color-red-0)'
+                    ? theme.colors.teal[0]
+                    : theme.colors.red[0],
+                  borderColor: lastAction.type === 'correct' 
+                    ? theme.colors.teal[3]
+                    : theme.colors.red[3],
+                  borderWidth: 2,
                 }}
               >
-                <Group>
-                  <Box 
-                    style={{ 
-                      backgroundColor: lastAction.type === 'correct' ? 'var(--mantine-color-teal-6)' : 'var(--mantine-color-red-6)',
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white'
-                    }}
+                <Group align="center" gap="md">
+                  <ThemeIcon 
+                    size={42} 
+                    radius={100} 
+                    color={lastAction.type === 'correct' ? 'teal' : 'red'}
                   >
-                    {lastAction.type === 'correct' ? <IconCheck size={18} /> : <IconPlayerSkipForward size={18} />}
-                  </Box>
+                    {lastAction.type === 'correct' ? 
+                      <IconCircleCheck size={24} /> : 
+                      <IconPlayerSkipForward size={24} />
+                    }
+                  </ThemeIcon>
                   <Stack gap={0}>
-                    <Text size="xs" c="dimmed">Last word:</Text>
-                    <Text fw={500}>{lastAction.word}</Text>
+                    <Text size="sm" c="dimmed">Last word:</Text>
+                    <Text fw={600} size="lg">{lastAction.word}</Text>
+                    <Text size="xs" c="dimmed">
+                      Marked as <b>{lastAction.type}</b>
+                    </Text>
                   </Stack>
                 </Group>
               </Card>
             )}
             
-            <Center mt="lg">
+            <Divider my="md" />
+            
+            <Center mt="md">
               <Button 
-                variant="outline" 
+                variant="light" 
                 color="red"
                 onClick={endRound}
+                leftSection={<IconClock size={18} />}
+                radius="md"
               >
                 End Round Early
               </Button>
@@ -649,17 +812,24 @@ export const GamePlay: React.FC = observer(() => {
   }
 
   return (
-    <Container size="xs" py="md">
-      <Alert 
-        icon={<IconAlertTriangle size={24} />} 
-        title="Unexpected game state"
-        color="yellow"
-      >
-        <Text mb="md">Something unexpected happened with the game state.</Text>
-        <Button onClick={() => navigate('/')} leftSection={<IconHome size={18} />}>
-          Return to Home
-        </Button>
-      </Alert>
+    <Container size="sm" py="md">
+      <Card shadow="md" withBorder p="lg" radius="lg">
+        <Stack align="center" gap="md">
+          <ThemeIcon size={60} radius="xl" color="yellow">
+            <IconAlertTriangle size={32} />
+          </ThemeIcon>
+          <Title order={2}>Unexpected game state</Title>
+          <Text>Something unexpected happened with the game state.</Text>
+          <Button 
+            onClick={() => navigate('/')} 
+            leftSection={<IconHome size={18} />}
+            variant="light"
+            size="md"
+          >
+            Return to Home
+          </Button>
+        </Stack>
+      </Card>
     </Container>
   );
 }); 

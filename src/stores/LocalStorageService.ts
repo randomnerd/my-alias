@@ -36,7 +36,15 @@ class LocalStorageService {
           currentGameId: this.rootStore.gameStore.currentGameId
         };
         
-        localStorage.setItem('alias-react-gameStore', JSON.stringify(gameState));
+        try {
+          localStorage.setItem('alias-react-gameStore', JSON.stringify(gameState));
+        } catch (error) {
+          console.error('Failed to save game state to localStorage:', error);
+          // Inform the user if in development mode
+          if (import.meta.env.DEV) {
+            console.warn('LocalStorage may be unavailable or quota exceeded. Game progress might not be saved.');
+          }
+        }
       })
     );
 
