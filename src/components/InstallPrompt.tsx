@@ -40,7 +40,7 @@ export const InstallPrompt: React.FC = () => {
       await deferredPrompt.prompt();
       
       // Wait for the user to respond to the prompt
-      const { outcome } = await deferredPrompt.userChoice;
+      await deferredPrompt.userChoice;
       
       // We've used the prompt, so we can't use it again, discard it
       setDeferredPrompt(null);
@@ -49,14 +49,9 @@ export const InstallPrompt: React.FC = () => {
       setShowPrompt(false);
       
       // Use conditional logging for development only
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`User ${outcome} the installation`);
-      }
     } catch (error) {
       // Handle any errors that might occur during the installation process
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Installation error:', error);
-      }
+      console.error('Installation error:', error);
     }
   };
 

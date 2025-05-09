@@ -23,7 +23,7 @@ export const HomePage: React.FC = () => {
 
   // Sequential animation for the sections
   useEffect(() => {
-    const timers: NodeJS.Timeout[] = [];
+    const timers: ReturnType<typeof setTimeout>[] = [];
     
     // Stagger the animations for each section
     loadedItems.forEach((_, index) => {

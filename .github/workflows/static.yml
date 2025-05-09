@@ -36,7 +36,9 @@ jobs:
         with:
           node-version: '20.x'
       - name: Install Dependencies
-        run: npx -y vite build
+        run: npm install
+      - name: Install Dependencies
+        run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
