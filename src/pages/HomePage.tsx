@@ -32,7 +32,7 @@ export const HomePage: React.FC = () => {
     const timers: ReturnType<typeof setTimeout>[] = [];
     
     // Stagger the animations for each section
-    loadedItems.forEach((_, index) => {
+    [false, false, false].forEach((_, index) => {
       const timer = setTimeout(() => {
         setLoadedItems(current => {
           const updated = [...current];
@@ -47,7 +47,7 @@ export const HomePage: React.FC = () => {
     // Features appear after all sections are loaded
     const featuresTimer = setTimeout(() => {
       // Stagger the animations for each feature
-      loadedFeatures.forEach((_, index) => {
+      [false, false, false].forEach((_, index) => {
         const timer = setTimeout(() => {
           setLoadedFeatures(current => {
             const updated = [...current];
@@ -63,7 +63,7 @@ export const HomePage: React.FC = () => {
     timers.push(featuresTimer);
     
     return () => timers.forEach(timer => clearTimeout(timer));
-  }, []); // Remove unnecessary dependencies to prevent re-triggering animations
+  }, []); // Animation should only run once on mount
 
   // On small screens, collapse rules by default
   useEffect(() => {

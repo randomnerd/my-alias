@@ -53,7 +53,7 @@ const wordCardAnimation = {
   out: { opacity: 0, transform: 'translateY(-20px) scale(0.95)' },
   common: { transformOrigin: 'center', transition: 'all 300ms cubic-bezier(0.4, 0, 0.2, 1)' },
   transitionProperty: 'transform, opacity',
-};
+} as const;
 
 // Define page transition animation
 const pageTransition = {
@@ -61,7 +61,7 @@ const pageTransition = {
   out: { opacity: 0, transform: 'scale(0.98)' },
   common: { transformOrigin: 'center' },
   transitionProperty: 'transform, opacity',
-};
+} as const;
 
 export const GamePlay: React.FC = observer(() => {
   const { gameId } = useParams<keyof GamePlayParams>() as GamePlayParams;
@@ -205,7 +205,7 @@ export const GamePlay: React.FC = observer(() => {
   }, [game, roundStarted, currentWordIndex, gameStore, endRound]);
 
   // Handle toggling word status in round summary
-  const toggleWordStatus = async (wordIndex: number, currentStatus: 'correct' | 'skipped') => {
+  const toggleWordStatus = useCallback(async (wordIndex: number, currentStatus: 'correct' | 'skipped') => {
     if (!game) return;
     
     const newStatus = currentStatus === 'correct' ? 'skipped' : 'correct';
@@ -216,13 +216,13 @@ export const GamePlay: React.FC = observer(() => {
       console.error('Error toggling word status:', errorMessage);
       alert(`Failed to update word status: ${errorMessage}`);
     }
-  };
+  }, [game, gameStore]);
 
-  const getTimerColor = (): string => {
+  const getTimerColor = useCallback((): string => {
     if (timeLeft <= 10) return 'red';
     if (timeLeft <= 30) return 'orange';
     return 'blue';
-  };
+  }, [timeLeft]);
 
   if (isLoading) {
     return (
@@ -719,6 +719,7 @@ export const GamePlay: React.FC = observer(() => {
                 radius="md"
                 h={80}
                 onClick={() => handleWordResult('skipped')}
+                aria-label="Skip this word"
                 styles={{
                   root: {
                     borderWidth: 2,
@@ -739,6 +740,7 @@ export const GamePlay: React.FC = observer(() => {
                 radius="md"
                 h={80}
                 onClick={() => handleWordResult('correct')}
+                aria-label="Mark word as correct"
                 styles={{
                   root: {
                     borderWidth: 2,

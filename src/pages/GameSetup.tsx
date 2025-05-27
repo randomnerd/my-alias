@@ -91,12 +91,12 @@ export const GameSetup: React.FC = observer(() => {
       }
 
       // Validate round time range
-      if (roundTime < 15 || roundTime > 180) {
-        throw { message: 'Round time must be between 15 and 180 seconds', field: 'roundTime' };
+      if (roundTime < 30 || roundTime > 300) {
+        throw { message: 'Round time must be between 30 and 300 seconds', field: 'roundTime' };
       }
 
       // Validate score limit
-      if (scoreLimit < 1) {
+      if (scoreLimit < 10) {
         throw { message: 'Score limit must be at least 10', field: 'scoreLimit' };
       }
       
@@ -201,16 +201,16 @@ export const GameSetup: React.FC = observer(() => {
                     <Text size="sm" c="dimmed">How long each team has to guess words</Text>
                     
                     <Slider
-                      min={15}
-                      max={180}
+                      min={30}
+                      max={300}
                       step={15}
                       value={roundTime}
                       onChange={setRoundTime}
                       marks={[
-                        { value: 30, label: '30s' },
                         { value: 60, label: '1m' },
                         { value: 120, label: '2m' },
                         { value: 180, label: '3m' },
+                        { value: 300, label: '5m' },
                       ]}
                       styles={{
                         mark: { width: rem(6), height: rem(6) },
@@ -236,7 +236,7 @@ export const GameSetup: React.FC = observer(() => {
                     <Text size="sm" c="dimmed">Game ends when a team reaches this score</Text>
                     
                     <Slider
-                      min={5}
+                      min={10}
                       max={50}
                       step={5}
                       value={scoreLimit}

@@ -31,8 +31,8 @@ class GameStore {
       throw new Error('At least 2 teams are required');
     }
     
-    if (options.roundTime < 15 || options.roundTime > 180) {
-      throw new Error('Round time must be between 15 and 180 seconds');
+    if (options.roundTime < 30 || options.roundTime > 300) {
+      throw new Error('Round time must be between 30 and 300 seconds');
     }
     
     if (options.scoreLimit < 10) {
@@ -247,10 +247,15 @@ class GameStore {
         // Update score based on status change
         const teamIndex = round.teamIndex;
         
-        // Handle score changes
+        // Handle score changes based on the game's skip penalty setting
         if (oldStatus === 'correct' && newStatus === 'skipped') {
-          // Removed a correct word, decrement score
+          // Removed a correct word, lose the +1 point from correct
           if (updatedGame.teams[teamIndex].score > 0) {
+            updatedGame.teams[teamIndex].score -= 1;
+          }
+          
+          // If skip penalty is enabled, lose an additional point for the skip
+          if (game.losePointOnSkip && updatedGame.teams[teamIndex].score > 0) {
             updatedGame.teams[teamIndex].score -= 1;
           }
           
@@ -262,7 +267,12 @@ class GameStore {
           }
         } 
         else if (oldStatus === 'skipped' && newStatus === 'correct') {
-          // Changed skipped to correct, increment score
+          // If skip penalty was enabled, regain the point lost from skip
+          if (game.losePointOnSkip) {
+            updatedGame.teams[teamIndex].score += 1;
+          }
+          
+          // Add the +1 point for correct
           updatedGame.teams[teamIndex].score += 1;
           
           // Check if team now meets or exceeds the score limit
