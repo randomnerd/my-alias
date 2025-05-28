@@ -128,9 +128,33 @@ export const HomePage: React.FC = () => {
       
       <Transition mounted={loadedItems[1]} transition="fade" duration={400}>
         {(styles) => (
-          <Card shadow="md" padding="md" radius="lg" withBorder mb="md" style={styles}>
+          <Card 
+            shadow="md" 
+            padding="md"
+            radius="lg" 
+            withBorder 
+            mb="md" 
+            style={{
+              ...styles,
+              paddingLeft: 'clamp(1rem, 3vw, 2rem)',
+              paddingRight: 'clamp(1rem, 3vw, 2rem)',
+              paddingTop: 'clamp(1rem, 2vw, 1.5rem)',
+              paddingBottom: 'clamp(1rem, 2vw, 1.5rem)'
+            }}
+          >
             <Group justify="space-between" mb="md">
-              <Title order={3}>{t('home:rules.title')}</Title>
+              <Title 
+                order={3}
+                style={{
+                  fontSize: 'clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem)', // 20px → 28px
+                  lineHeight: '1.3',
+                  fontWeight: '600',
+                  letterSpacing: '0.005em',
+                  color: '#1a1a1a'
+                }}
+              >
+                {t('home:rules.title')}
+              </Title>
               <Button 
                 variant="subtle" 
                 size="sm"
@@ -138,6 +162,8 @@ export const HomePage: React.FC = () => {
                 rightSection={rulesExpanded ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
                 styles={{
                   root: {
+                    fontWeight: '500',
+                    letterSpacing: '0.01em',
                     '@media (minWidth: 768px)': {
                       display: 'none',
                     }
@@ -149,11 +175,61 @@ export const HomePage: React.FC = () => {
             </Group>
             
             <Collapse in={rulesExpanded}>
-              <List spacing="sm" size="md" mb="xs" styles={{ item: { fontSize: rem(15) } }}>
-                {(t('home:rules.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
-                  <List.Item key={index}>{item}</List.Item>
-                ))}
-              </List>
+              <Box 
+                style={{ 
+                  maxWidth: '100%',
+                  paddingRight: 'clamp(0.5rem, 2vw, 2rem)'
+                }}
+              >
+                <List 
+                  spacing="md" 
+                  size="md" 
+                  mb="xs" 
+                  styles={{ 
+                    item: { 
+                      fontSize: 'clamp(0.9rem, 0.85rem + 0.25vw, 1.05rem)', // 14.4px → 16.8px
+                      lineHeight: '1.6',
+                      letterSpacing: '0.005em',
+                      color: '#374151',
+                      marginBottom: '0.75rem',
+                      textRendering: 'optimizeLegibility',
+                      WebkitFontSmoothing: 'antialiased',
+                      MozOsxFontSmoothing: 'grayscale',
+                      paddingRight: '1rem'
+                    },
+                    itemWrapper: {
+                      alignItems: 'flex-start'
+                    }
+                  }}
+                >
+                  {(t('home:rules.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
+                    <List.Item 
+                      key={index}
+                      style={{
+                        paddingLeft: '0.5rem',
+                        paddingRight: '0.5rem',
+                        maxWidth: '100%'
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 'clamp(0.9rem, 0.85rem + 0.25vw, 1.05rem)',
+                          lineHeight: '1.6',
+                          letterSpacing: '0.005em',
+                          color: '#374151',
+                          textRendering: 'optimizeLegibility',
+                          WebkitFontSmoothing: 'antialiased',
+                          MozOsxFontSmoothing: 'grayscale',
+                          maxWidth: '100%',
+                          wordWrap: 'break-word'
+                        }}
+                      >
+                        {item}
+                      </Text>
+                    </List.Item>
+                  ))}
+                </List>
+              </Box>
             </Collapse>
           </Card>
         )}
