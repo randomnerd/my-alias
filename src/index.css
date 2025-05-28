@@ -10,19 +10,202 @@
   --error-color: #a64452;
   --background-color: #f2f4f6;
   --card-color: #ffffff;
-  --text-primary: #333333;
-  --text-secondary: #656565;
+  --text-primary: #1a1a1a;
+  --text-secondary: #4a4a4a;
+  --text-muted: #6b7280;
+  
+  /* Enhanced Typography System */
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  
+  /* Fluid Typography Scale */
+  --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --font-size-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --font-size-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+  --font-size-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+  --font-size-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  --font-size-2xl: clamp(1.5rem, 1.25rem + 1.25vw, 2.25rem);
+  --font-size-3xl: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+  
+  /* Line Heights */
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 1.75;
+  
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
+
+/* Enhanced Base Typography */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px; /* Base font size for rem calculations */
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-normal);
+  letter-spacing: var(--letter-spacing-normal);
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   background-color: var(--background-color);
   color: var(--text-primary);
-  line-height: 1.6;
+  
+  /* Enhanced text rendering */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1;
+  
+  /* Improve mobile scrolling */
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
+
+/* Enhanced Typography Hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  margin: 0 0 0.5em 0;
+  color: var(--text-primary);
+  
+  /* Better heading rendering */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: var(--font-size-2xl);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+  line-height: 1.3;
+}
+
+h4 {
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-snug);
+}
+
+h5 {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+}
+
+h6 {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Enhanced Text Elements */
+p {
+  margin: 0 0 1em 0;
+  line-height: var(--line-height-relaxed);
+}
+
+small {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+strong, b {
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Better Link Styling */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--primary-light);
+  text-decoration: underline;
+}
+
+/* Enhanced Form Typography */
+input, textarea, select, button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Improved Focus Styles */
+input:focus, textarea:focus, select:focus, button:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Reading Width Optimization */
+.prose {
+  max-width: 65ch;
+  margin: 0 auto;
+}
+
+/* Mobile-First Typography Utilities */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.text-xs { font-size: var(--font-size-xs); }
+.text-sm { font-size: var(--font-size-sm); }
+.text-base { font-size: var(--font-size-base); }
+.text-lg { font-size: var(--font-size-lg); }
+.text-xl { font-size: var(--font-size-xl); }
+.text-2xl { font-size: var(--font-size-2xl); }
+.text-3xl { font-size: var(--font-size-3xl); }
+
+.font-normal { font-weight: var(--font-weight-normal); }
+.font-medium { font-weight: var(--font-weight-medium); }
+.font-semibold { font-weight: var(--font-weight-semibold); }
+.font-bold { font-weight: var(--font-weight-bold); }
+
+.leading-tight { line-height: var(--line-height-tight); }
+.leading-snug { line-height: var(--line-height-snug); }
+.leading-normal { line-height: var(--line-height-normal); }
+.leading-relaxed { line-height: var(--line-height-relaxed); }
+.leading-loose { line-height: var(--line-height-loose); }
+
+.tracking-tight { letter-spacing: var(--letter-spacing-tight); }
+.tracking-normal { letter-spacing: var(--letter-spacing-normal); }
+.tracking-wide { letter-spacing: var(--letter-spacing-wide); }
+
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
 
 .container {
   max-width: 800px;
@@ -92,25 +275,39 @@ body {
 }
 
 .timer {
-  font-size: 3.5rem;
+  font-size: clamp(2.5rem, 4vw + 1.5rem, 4rem);
   text-align: center;
   margin: 20px 0;
   color: var(--primary-color);
-  font-weight: 700;
-  letter-spacing: -1px;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-tight);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 .word-card {
-  padding: 35px;
+  padding: clamp(1.5rem, 5vw, 2.5rem);
   text-align: center;
-  font-size: 2.25rem;
-  font-weight: 700;
+  font-size: clamp(1.75rem, 4vw + 0.5rem, 3rem);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-normal);
   margin-bottom: 25px;
   background-color: var(--primary-color);
   color: white;
-  border-radius: 8px;
-  box-shadow: 0 6px 16px rgba(58, 80, 107, 0.25);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(58, 80, 107, 0.25);
   transition: transform 0.2s ease;
+  min-height: clamp(120px, 15vw, 180px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Enhanced text rendering for better mobile readability */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .word-card:hover {
@@ -274,26 +471,118 @@ body {
 
 /* Responsive adjustments */
 @media (max-width: 600px) {
-  /* Existing mobile styles */
+  .header h1 {
+    font-size: clamp(1.75rem, 5vw, 2.25rem);
+    line-height: var(--line-height-tight);
+  }
+  
+  .word-card {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+    padding: clamp(1.25rem, 5vw, 2rem);
+    min-height: clamp(100px, 20vw, 150px);
+  }
+  
+  .timer {
+    font-size: clamp(2rem, 8vw, 3rem);
+    margin: 1rem 0;
+  }
+  
   .team-score {
     flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .team-score-card {
+    min-width: 100%;
+    padding: 1rem;
+  }
+  
+  .team-score-card h3 {
+    font-size: 1rem;
+  }
+  
+  .score {
+    font-size: 1.75rem;
   }
   
   .actions {
     flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .action-button {
+    width: 100%;
+    min-height: 3.5rem;
+    font-size: 1.125rem;
+    padding: 1rem 1.5rem;
   }
   
   .button {
-    width: 100%;
+    min-height: 3rem;
+    font-size: 1rem;
+    padding: 0.875rem 1.5rem;
   }
   
-  .header h1 {
-    font-size: 1.75rem;
+  .instructions-panel {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+  
+  .instructions-panel p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  
+  .next-team-name {
+    font-size: 1.375rem;
+  }
+  
+  .team-turn {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 1rem;
+    margin-bottom: 1rem;
   }
   
   .word-card {
-    font-size: 1.75rem;
-    padding: 25px;
+    font-size: clamp(1.375rem, 7vw, 2.25rem);
+    padding: 1rem;
+    min-height: 100px;
+  }
+  
+  .timer {
+    font-size: clamp(1.75rem, 9vw, 2.5rem);
+  }
+  
+  .action-button {
+    min-height: 3.75rem;
+    font-size: 1.25rem;
+    padding: 1.125rem 1.5rem;
+  }
+  
+  .team-score-card h3 {
+    font-size: 0.95rem;
+  }
+  
+  .score {
+    font-size: 1.625rem;
+  }
+  
+  .instructions-panel p {
+    font-size: 0.9rem;
+  }
+  
+  .next-team-name {
+    font-size: 1.25rem;
+  }
+  
+  .team-turn {
+    font-size: 1.375rem;
   }
 }
 
@@ -825,28 +1114,39 @@ body {
 .team-score-card {
   flex: 1;
   min-width: 120px;
-  padding: 15px;
-  border-radius: 6px;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border-radius: 8px;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   background-color: white;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.team-score-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .team-score-card h3 {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: clamp(0.875rem, 2.5vw, 1.125rem);
+  font-weight: var(--font-weight-semibold);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--text-primary);
+  line-height: var(--line-height-snug);
 }
 
 .score {
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: var(--font-weight-bold);
   color: var(--primary-color);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .game-status-card {
@@ -866,34 +1166,39 @@ body {
 }
 
 .next-team-label {
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
-  margin-bottom: 5px;
+  margin-bottom: 0.5rem;
+  font-weight: var(--font-weight-medium);
 }
 
 .next-team-name {
-  font-size: 1.4rem;
-  font-weight: 600;
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
+  font-weight: var(--font-weight-semibold);
   color: var(--primary-color);
+  line-height: var(--line-height-snug);
 }
 
 .instructions-panel {
   text-align: left;
   margin: 20px 0;
   background-color: rgba(58, 80, 107, 0.04);
-  padding: 15px;
-  border-radius: 6px;
-  border-left: 3px solid var(--primary-color);
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-color);
 }
 
 .instructions-panel p {
-  margin: 10px 0;
-  font-size: 0.95rem;
+  margin: 0.75rem 0;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--text-primary);
 }
 
 .important-note {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--error-color);
+  font-size: var(--font-size-base);
 }
 
 .animated-button {
@@ -913,11 +1218,11 @@ body {
 }
 
 .team-turn {
-  font-size: 1.3rem;
-  margin: 20px 0;
-  padding: 10px;
-  border-radius: 6px;
-  font-weight: 600;
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: var(--font-weight-semibold);
+  color: var(--primary-color);
+  line-height: var(--line-height-snug);
+  margin: 0.5rem 0;
 }
 
 .gameplay-active {
@@ -993,32 +1298,35 @@ body {
 }
 
 .action-button {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 14px;
-  font-size: 1rem;
+  min-height: 3rem;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  padding: clamp(0.75rem, 3vw, 1rem) clamp(1.5rem, 4vw, 2rem);
+  border-radius: 8px;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .skip-button {
-  background-color: #e0e0e0;
-  color: var(--text-primary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--error-color);
+  color: white;
+  border: none;
 }
 
 .skip-button:hover {
-  background-color: #d0d0d0;
+  background-color: #b5535f;
 }
 
 .correct-button {
-  background-color: #3d8168;
-  box-shadow: 0 2px 8px rgba(61, 129, 104, 0.25);
+  background-color: #22c55e;
+  color: white;
+  border: none;
 }
 
 .correct-button:hover {
-  background-color: #2f6e54;
+  background-color: #16a34a;
 }
 
 .action-icon {
@@ -1026,31 +1334,29 @@ body {
 }
 
 .last-action {
+  text-align: center;
+  padding: clamp(0.75rem, 2vw, 1rem);
+  border-radius: 8px;
+  margin: 1rem 0;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  min-height: 3rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-  border-radius: 6px;
-  margin-top: 10px;
-  background-color: rgba(0, 0, 0, 0.04);
-  font-size: 0.85rem;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.last-action.correct {
-  border-left: 3px solid #3d8168;
-}
-
-.last-action.skipped {
-  border-left: 3px solid #e6a23c;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.3s ease;
 }
 
 .action-word {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-lg);
+  margin-bottom: 0.25rem;
 }
 
 .action-result {
-  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  opacity: 0.8;
 }
 
 .end-round-button {
@@ -1247,5 +1553,241 @@ body {
   
   .gameplay-bottom {
     margin-top: 0 !important;
+  }
+}
+
+.last-action.correct {
+  background-color: rgba(34, 197, 94, 0.1);
+  border-left: 4px solid #22c55e;
+  color: #166534;
+}
+
+.last-action.skipped {
+  background-color: rgba(166, 68, 82, 0.1);
+  border-left: 4px solid var(--error-color);
+  color: #7f1d1d;
+}
+
+/* Enhanced Desktop Typography (768px and up) */
+@media (min-width: 768px) {
+  body {
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-relaxed);
+    letter-spacing: 0.01em;
+  }
+  
+  .header h1 {
+    font-size: clamp(2.25rem, 3vw, 3rem);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    margin-bottom: 1rem;
+  }
+  
+  .card {
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .word-card {
+    font-size: clamp(2.5rem, 3.5vw, 3.5rem);
+    padding: 2.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  
+  .timer {
+    font-size: clamp(3rem, 4vw, 4.5rem);
+    margin: 1.5rem 0;
+    letter-spacing: -0.02em;
+  }
+  
+  .team-score-card {
+    padding: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .team-score-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+  
+  .team-score-card h3 {
+    font-size: 1.125rem;
+    line-height: 1.4;
+  }
+  
+  .score {
+    font-size: 2.25rem;
+    letter-spacing: -0.015em;
+  }
+  
+  .action-button {
+    min-height: 3.25rem;
+    font-size: 1.25rem;
+    padding: 1rem 2.5rem;
+    letter-spacing: 0.025em;
+  }
+  
+  /* Enhanced text blocks for better desktop reading */
+  .welcome-description {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    max-width: 70ch;
+    letter-spacing: 0.005em;
+  }
+  
+  .rules-list li {
+    font-size: 1.125rem;
+    line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+  
+  /* Better spacing for feature cards */
+  .feature-content p {
+    font-size: 1rem;
+    line-height: 1.65;
+    letter-spacing: 0.005em;
+  }
+  
+  .feature-content h4 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Large Desktop Typography (1200px and up) */
+@media (min-width: 1200px) {
+  body {
+    font-size: var(--font-size-xl);
+    line-height: var(--line-height-loose);
+    letter-spacing: 0.015em;
+  }
+  
+  .container {
+    max-width: 1000px;
+    padding: 3rem;
+  }
+  
+  .header h1 {
+    font-size: clamp(3rem, 4vw, 3.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  
+  .card {
+    padding: 3rem;
+    margin-bottom: 3rem;
+    border-radius: 16px;
+  }
+  
+  .word-card {
+    font-size: clamp(3.5rem, 4vw, 4.5rem);
+    padding: 3rem;
+    border-radius: 20px;
+    min-height: 200px;
+  }
+  
+  .timer {
+    font-size: clamp(4rem, 5vw, 5rem);
+    margin: 2rem 0;
+  }
+  
+  .team-score-card {
+    padding: 2rem;
+    border-radius: 12px;
+  }
+  
+  .team-score-card h3 {
+    font-size: 1.375rem;
+    line-height: 1.35;
+  }
+  
+  .score {
+    font-size: 2.75rem;
+  }
+  
+  .action-button {
+    min-height: 4rem;
+    font-size: 1.5rem;
+    padding: 1.25rem 3rem;
+    border-radius: 12px;
+  }
+  
+  .instructions-panel {
+    padding: 3rem;
+    margin: 3rem 0;
+    border-radius: 16px;
+  }
+  
+  .instructions-panel p {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    max-width: 70ch;
+  }
+  
+  .next-team-name {
+    font-size: 2rem;
+    line-height: 1.25;
+  }
+  
+  .team-turn {
+    font-size: 2.5rem;
+    margin: 2rem 0;
+    line-height: 1.2;
+  }
+  
+  .button {
+    min-height: 3.5rem;
+    font-size: 1.25rem;
+    padding: 1.25rem 2.5rem;
+    border-radius: 10px;
+  }
+  
+  /* Optimized text blocks for large screens */
+  .welcome-description {
+    font-size: 1.5rem;
+    line-height: 1.75;
+    max-width: 75ch;
+    letter-spacing: 0.01em;
+  }
+  
+  .rules-list li {
+    font-size: 1.25rem;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+  
+  .feature-content p {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+  }
+  
+  .feature-content h4 {
+    font-size: 1.5rem;
+    line-height: 1.35;
+    margin-bottom: 1rem;
+  }
+  
+  /* Enhanced visual hierarchy */
+  .summary-stats {
+    gap: 2rem;
+  }
+  
+  .stat-card {
+    padding: 2rem;
+    border-radius: 12px;
+  }
+  
+  .stat-title {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+  
+  .stat-value {
+    font-size: 1.75rem;
+    line-height: 1.2;
   }
 }

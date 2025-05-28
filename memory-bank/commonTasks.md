@@ -231,6 +231,149 @@ const OptimizedComponent = observer(() => {
 **React loading:** `src/App.tsx` (Suspense with lazy loading)
 **Translation loading:** `src/i18n.ts` (dynamic imports)
 
+### Lazy Loading
+**Implementation pattern:**
+```typescript
+const Component = lazy(() => import('./path/Component'));
+```
+
+### Bundle Analysis
+**Command:** `npm run build` 
+**Analyze output:** Check dist folder sizes and chunk distribution
+
+## Typography and Design Tasks
+
+### Typography System Modifications
+**Primary files:**
+- `src/App.tsx` - Mantine theme configuration with responsive typography
+- `src/index.css` - Global CSS custom properties and responsive breakpoints
+- `src/pages/HomePage.tsx` - Feature card layouts and alignment patterns
+
+### Responsive Typography Implementation
+**Key patterns:**
+```typescript
+// Fluid font sizing in theme
+fontSizes: {
+  xs: 'clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)',     // 12px → 14px
+  sm: 'clamp(0.875rem, 0.8rem + 0.375vw, 1rem)',       // 14px → 16px
+  md: 'clamp(1rem, 0.9rem + 0.5vw, 1.125rem)',         // 16px → 18px
+}
+
+// Component responsive props
+<Text ta={{ base: 'center', md: 'left' }} lh={{ base: 1.5, md: 1.6 }}>
+```
+
+### Feature Card Alignment
+**Pattern for vertical alignment:**
+```typescript
+// Fixed-height title containers in HomePage.tsx
+<div style={{ 
+  height: '80px', 
+  display: 'flex', 
+  alignItems: 'center', 
+  justifyContent: 'center' 
+}}>
+  <Title order={4} ta="center">{title}</Title>
+</div>
+```
+
+### Mobile Typography Optimization
+**Key areas to modify:**
+- `src/pages/GamePlay.tsx` - Word cards, timer display, action buttons
+- `src/index.css` - Mobile media queries (@media (maxWidth: 576px))
+- `src/App.tsx` - Component defaults for touch targets
+
+**Mobile touch targets:**
+```typescript
+// Minimum 44px height for iOS/Android accessibility
+Button: {
+  styles: {
+    root: {
+      '@media (maxWidth: 576px)': {
+        minHeight: rem(44),
+        fontSize: rem(16), // Prevent iOS zoom
+      }
+    }
+  }
+}
+```
+
+### Desktop Typography Enhancement
+**Files to modify:**
+- `src/index.css` - Desktop media queries (@media (minWidth: 768px), @media (minWidth: 1200px))
+- `src/App.tsx` - Desktop-specific component styling
+- Component files - Responsive text alignment and line heights
+
+**Desktop optimizations:**
+```css
+/* Desktop typography patterns */
+@media (minWidth: 768px) {
+  .content-text { 
+    max-width: 65ch; 
+    line-height: 1.65;
+    letter-spacing: 0.01em; 
+  }
+}
+
+@media (minWidth: 1200px) {
+  .content-text { 
+    max-width: 70ch; 
+    line-height: 1.8;
+  }
+}
+```
+
+### Adding New Responsive Components
+**Process:**
+1. Define responsive props using Mantine's responsive object syntax
+2. Add CSS clamp() functions for fluid scaling
+3. Test across breakpoints: mobile (320px-576px), tablet (768px-1024px), desktop (1200px+)
+4. Ensure proper touch targets (44px minimum) for mobile
+5. Optimize reading widths (65-70ch) for desktop
+
+**Responsive component pattern:**
+```typescript
+<Text
+  ta={{ base: 'center', md: 'left', lg: 'left' }}
+  lh={{ base: 1.5, md: 1.6, lg: 1.7 }}
+  style={{
+    fontSize: 'clamp(0.875rem, 0.8rem + 0.375vw, 1rem)',
+    letterSpacing: '0.005em',
+    maxWidth: '100%'
+  }}
+>
+```
+
+### CSS Custom Properties for Typography
+**Location:** `src/index.css` `:root` section
+**Pattern for adding new scales:**
+```css
+:root {
+  --font-size-new: clamp(minSize, preferredSize, maxSize);
+  --line-height-new: clamp(minLH, preferredLH, maxLH);
+  --letter-spacing-new: 0.01em;
+}
+```
+
+### Typography Accessibility Tasks
+**Key considerations:**
+- Minimum 16px font size to prevent iOS zoom
+- WCAG AA contrast ratios (4.5:1 for normal text, 3:1 for large text)
+- Maximum line length 70 characters for readability
+- Line height between 1.4-1.6 for optimal reading
+- Letter spacing for improved character recognition
+
+**Implementation pattern:**
+```css
+/* Accessibility-compliant typography */
+.accessible-text {
+  font-size: clamp(1rem, 1vw + 0.5rem, 1.125rem); /* Min 16px */
+  line-height: 1.5; /* WCAG recommended */
+  max-width: 65ch; /* Optimal reading width */
+  color: #1a1a1a; /* High contrast */
+}
+```
+
 ## Testing Tasks
 
 ### Adding Tests (Future)

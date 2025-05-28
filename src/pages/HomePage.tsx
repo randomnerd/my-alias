@@ -172,12 +172,26 @@ export const HomePage: React.FC = () => {
                       height: '100%',
                       background: 'linear-gradient(180deg, #ffffff 0%, #f8faff 100%)'
                     }}>
-                      <Stack align="center" gap="sm">
+                      <Stack align="center" gap="md" style={{ height: '100%' }}>
                         <ThemeIcon size={60} radius="xl" color="blue" styles={{ root: { boxShadow: '0 4px 8px rgba(34, 139, 230, 0.2)' } }}>
                           <IconVocabulary size={36} />
                         </ThemeIcon>
-                        <Title order={4}>{t('home:features.vocabulary.title')}</Title>
-                        <Text ta="center" c="dimmed">{t('home:features.vocabulary.description')}</Text>
+                        <div style={{ height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Title order={4} ta="center">{t('home:features.vocabulary.title')}</Title>
+                        </div>
+                        <Text 
+                          ta="center" 
+                          c="dimmed" 
+                          size="sm"
+                          lh={{ base: 1.5, md: 1.6 }}
+                          style={{ 
+                            fontSize: 'clamp(0.875rem, 0.8rem + 0.375vw, 1rem)',
+                            letterSpacing: '0.005em',
+                            maxWidth: '100%'
+                          }}
+                        >
+                          {t('home:features.vocabulary.description')}
+                        </Text>
                       </Stack>
                     </Paper>
                   )}
@@ -192,12 +206,26 @@ export const HomePage: React.FC = () => {
                       height: '100%',
                       background: 'linear-gradient(180deg, #ffffff 0%, #f0fcff 100%)'
                     }}>
-                      <Stack align="center" gap="sm">
+                      <Stack align="center" gap="md" style={{ height: '100%' }}>
                         <ThemeIcon size={60} radius="xl" color="cyan" styles={{ root: { boxShadow: '0 4px 8px rgba(34, 195, 230, 0.2)' } }}>
                           <IconUsers size={36} />
                         </ThemeIcon>
-                        <Title order={4}>{t('home:features.groups.title')}</Title>
-                        <Text ta="center" c="dimmed">{t('home:features.groups.description')}</Text>
+                        <div style={{ height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Title order={4} ta="center">{t('home:features.groups.title')}</Title>
+                        </div>
+                        <Text 
+                          ta="center" 
+                          c="dimmed" 
+                          size="sm"
+                          lh={{ base: 1.5, md: 1.6 }}
+                          style={{ 
+                            fontSize: 'clamp(0.875rem, 0.8rem + 0.375vw, 1rem)',
+                            letterSpacing: '0.005em',
+                            maxWidth: '100%'
+                          }}
+                        >
+                          {t('home:features.groups.description')}
+                        </Text>
                       </Stack>
                     </Paper>
                   )}
@@ -212,12 +240,26 @@ export const HomePage: React.FC = () => {
                       height: '100%',
                       background: 'linear-gradient(180deg, #ffffff 0%, #f3f0ff 100%)'
                     }}>
-                      <Stack align="center" gap="sm">
+                      <Stack align="center" gap="md" style={{ height: '100%' }}>
                         <ThemeIcon size={60} radius="xl" color="indigo" styles={{ root: { boxShadow: '0 4px 8px rgba(92, 73, 216, 0.2)' } }}>
                           <IconClock size={36} />
                         </ThemeIcon>
-                        <Title order={4}>{t('home:features.quickRounds.title')}</Title>
-                        <Text ta="center" c="dimmed">{t('home:features.quickRounds.description')}</Text>
+                        <div style={{ height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Title order={4} ta="center">{t('home:features.quickRounds.title')}</Title>
+                        </div>
+                        <Text 
+                          ta="center" 
+                          c="dimmed" 
+                          size="sm"
+                          lh={{ base: 1.5, md: 1.6 }}
+                          style={{ 
+                            fontSize: 'clamp(0.875rem, 0.8rem + 0.375vw, 1rem)',
+                            letterSpacing: '0.005em',
+                            maxWidth: '100%'
+                          }}
+                        >
+                          {t('home:features.quickRounds.description')}
+                        </Text>
                       </Stack>
                     </Paper>
                   )}

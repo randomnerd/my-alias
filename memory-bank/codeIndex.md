@@ -190,24 +190,189 @@ import { HashRouter, Routes, Route } from 'react-router-dom';
 </HashRouter>
 ```
 
-## Mantine Theme Configuration
+## Mantine Theme Configuration (`src/App.tsx`)
 ```typescript
 import { MantineProvider, createTheme } from '@mantine/core';
 
 const theme = createTheme({
-  colors: {
-    brand: [
-      '#f0f9ff', '#e0f2fe', '#bae6fd', '#7dd3fc',
-      '#38bdf8', '#0ea5e9', '#0284c7', '#0369a1',
-      '#075985', '#0c4a6e'
-    ]
+  fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif',
+  primaryColor: 'blue',
+  
+  // Responsive typography system with clamp() functions
+  fontSizes: {
+    xs: 'clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)',     // 12px → 14px
+    sm: 'clamp(0.875rem, 0.8rem + 0.375vw, 1rem)',       // 14px → 16px
+    md: 'clamp(1rem, 0.9rem + 0.5vw, 1.125rem)',         // 16px → 18px
+    lg: 'clamp(1.125rem, 1rem + 0.625vw, 1.25rem)',      // 18px → 20px
+    xl: 'clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem)',       // 20px → 24px
   },
-  primaryColor: 'brand'
+  
+  lineHeights: {
+    xs: '1.4', sm: '1.45', md: '1.5', lg: '1.55', xl: '1.6',
+  },
+  
+  // Responsive heading hierarchy
+  headings: {
+    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontWeight: '600',
+    sizes: {
+      h1: { fontSize: 'clamp(2rem, 1.5rem + 2.5vw, 3rem)', lineHeight: '1.2' },        // 32px → 48px
+      h2: { fontSize: 'clamp(1.5rem, 1.25rem + 1.25vw, 2.25rem)', lineHeight: '1.25' }, // 24px → 36px
+      h3: { fontSize: 'clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem)', lineHeight: '1.3' },  // 20px → 28px
+      h4: { fontSize: 'clamp(1.125rem, 1rem + 0.625vw, 1.5rem)', lineHeight: '1.35' },  // 18px → 24px
+      h5: { fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.25rem)', lineHeight: '1.4' },      // 16px → 20px
+      h6: { fontSize: 'clamp(0.875rem, 0.8rem + 0.375vw, 1.125rem)', lineHeight: '1.45' }, // 14px → 18px
+    },
+  },
+  
+  // Enhanced component defaults for mobile-first design
+  components: {
+    Button: {
+      styles: {
+        root: {
+          fontWeight: '500',
+          letterSpacing: '0.01em',
+          '@media (maxWidth: 576px)': {
+            minHeight: rem(44), // Mobile touch targets
+            fontSize: rem(16),   // Prevent iOS zoom
+            padding: `${rem(12)} ${rem(20)}`,
+          },
+          '@media (minWidth: 768px)': {
+            letterSpacing: '0.025em', // Desktop readability
+            lineHeight: '1.45',
+          }
+        }
+      }
+    },
+    
+    Text: {
+      styles: {
+        root: {
+          lineHeight: '1.6',
+          letterSpacing: '0.005em',
+          textRendering: 'optimizeLegibility',
+          fontFeatureSettings: '"kern" 1',
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale',
+          '@media (minWidth: 768px)': {
+            lineHeight: '1.65',
+            letterSpacing: '0.01em',
+            fontSize: 'clamp(1rem, 0.9rem + 0.3vw, 1.125rem)',
+          },
+          '@media (minWidth: 1200px)': {
+            lineHeight: '1.7',
+            maxWidth: '65ch', // Optimal reading width
+            letterSpacing: '0.015em',
+          }
+        }
+      }
+    }
+  }
 });
+```
 
-<MantineProvider theme={theme}>
-  {/* App content */}
-</MantineProvider>
+## Typography Patterns and Utilities
+
+### CSS Custom Properties (`src/index.css`)
+```css
+:root {
+  /* Fluid typography variables */
+  --font-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --font-size-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --font-size-md: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+  --font-size-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+  --font-size-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  
+  /* Enhanced color system */
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b7280;
+  --text-dimmed: #9ca3af;
+  
+  /* Typography hierarchy */
+  --heading-h1: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+  --heading-h2: clamp(1.5rem, 1.25rem + 1.25vw, 2.25rem);
+  --heading-h3: clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem);
+}
+
+/* Professional text rendering */
+body, .mantine-Text-root, .mantine-Title-root {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1;
+}
+
+/* Mobile-first responsive breakpoints */
+@media (maxWidth: 576px) {
+  /* Mobile optimizations */
+  .word-card { font-size: clamp(1.75rem, 4vw + 0.5rem, 3rem); }
+  .timer-display { font-size: clamp(2.5rem, 4vw + 1.5rem, 4rem); }
+  .action-button { min-height: 3rem; }
+}
+
+@media (minWidth: 768px) {
+  /* Desktop typography enhancements */
+  .word-card { font-size: clamp(2.5rem, 3vw + 1rem, 3.5rem); }
+  .content-text { max-width: 65ch; line-height: 1.65; }
+}
+
+@media (minWidth: 1200px) {
+  /* Large desktop optimizations */
+  .word-card { font-size: clamp(3.5rem, 2vw + 2rem, 4.5rem); }
+  .content-text { max-width: 70ch; line-height: 1.8; }
+}
+```
+
+### Feature Card Alignment Pattern (`src/pages/HomePage.tsx`)
+```typescript
+// Fixed-height title containers for perfect vertical alignment
+<Stack align="center" gap="md" style={{ height: '100%' }}>
+  <ThemeIcon size={60} radius="xl" color="blue">
+    <IconVocabulary size={36} />
+  </ThemeIcon>
+  
+  {/* Fixed 80px height ensures all descriptions align vertically */}
+  <div style={{ 
+    height: '80px', 
+    display: 'flex', 
+    alignItems: 'center', 
+    justifyContent: 'center' 
+  }}>
+    <Title order={4} ta="center">{t('home:features.vocabulary.title')}</Title>
+  </div>
+  
+  <Text 
+    ta="center" 
+    c="dimmed" 
+    size="sm"
+    lh={{ base: 1.5, md: 1.6 }}
+    style={{ 
+      fontSize: 'clamp(0.875rem, 0.8rem + 0.375vw, 1rem)',
+      letterSpacing: '0.005em',
+      maxWidth: '100%'
+    }}
+  >
+    {t('home:features.vocabulary.description')}
+  </Text>
+</Stack>
+```
+
+### Responsive Typography Utility Patterns
+```typescript
+// Responsive text alignment
+<Text ta={{ base: 'center', md: 'left' }}>...</Text>
+
+// Responsive line heights
+<Text lh={{ base: 1.5, md: 1.6, lg: 1.7 }}>...</Text>
+
+// Fluid font sizing with clamp()
+style={{ fontSize: 'clamp(0.875rem, 0.8rem + 0.375vw, 1rem)' }}
+
+// Mobile-first spacing
+style={{ padding: 'clamp(1rem, 2vw, 2rem)' }}
+
+// Desktop-optimized reading width
+style={{ maxWidth: '65ch', lineHeight: '1.65' }}
 ```
 
 ## LocalStorage Service Pattern (`src/stores/LocalStorageService.ts`)
