@@ -1,0 +1,42 @@
+{
+  "title": "Game Results",
+  "notFound": {
+    "title": "Game not found",
+    "message": "The game you're looking for doesn't exist or has been removed."
+  },
+  "winner": {
+    "congratulations": "🎉 Congratulations!",
+    "winner": "{{teamName}} wins!",
+    "tie": "It's a tie!",
+    "tieMessage": "Multiple teams tied with {{score}} points!"
+  },
+  "finalScore": "Final Score",
+  "teamRanks": {
+    "1st": "1st",
+    "2nd": "2nd", 
+    "3rd": "3rd",
+    "nth": "{{rank}}th"
+  },
+  "rank": "Rank:",
+  "finalScores": "Final Scores",
+  "teamStatistics": "Team Statistics",
+  "teamStats": {
+    "rounds": "Rounds:",
+    "totalWords": "Total Words:",
+    "correct": "Correct:",
+    "skipped": "Skipped:",
+    "avgPerRound": "Avg per round:",
+    "correctAvg": "{{avg}} correct"
+  },
+  "gameOverview": {
+    "title": "Game Overview",
+    "totalRounds": "Total Rounds",
+    "totalWords": "Total Words",
+    "overallSuccess": "Overall Success"
+  },
+  "buttons": {
+    "home": "Home",
+    "newGame": "New Game",
+    "playAgain": "Play Again"
+  }
+} 

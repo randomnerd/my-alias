@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 import {
   Card,
   Button,
@@ -39,6 +40,7 @@ export const GameSummary: React.FC = observer(() => {
   const theme = useMantineTheme();
   const [showStats, setShowStats] = useState(false);
   const [animateWinner, setAnimateWinner] = useState(false);
+  const { t } = useTranslation(['summary', 'common']);
   
   // Set the current game on component mount
   useEffect(() => {
@@ -73,15 +75,15 @@ export const GameSummary: React.FC = observer(() => {
             <ThemeIcon size={60} radius="xl" color="red">
               <IconHome size={32} />
             </ThemeIcon>
-            <Title order={2}>Game not found</Title>
-            <Text>The game you're looking for doesn't exist or has been removed.</Text>
+            <Title order={2}>{t('summary:notFound.title')}</Title>
+            <Text>{t('summary:notFound.message')}</Text>
             <Button 
               onClick={() => navigate('/')} 
               leftSection={<IconHome size={18} />}
               size="md"
               variant="light"
             >
-              Return Home
+              {t('common:buttons.returnHome')}
             </Button>
           </Stack>
         </Card>
@@ -137,7 +139,7 @@ export const GameSummary: React.FC = observer(() => {
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent'
           }}>
-            Game Results
+            {t('summary:title')}
           </Title>
           
           <Paper withBorder p="xl" radius="lg" bg={isTie ? 'gray.0' : 'blue.0'} style={{
@@ -168,7 +170,7 @@ export const GameSummary: React.FC = observer(() => {
                   }}>
                     <IconConfetti size={50} />
                   </ThemeIcon>
-                  <Title order={2} ta="center">It's a Tie!</Title>
+                  <Title order={2} ta="center">{t('summary:winner.tie')}</Title>
                   <Group gap="xs">
                     {sortedTeams.filter(team => team.score === winner.score).map((team, i) => (
                       <Badge key={i} size="xl" variant="filled" radius="md" color="blue">
@@ -176,7 +178,7 @@ export const GameSummary: React.FC = observer(() => {
                       </Badge>
                     ))}
                   </Group>
-                  <Text size="lg">Multiple teams tied with {winner.score} points!</Text>
+                  <Text size="lg">{t('summary:winner.tieMessage', { score: winner.score })}</Text>
                 </>
               ) : (
                 <>
@@ -196,13 +198,13 @@ export const GameSummary: React.FC = observer(() => {
                     color: theme.colors.yellow[5],
                     textShadow: '0 2px 4px rgba(0,0,0,0.1)'
                   }}>
-                    {winner.name} Wins!
+                    {t('summary:winner.winner', { teamName: winner.name })}
                   </Title>
                   <Paper p="md" radius="md" withBorder shadow="sm" style={{ minWidth: '140px' }}>
                     <Stack align="center" gap={5}>
-                      <Text size="sm" c="dimmed">Final Score</Text>
+                      <Text size="sm" c="dimmed">{t('summary:finalScore')}</Text>
                       <Title order={1} style={{ color: theme.colors.blue[6] }}>{winner.score}</Title>
-                      <Text size="xs" c="dimmed">points</Text>
+                      <Text size="xs" c="dimmed">{t('common:common.points')}</Text>
                     </Stack>
                   </Paper>
                 </>
@@ -211,7 +213,7 @@ export const GameSummary: React.FC = observer(() => {
           </Paper>
           
           <Divider 
-            label={<Group gap="xs"><IconListNumbers size={16} />Final Scores</Group>} 
+            label={<Group gap="xs"><IconListNumbers size={16} />{t('summary:finalScores')}</Group>} 
             labelPosition="center" 
             size="md"
           />
@@ -247,7 +249,7 @@ export const GameSummary: React.FC = observer(() => {
                     <div>
                       <Text fw={500} size="lg">{team.name}</Text>
                       <Text size="xs" c="dimmed">
-                        Rank: {index === 0 ? '1st' : index === 1 ? '2nd' : index === 2 ? '3rd' : `${index + 1}th`}
+                        {t('summary:rank')} {index === 0 ? t('summary:teamRanks.1st') : index === 1 ? t('summary:teamRanks.2nd') : index === 2 ? t('summary:teamRanks.3rd') : t('summary:teamRanks.nth', { rank: index + 1 })}
                       </Text>
                     </div>
                   </Group>
@@ -260,7 +262,7 @@ export const GameSummary: React.FC = observer(() => {
           {showStats && (
             <>
               <Divider 
-                label={<Group gap="xs"><IconChartBar size={16} />Team Statistics</Group>}
+                label={<Group gap="xs"><IconChartBar size={16} />{t('summary:teamStatistics')}</Group>}
                 labelPosition="center" 
                 size="md"
               />
@@ -298,7 +300,7 @@ export const GameSummary: React.FC = observer(() => {
                           <Group justify="space-between">
                             <Group gap={5}>
                               <IconListNumbers size={16} color={theme.colors[teamColor][6]} />
-                              <Text size="sm">Rounds:</Text>
+                              <Text size="sm">{t('summary:teamStats.rounds')}</Text>
                             </Group>
                             <Text size="sm" fw={500}>{stats.roundsPlayed}</Text>
                           </Group>
@@ -306,7 +308,7 @@ export const GameSummary: React.FC = observer(() => {
                           <Group justify="space-between">
                             <Group gap={5}>
                               <IconChartBar size={16} color={theme.colors[teamColor][6]} />
-                              <Text size="sm">Total Words:</Text>
+                              <Text size="sm">{t('summary:teamStats.totalWords')}</Text>
                             </Group>
                             <Text size="sm" fw={500}>{stats.totalWords}</Text>
                           </Group>
@@ -314,7 +316,7 @@ export const GameSummary: React.FC = observer(() => {
                           <Group justify="space-between">
                             <Group gap={5}>
                               <IconCircleCheck size={16} color={theme.colors.green[6]} />
-                              <Text size="sm">Correct:</Text>
+                              <Text size="sm">{t('summary:teamStats.correct')}</Text>
                             </Group>
                             <Text size="sm" fw={500}>{stats.correctWords}</Text>
                           </Group>
@@ -322,16 +324,16 @@ export const GameSummary: React.FC = observer(() => {
                           <Group justify="space-between">
                             <Group gap={5}>
                               <IconPlayerSkipForward size={16} color={theme.colors.gray[6]} />
-                              <Text size="sm">Skipped:</Text>
+                              <Text size="sm">{t('summary:teamStats.skipped')}</Text>
                             </Group>
                             <Text size="sm" fw={500}>{stats.skippedWords}</Text>
                           </Group>
                           
                           {stats.roundsPlayed > 0 && (
                             <Group justify="space-between">
-                              <Text size="xs" c="dimmed">Avg per round:</Text>
+                              <Text size="xs" c="dimmed">{t('summary:teamStats.avgPerRound')}</Text>
                               <Text size="xs" c="dimmed">
-                                {(stats.correctWords / stats.roundsPlayed).toFixed(1)} correct
+                                {t('summary:teamStats.correctAvg', { avg: (stats.correctWords / stats.roundsPlayed).toFixed(1) })}
                               </Text>
                             </Group>
                           )}
@@ -345,19 +347,19 @@ export const GameSummary: React.FC = observer(() => {
               {/* Overall game summary */}
               <Paper p="md" radius="md" withBorder bg="gray.0">
                 <Stack>
-                  <Title order={5} ta="center" c="dimmed">Game Overview</Title>
+                  <Title order={5} ta="center" c="dimmed">{t('summary:gameOverview.title')}</Title>
                   <Group justify="space-around" wrap="nowrap">
                     <Stack align="center" gap={2}>
                       <Text size="lg" fw={700}>{game.rounds.length}</Text>
-                      <Text size="xs" c="dimmed" ta="center">Total Rounds</Text>
+                      <Text size="xs" c="dimmed" ta="center">{t('summary:gameOverview.totalRounds')}</Text>
                     </Stack>
                     <Stack align="center" gap={2}>
                       <Text size="lg" fw={700}>{totalWords}</Text>
-                      <Text size="xs" c="dimmed" ta="center">Total Words</Text>
+                      <Text size="xs" c="dimmed" ta="center">{t('summary:gameOverview.totalWords')}</Text>
                     </Stack>
                     <Stack align="center" gap={2}>
                       <Text size="lg" fw={700}>{successRate}%</Text>
-                      <Text size="xs" c="dimmed" ta="center">Overall Success</Text>
+                      <Text size="xs" c="dimmed" ta="center">{t('summary:gameOverview.overallSuccess')}</Text>
                     </Stack>
                   </Group>
                 </Stack>
@@ -373,7 +375,7 @@ export const GameSummary: React.FC = observer(() => {
               radius="md"
               size="md"
             >
-              Home
+              {t('summary:buttons.home')}
             </Button>
             
             <Button
@@ -387,7 +389,7 @@ export const GameSummary: React.FC = observer(() => {
                 boxShadow: '0 4px 14px rgba(34, 139, 230, 0.25)',
               }}
             >
-              New Game
+              {t('summary:buttons.newGame')}
             </Button>
           </Group>
         </Stack>

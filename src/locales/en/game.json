@@ -1,0 +1,62 @@
+{
+  "loading": {
+    "game": "Loading game..."
+  },
+  "notFound": {
+    "title": "Game not found",
+    "message": "The game you're looking for doesn't exist or has been removed."
+  },
+  "scoreLimitBanner": {
+    "scoreLimit": "Score Limit: {{limit}} points",
+    "scoreLimitReached": "Score limit reached! Game will end after this round."
+  },
+  "roundSummary": {
+    "title": "Round Summary",
+    "score": "Score: {{score}}",
+    "instruction": "Click on a word's status to toggle between correct and skipped",
+    "continueButton": "Continue to Next Round",
+    "reviewButton": "Review Last Round",
+    "tableHeaders": {
+      "word": "Word",
+      "status": "Status"
+    }
+  },
+  "roundStart": {
+    "gameReady": "Game Ready!",
+    "roundEnded": "Round Ended",
+    "firstTeam": "First Team:",
+    "nextTeam": "Next Team:",
+    "timeInstruction": "You will have {{time}} seconds to explain as many words as possible.",
+    "getReady": "Get Ready!",
+    "teamTurn": "It's {{teamName}}'s turn",
+    "startRound": "Start Round"
+  },
+  "gameplay": {
+    "timeLeft": "{{time}}s",
+    "correct": "Correct",
+    "skip": "Skip",
+    "endRoundEarly": "End Round Early",
+    "pause": "Pause",
+    "resume": "Resume",
+    "paused": "Paused"
+  },
+  "actions": {
+    "lastWord": "Last word:",
+    "markedAs": "Marked as",
+    "correctWord": "Correct: {{word}}",
+    "skippedWord": "Skipped: {{word}}"
+  },
+  "status": {
+    "correct": "Correct",
+    "skipped": "Skipped",
+    "pending": "Pending"
+  },
+  "errors": {
+    "failedToEndRound": "Failed to end round",
+    "failedToEndRoundUnknown": "Failed to end round: Unknown error",
+    "failedToStartRound": "Failed to start round",
+    "roundNotFound": "Round not found",
+    "unexpectedState": "Unexpected game state",
+    "unexpectedStateMessage": "Something unexpected happened with the game state."
+  }
+} 

@@ -7,6 +7,8 @@
 - Mantine UI component library for consistent design
 - React Router for navigation
 - Web Storage API (localStorage) for state persistence
+- i18next for internationalization and localization
+- react-i18next for React integration with translation hooks
 
 ## Key Design Patterns
 - Reactive state management with MobX observables and actions
@@ -21,12 +23,17 @@
 - Animation and transition patterns for UI elements
 - Memory leak prevention with proper cleanup functions
 - Type-safe event handling and state management
+- Namespace-based translation organization pattern
+- Translation key interpolation for dynamic content
+- Language switching with preference persistence
 
 ## Component Relationships
 - Main application entry point: src/main.tsx
 - UI components in src/components/
 - Pages in src/pages/
 - State management stores in src/stores/
+- Internationalization setup in src/i18n.ts
+- Translation files in src/locales/ organized by language and namespace
 - Game flow: HomePage → GameSetup → GamePlay → GameSummary
 - Store structure:
   - RootStore: Combines all stores
@@ -39,6 +46,7 @@
   - GameSetup: Team creation and game settings
   - GamePlay: Active gameplay with word guessing
   - GameSummary: Results and winner display
+  - LanguageSwitcher: Language selection dropdown component
 
 ## UI Architecture
 - MobX observers for reactive component updates
@@ -50,6 +58,8 @@
 - Color-coded team representation throughout UI
 - Consistent spacing and typography patterns
 - Type-safe component props and event handlers
+- useTranslation hook for accessing translations in components
+- Translation namespaces for organized content (common, home, setup, game, summary)
 
 ## State Management
 - MobX stores with clear domain separation
@@ -79,6 +89,15 @@
 - Session continuity across browser refreshes
 - Map data structure serialization handling
 - Error handling for storage limitations
+- Language preference persistence in localStorage
+
+## Internationalization Patterns
+- Namespace-based translation organization (common, home, setup, game, summary)
+- Key interpolation pattern for dynamic content: {{variable}}
+- Browser language detection with fallback to English
+- Translation loading with React Suspense support
+- Consistent translation key naming conventions
+- Cultural adaptation of content beyond literal translation
 
 ## Error Handling Patterns
 - Try/catch blocks for async operations

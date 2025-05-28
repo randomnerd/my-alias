@@ -1,0 +1,56 @@
+{
+  "appTitle": "Игра Alias",
+  "buttons": {
+    "start": "Начать",
+    "continue": "Продолжить",
+    "next": "Далее",
+    "back": "Назад",
+    "exit": "Выйти",
+    "home": "Главная",
+    "returnHome": "Вернуться домой",
+    "newGame": "Новая игра",
+    "startNewGame": "Начать новую игру",
+    "getStarted": "Начать",
+    "show": "Показать",
+    "hide": "Скрыть"
+  },
+  "navigation": {
+    "home": "Главная",
+    "setup": "Настройки",
+    "game": "Игра",
+    "summary": "Результаты"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "success": "Успех",
+    "cancel": "Отмена",
+    "confirm": "Подтвердить",
+    "close": "Закрыть",
+    "save": "Сохранить",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "add": "Добавить",
+    "remove": "Удалить",
+    "team": "Команда",
+    "teams": "Команды",
+    "score": "Счёт",
+    "points": "очков",
+    "round": "Раунд",
+    "rounds": "Раунды",
+    "time": "Время",
+    "seconds": "секунд",
+    "minutes": "минут"
+  },
+  "language": {
+    "english": "English",
+    "russian": "Русский",
+    "switchLanguage": "Сменить язык"
+  },
+  "install": {
+    "title": "Установить игру Alias",
+    "description": "Установите это приложение на ваше устройство для лучшего опыта!",
+    "installNow": "Установить сейчас",
+    "maybeLater": "Может быть позже"
+  }
+} 

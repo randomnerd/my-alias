@@ -1,6 +1,32 @@
-# React + TypeScript + Vite
+# Alias Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A word-guessing game built with React, TypeScript, and Vite. Perfect for gatherings with friends and family.
+
+## Features
+
+- **Multilingual Support**: Available in English and Russian
+- **Team-based Gameplay**: Create multiple teams and take turns
+- **Customizable Settings**: Adjust round time, score limits, and difficulty
+- **Responsive Design**: Works on desktop and mobile devices
+- **Progressive Web App**: Can be installed on mobile devices
+
+## Localization
+
+The application supports multiple languages:
+- **English** (default)
+- **Russian** (Русский)
+
+Language detection is automatic based on browser settings, but users can manually switch languages using the language switcher in the header.
+
+### Adding New Languages
+
+To add a new language:
+
+1. Create translation files in `src/locales/[language-code]/`
+2. Add the language to the i18n configuration in `src/i18n.ts`
+3. Update the language switcher component if needed
+
+## Development
 
 Currently, two official plugins are available:
 

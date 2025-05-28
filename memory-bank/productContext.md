@@ -12,6 +12,9 @@
 - Provides flexibility to pause and resume gameplay as needed
 - Ensures memory efficiency with proper cleanup of resources
 - Enforces type safety for reliable application behavior
+- Supports multiple languages for international users
+- Eliminates language barriers with comprehensive localization
+- Provides culturally appropriate translations and terminology
 
 ## User Experience Goals
 - Simple, intuitive interface with minimal learning curve
@@ -28,6 +31,9 @@
 - Game control options like pause and early round ending
 - Error-free gameplay experience with proper error handling
 - No performance degradation during extended play sessions
+- Native language support for global accessibility
+- Seamless language switching during gameplay
+- Culturally appropriate user interface elements
 
 ## Target Users
 - Friends and family looking for multiplayer entertainment
@@ -36,6 +42,8 @@
 - Party and social gathering participants
 - Users who need flexibility in gameplay (ability to pause/resume)
 - Users with varying device capabilities and browsers
+- International users requiring non-English language support
+- Multilingual groups preferring different interface languages
 
 ## Current User Experience
 - Modern, clean UI with Mantine components
@@ -55,3 +63,7 @@
 - Interactive round summaries with word status toggling
 - Graceful error handling with user-friendly messages
 - Stable performance without memory issues
+- Complete localization in English and Russian
+- Dynamic language switching with preference persistence
+- Properly translated game terminology and instructions
+- Cultural adaptation of text content and messaging

@@ -1,0 +1,49 @@
+{
+  "title": "Game Setup",
+  "teams": {
+    "title": "Teams",
+    "description": "Add at least 2 teams. Each team will take turns explaining words.",
+    "placeholder": "Team {{number}}",
+    "addTeam": "Add Team",
+    "removeTeam": "Remove Team"
+  },
+  "gameSettings": {
+    "title": "Game Settings",
+    "roundTime": {
+      "title": "Round Time: {{time}} seconds",
+      "description": "How long each team has to guess words"
+    },
+    "scoreLimit": {
+      "title": "Score Limit: {{score}} points",
+      "description": "Game ends when a team reaches this score"
+    }
+  },
+  "difficulty": {
+    "title": "Difficulty",
+    "description": "Choose the difficulty level of words",
+    "options": {
+      "easy": "Easy - Common everyday words",
+      "medium": "Medium - Moderate difficulty",
+      "hard": "Hard - Challenging words",
+      "mixed": "Mixed - Variety of difficulty levels"
+    }
+  },
+  "settings": {
+    "losePointOnSkip": {
+      "label": "Lose point on skipping a word",
+      "description": "Teams will lose one point each time they skip a word"
+    }
+  },
+  "validation": {
+    "minTeams": "At least 2 teams are required",
+    "emptyTeamNames": "All teams must have names",
+    "duplicateTeamNames": "Team names must be unique",
+    "invalidRoundTime": "Round time must be between 30 and 300 seconds",
+    "invalidScoreLimit": "Score limit must be at least 10"
+  },
+  "buttons": {
+    "addTeam": "Add Team",
+    "back": "Back",
+    "startGame": "Start"
+  }
+} 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 import { useStores } from '../stores/RootStore';
 import { 
   Title, 
@@ -32,10 +33,14 @@ interface SetupError {
 export const GameSetup: React.FC = observer(() => {
   const navigate = useNavigate();
   const { gameStore } = useStores();
+  const { t } = useTranslation(['setup', 'common']);
   const theme = useMantineTheme();
   
   // Team names state management
-  const [teamNames, setTeamNames] = useState<string[]>(['Team 1', 'Team 2']);
+  const [teamNames, setTeamNames] = useState<string[]>([
+    t('setup:teams.placeholder', { number: 1 }),
+    t('setup:teams.placeholder', { number: 2 })
+  ]);
   
   // Game settings state management
   const [roundTime, setRoundTime] = useState<number>(60);
@@ -46,7 +51,7 @@ export const GameSetup: React.FC = observer(() => {
   // Add team button handler
   const handleAddTeam = () => {
     if (teamNames.length < 6) {
-      setTeamNames([...teamNames, `Team ${teamNames.length + 1}`]);
+      setTeamNames([...teamNames, t('setup:teams.placeholder', { number: teamNames.length + 1 })]);
     }
   };
   
@@ -76,28 +81,28 @@ export const GameSetup: React.FC = observer(() => {
       
       // Check for minimum number of teams
       if (trimmedTeamNames.length < 2) {
-        throw { message: 'At least 2 teams are required', field: 'teamNames' };
+        throw { message: t('setup:validation.minTeams'), field: 'teamNames' };
       }
 
       // Check for empty team names
       if (trimmedTeamNames.some(name => name === '')) {
-        throw { message: 'All teams must have names', field: 'teamNames' };
+        throw { message: t('setup:validation.emptyTeamNames'), field: 'teamNames' };
       }
       
       // Check for duplicate team names
       const uniqueNames = new Set(trimmedTeamNames);
       if (uniqueNames.size !== trimmedTeamNames.length) {
-        throw { message: 'Team names must be unique', field: 'teamNames' };
+        throw { message: t('setup:validation.duplicateTeamNames'), field: 'teamNames' };
       }
 
       // Validate round time range
       if (roundTime < 30 || roundTime > 300) {
-        throw { message: 'Round time must be between 30 and 300 seconds', field: 'roundTime' };
+        throw { message: t('setup:validation.invalidRoundTime'), field: 'roundTime' };
       }
 
       // Validate score limit
       if (scoreLimit < 10) {
-        throw { message: 'Score limit must be at least 10', field: 'scoreLimit' };
+        throw { message: t('setup:validation.invalidScoreLimit'), field: 'scoreLimit' };
       }
       
       // Create the game
@@ -127,7 +132,7 @@ export const GameSetup: React.FC = observer(() => {
   return (
         <form onSubmit={handleSubmit}>
           <Stack gap="xl">
-            <Title order={2} ta="center" mt="lg">Game Setup</Title>
+            <Title order={2} ta="center" mt="lg">{t('setup:title')}</Title>
             
             <Paper withBorder p="md" radius="md" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f8faff 100%)' }}>
               <Stack gap="md">
@@ -136,9 +141,9 @@ export const GameSetup: React.FC = observer(() => {
                     <IconUsers size={24} />
                   </ThemeIcon>
                   <div>
-                    <Title order={4}>Teams</Title>
+                    <Title order={4}>{t('setup:teams.title')}</Title>
                     <Text size="sm" c="dimmed">
-                      Add at least 2 teams. Each team will take turns explaining words.
+                      {t('setup:teams.description')}
                     </Text>
                   </div>
                 </Group>
@@ -149,7 +154,7 @@ export const GameSetup: React.FC = observer(() => {
                       <TextInput
                         value={teamName}
                         onChange={(e) => handleTeamNameChange(index, e.target.value)}
-                        placeholder={`Team ${index + 1}`}
+                        placeholder={t('setup:teams.placeholder', { number: index + 1 })}
                         required
                         style={{ flexGrow: 1 }}
                         size="md"
@@ -181,13 +186,13 @@ export const GameSetup: React.FC = observer(() => {
                     leftSection={<IconCirclePlus size={20} />}
                     style={{ alignSelf: 'flex-start' }}
                   >
-                    Add Team
+                    {t('setup:buttons.addTeam')}
                   </Button>
                 )}
               </Stack>
             </Paper>
             
-            <Divider label="Game Settings" labelPosition="center" />
+            <Divider label={t('setup:gameSettings.title')} labelPosition="center" />
             
             <Paper withBorder p="md" radius="md" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f8faff 100%)' }}>
               <Stack gap="lg">
@@ -197,8 +202,8 @@ export const GameSetup: React.FC = observer(() => {
                   </ThemeIcon>
                   
                   <Stack gap={5}>
-                    <Title order={4}>Round Time: {roundTime} seconds</Title>
-                    <Text size="sm" c="dimmed">How long each team has to guess words</Text>
+                    <Title order={4}>{t('setup:gameSettings.roundTime.title', { time: roundTime })}</Title>
+                    <Text size="sm" c="dimmed">{t('setup:gameSettings.roundTime.description')}</Text>
                     
                     <Slider
                       min={30}
@@ -232,8 +237,8 @@ export const GameSetup: React.FC = observer(() => {
                   </ThemeIcon>
                   
                   <Stack gap={5}>
-                    <Title order={4}>Score Limit: {scoreLimit} points</Title>
-                    <Text size="sm" c="dimmed">Game ends when a team reaches this score</Text>
+                    <Title order={4}>{t('setup:gameSettings.scoreLimit.title', { score: scoreLimit })}</Title>
+                    <Text size="sm" c="dimmed">{t('setup:gameSettings.scoreLimit.description')}</Text>
                     
                     <Slider
                       min={10}
@@ -267,15 +272,15 @@ export const GameSetup: React.FC = observer(() => {
                   </ThemeIcon>
                   
                   <div style={{ flex: 1 }}>
-                    <Title order={4}>Difficulty</Title>
-                    <Text size="sm" c="dimmed" mb="xs">Choose the difficulty level of words</Text>
+                    <Title order={4}>{t('setup:difficulty.title')}</Title>
+                    <Text size="sm" c="dimmed" mb="xs">{t('setup:difficulty.description')}</Text>
                     
                     <Select
                       data={[
-                        { value: 'easy', label: 'Easy - Common everyday words' },
-                        { value: 'medium', label: 'Medium - Moderate difficulty' },
-                        { value: 'hard', label: 'Hard - Challenging words' },
-                        { value: 'mixed', label: 'Mixed - Variety of difficulty levels' },
+                        { value: 'easy', label: t('setup:difficulty.options.easy') },
+                        { value: 'medium', label: t('setup:difficulty.options.medium') },
+                        { value: 'hard', label: t('setup:difficulty.options.hard') },
+                        { value: 'mixed', label: t('setup:difficulty.options.mixed') },
                       ]}
                       value={difficulty}
                       onChange={(value) => setDifficulty(value || 'mixed')}
@@ -287,8 +292,8 @@ export const GameSetup: React.FC = observer(() => {
                 
                 <Box p="md" style={{ background: 'rgba(250, 250, 250, 0.7)', borderRadius: theme.radius.md }}>
                   <Switch
-                    label="Lose point on skipping a word"
-                    description="Teams will lose one point each time they skip a word"
+                    label={t('setup:settings.losePointOnSkip.label')}
+                    description={t('setup:settings.losePointOnSkip.description')}
                     checked={losePointOnSkip}
                     onChange={(e) => setLosePointOnSkip(e.currentTarget.checked)}
                     size="md"
@@ -310,7 +315,7 @@ export const GameSetup: React.FC = observer(() => {
                 leftSection={<IconArrowLeft size={18} />}
                 size="lg"
               >
-                Back
+                {t('setup:buttons.back')}
               </Button>
               <Button 
                 type="submit" 
@@ -323,7 +328,7 @@ export const GameSetup: React.FC = observer(() => {
                   boxShadow: '0 4px 14px rgba(34, 139, 230, 0.25)',
                 }}
               >
-                Start
+                {t('setup:buttons.startGame')}
               </Button>
             </Group>
           </Stack>

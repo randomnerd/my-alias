@@ -1,0 +1,62 @@
+{
+  "loading": {
+    "game": "Загрузка игры..."
+  },
+  "notFound": {
+    "title": "Игра не найдена",
+    "message": "Игра, которую вы ищете, не существует или была удалена."
+  },
+  "scoreLimitBanner": {
+    "scoreLimit": "Лимит очков: {{limit}} очков",
+    "scoreLimitReached": "Лимит очков достигнут! Игра закончится после этого раунда."
+  },
+  "roundSummary": {
+    "title": "Итоги раунда",
+    "score": "Счёт: {{score}}",
+    "instruction": "Нажмите на статус слова, чтобы переключить между правильным и пропущенным",
+    "continueButton": "Продолжить к следующему раунду",
+    "reviewButton": "Просмотреть последний раунд",
+    "tableHeaders": {
+      "word": "Слово",
+      "status": "Статус"
+    }
+  },
+  "roundStart": {
+    "gameReady": "Игра готова!",
+    "roundEnded": "Раунд окончен",
+    "firstTeam": "Первая команда:",
+    "nextTeam": "Следующая команда:",
+    "timeInstruction": "У вас будет {{time}} секунд, чтобы объяснить как можно больше слов.",
+    "getReady": "Приготовьтесь!",
+    "teamTurn": "Ход команды {{teamName}}",
+    "startRound": "Начать раунд"
+  },
+  "gameplay": {
+    "timeLeft": "{{time}}с",
+    "correct": "Правильно",
+    "skip": "Пропустить",
+    "endRoundEarly": "Закончить раунд досрочно",
+    "pause": "Пауза",
+    "resume": "Продолжить",
+    "paused": "На паузе"
+  },
+  "actions": {
+    "lastWord": "Последнее слово:",
+    "markedAs": "Отмечено как",
+    "correctWord": "Правильно: {{word}}",
+    "skippedWord": "Пропущено: {{word}}"
+  },
+  "status": {
+    "correct": "Правильно",
+    "skipped": "Пропущено",
+    "pending": "Ожидание"
+  },
+  "errors": {
+    "failedToEndRound": "Не удалось завершить раунд",
+    "failedToEndRoundUnknown": "Не удалось завершить раунд: Неизвестная ошибка",
+    "failedToStartRound": "Не удалось начать раунд",
+    "roundNotFound": "Раунд не найден",
+    "unexpectedState": "Неожиданное состояние игры",
+    "unexpectedStateMessage": "Что-то неожиданное произошло с состоянием игры."
+  }
+} 

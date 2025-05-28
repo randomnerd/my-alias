@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Group, Text, Alert } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 
 // Define a proper interface for the BeforeInstallPromptEvent
 interface BeforeInstallPromptEvent extends Event {
@@ -14,6 +15,7 @@ interface BeforeInstallPromptEvent extends Event {
 export const InstallPrompt: React.FC = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
@@ -62,21 +64,21 @@ export const InstallPrompt: React.FC = () => {
       mb="md" 
       variant="light" 
       color="blue" 
-      title="Install Alias Game"
+      title={t('install.title')}
       withCloseButton
       onClose={() => setShowPrompt(false)}
     >
       <Text size="sm" mb="xs">
-        Install this app on your device for a better experience!
+        {t('install.description')}
       </Text>
       <Group>
-        <Button size="xs" onClick={handleInstallClick}>Install Now</Button>
+        <Button size="xs" onClick={handleInstallClick}>{t('install.installNow')}</Button>
         <Button 
           size="xs" 
           variant="subtle" 
           onClick={() => setShowPrompt(false)}
         >
-          Maybe Later
+          {t('install.maybeLater')}
         </Button>
       </Group>
     </Alert>

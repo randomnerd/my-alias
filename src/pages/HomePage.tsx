@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
   Container, 
   Title, 
@@ -23,6 +24,7 @@ import { IconVocabulary, IconUsers, IconClock, IconChevronDown, IconChevronUp } 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const theme = useMantineTheme();
+  const { t } = useTranslation(['home', 'common']);
   const [loadedItems, setLoadedItems] = useState<boolean[]>([false, false, false]);
   const [loadedFeatures, setLoadedFeatures] = useState<boolean[]>([false, false, false]);
   const [rulesExpanded, setRulesExpanded] = useState(true);
@@ -93,10 +95,10 @@ export const HomePage: React.FC = () => {
                   WebkitTextFillColor: 'transparent'
                 }}
               >
-                Welcome to Alias
+                {t('home:welcome.title')}
               </Title>
               <Text ta="center" size="lg" c="dimmed">
-                A word-guessing game perfect for gatherings with friends and family.
+                {t('home:welcome.subtitle')}
               </Text>
               
               <Group justify="center" mt="md">
@@ -116,7 +118,7 @@ export const HomePage: React.FC = () => {
                     }
                   }}
                 >
-                  Start New Game
+                  {t('common:buttons.startNewGame')}
                 </Button>
               </Group>
             </Stack>
@@ -128,7 +130,7 @@ export const HomePage: React.FC = () => {
         {(styles) => (
           <Card shadow="md" padding="md" radius="lg" withBorder mb="md" style={styles}>
             <Group justify="space-between" mb="md">
-              <Title order={3}>Game Rules</Title>
+              <Title order={3}>{t('home:rules.title')}</Title>
               <Button 
                 variant="subtle" 
                 size="sm"
@@ -142,20 +144,15 @@ export const HomePage: React.FC = () => {
                   }
                 }}
               >
-                {rulesExpanded ? 'Hide' : 'Show'}
+                {rulesExpanded ? t('common:buttons.hide') : t('common:buttons.show')}
               </Button>
             </Group>
             
             <Collapse in={rulesExpanded}>
               <List spacing="sm" size="md" mb="xs" styles={{ item: { fontSize: rem(15) } }}>
-                <List.Item>Players are organized into teams</List.Item>
-                <List.Item>Each round, one player explains words to teammates</List.Item>
-                <List.Item>Teams gain points for correctly guessed words</List.Item>
-                <List.Item>Teams lose points for skipped words <b>(optional setting)</b></List.Item>
-                <List.Item>Rounds are timed</List.Item>
-                <List.Item>The game continues until a team reaches the score limit</List.Item>
-                <List.Item>When a team reaches the score limit, all teams finish the current round</List.Item>
-                <List.Item>The team with the highest score at the end of that round wins</List.Item>
+                {(t('home:rules.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
+                  <List.Item key={index}>{item}</List.Item>
+                ))}
               </List>
             </Collapse>
           </Card>
@@ -165,7 +162,7 @@ export const HomePage: React.FC = () => {
       <Transition mounted={loadedItems[2]} transition="fade" duration={400}>
         {(styles) => (
           <Card shadow="md" padding="md" radius="lg" withBorder style={styles}>
-            <Title order={3} mb="md" ta="center">Why Play Alias?</Title>
+            <Title order={3} mb="md" ta="center">{t('home:features.title')}</Title>
             <Grid>
               <Grid.Col span={{ base: 12, xs: 12, sm: 4 }}>
                 <Transition mounted={loadedFeatures[0]} transition="slide-up" duration={400}>
@@ -179,8 +176,8 @@ export const HomePage: React.FC = () => {
                         <ThemeIcon size={60} radius="xl" color="blue" styles={{ root: { boxShadow: '0 4px 8px rgba(34, 139, 230, 0.2)' } }}>
                           <IconVocabulary size={36} />
                         </ThemeIcon>
-                        <Title order={4}>Improve Vocabulary</Title>
-                        <Text ta="center" c="dimmed">Enhance your language skills by finding creative ways to describe words</Text>
+                        <Title order={4}>{t('home:features.vocabulary.title')}</Title>
+                        <Text ta="center" c="dimmed">{t('home:features.vocabulary.description')}</Text>
                       </Stack>
                     </Paper>
                   )}
@@ -199,8 +196,8 @@ export const HomePage: React.FC = () => {
                         <ThemeIcon size={60} radius="xl" color="cyan" styles={{ root: { boxShadow: '0 4px 8px rgba(34, 195, 230, 0.2)' } }}>
                           <IconUsers size={36} />
                         </ThemeIcon>
-                        <Title order={4}>Perfect for Groups</Title>
-                        <Text ta="center" c="dimmed">Designed for friends, family gatherings, or team-building events</Text>
+                        <Title order={4}>{t('home:features.groups.title')}</Title>
+                        <Text ta="center" c="dimmed">{t('home:features.groups.description')}</Text>
                       </Stack>
                     </Paper>
                   )}
@@ -219,8 +216,8 @@ export const HomePage: React.FC = () => {
                         <ThemeIcon size={60} radius="xl" color="indigo" styles={{ root: { boxShadow: '0 4px 8px rgba(92, 73, 216, 0.2)' } }}>
                           <IconClock size={36} />
                         </ThemeIcon>
-                        <Title order={4}>Quick Rounds</Title>
-                        <Text ta="center" c="dimmed">Fast-paced gameplay keeps everyone engaged and entertained</Text>
+                        <Title order={4}>{t('home:features.quickRounds.title')}</Title>
+                        <Text ta="center" c="dimmed">{t('home:features.quickRounds.description')}</Text>
                       </Stack>
                     </Paper>
                   )}
@@ -240,7 +237,7 @@ export const HomePage: React.FC = () => {
                   maxWidth: '320px'
                 }}
               >
-                Get Started
+                {t('common:buttons.getStarted')}
               </Button>
             </Box>
           </Card>

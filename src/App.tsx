@@ -4,8 +4,10 @@ import '@mantine/core/styles.css';
 import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Center, Loader } from '@mantine/core';
+import { useTranslation } from 'react-i18next';
 import { RouteTransition } from './components/RouteTransition';
 import { InstallPrompt } from './components/InstallPrompt';
+import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { StoreProvider } from './stores/StoreProvider';
 
 // Lazy load components for code splitting
@@ -96,6 +98,7 @@ const theme = createTheme({
 const AppWithHeaderControl: React.FC = () => {
   const location = useLocation();
   const showHeader = location.pathname === '/';
+  const { t } = useTranslation('common');
   
   // Add viewport meta tag to ensure proper scaling on mobile
   useEffect(() => {
@@ -116,13 +119,13 @@ const AppWithHeaderControl: React.FC = () => {
     >
       {showHeader && (
         <AppShell.Header withBorder px={{ base: 'md', sm: 'xl' }}>
-          <Flex align="center" h="100%">
+          <Flex align="center" h="100%" justify="space-between">
             <Title order={2}>
               <Text component="span" variant="gradient" gradient={{ from: 'blue', to: 'cyan' }} fw={700} inherit>
-                Alias
-              </Text>{' '}
-              Game
+                {t('appTitle')}
+              </Text>
             </Title>
+            <LanguageSwitcher />
           </Flex>
         </AppShell.Header>
       )}
