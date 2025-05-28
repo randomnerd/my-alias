@@ -5,7 +5,7 @@
 - MobX for state management
 - TypeScript for type safety
 - Mantine UI component library for consistent design
-- React Router for navigation
+- React Router with HashRouter for universal static hosting compatibility
 - Web Storage API (localStorage) for state persistence
 - i18next for internationalization and localization
 - react-i18next for React integration with translation hooks
@@ -124,6 +124,46 @@
 - CSS extraction and separation pattern for cache efficiency
 - Tree-shaking optimization with proper ESM module resolution
 - Progressive loading architecture with optimal resource utilization
+- Conservative chunking approach for production stability:
+  - React-ui chunk pattern: Grouping React-dependent libraries to prevent race conditions
+  - Core i18n chunk pattern: Isolating non-React dependencies for independent loading
+  - Strategic dependency grouping to ensure proper loading order
+  - Production build stability through conservative library grouping
+
+## Routing Patterns
+- HashRouter implementation for universal deployment compatibility:
+  - Hash-based routing pattern eliminating server configuration requirements
+  - Static hosting compatibility with GitHub Pages, Netlify, Vercel
+  - Direct URL access and bookmarking functionality maintained
+  - Simplified router configuration without environment dependencies
+  - Clean routing implementation without conditional logic or debugging
+
+## Translation Loading Patterns
+- Hybrid translation loading strategy for optimal performance:
+  - Static imports for critical translations ensuring immediate availability
+  - Dynamic loading for non-critical namespaces preserving optimization
+  - Error handling and fallback mechanisms for translation loading failures
+  - Type-safe translation loading with enhanced error recovery
+  - Common translation preloading pattern preventing translation key visibility
+
+## Interactive UI Patterns
+- Clickable ThemeIcon components for intuitive interaction:
+  - Dual interaction pattern: buttons + clickable icons for enhanced UX
+  - Hover animation patterns with scale transform and shadow effects
+  - Visual feedback indicators for interactive elements
+  - Accessibility-enhanced interactive patterns with clear visual cues
+  - Enhanced gameplay flow with icon-based controls
+
+## Production Build Patterns
+- React dependency resolution patterns:
+  - Conservative chunking strategy preventing race conditions
+  - Proper loading order through strategic chunk grouping
+  - Production-specific dependency resolution patterns
+  - Consistency patterns across browsers and deployment environments
+- Translation optimization patterns:
+  - Immediate availability for common translations on app startup
+  - Progressive loading for additional namespaces without blocking render
+  - Professional loading experience with instant localized content
 
 ## Build Configuration Patterns
 - Advanced Vite configuration with rollupOptions optimization

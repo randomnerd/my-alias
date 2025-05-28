@@ -439,6 +439,17 @@ export const GamePlay: React.FC = observer(() => {
                   color={teamColor}
                   style={{
                     boxShadow: `0 4px 14px ${theme.colors[teamColor][3]}80`,
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                  }}
+                  onClick={startRound}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.boxShadow = `0 6px 20px ${theme.colors[teamColor][3]}cc`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.boxShadow = `0 4px 14px ${theme.colors[teamColor][3]}80`;
                   }}
                 >
                   {isFirstRound ? (
@@ -584,6 +595,17 @@ export const GamePlay: React.FC = observer(() => {
                     color={teamColor}
                     style={{
                       boxShadow: `0 4px 14px ${theme.colors[teamColor][3]}80`,
+                      cursor: 'pointer',
+                      transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                    }}
+                    onClick={startRound}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'scale(1.05)';
+                      e.currentTarget.style.boxShadow = `0 6px 20px ${theme.colors[teamColor][3]}cc`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.boxShadow = `0 4px 14px ${theme.colors[teamColor][3]}80`;
                     }}
                   >
                     <IconPlayerPlay size={40} />

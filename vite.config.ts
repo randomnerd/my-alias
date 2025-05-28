@@ -17,41 +17,25 @@ export default defineConfig({
     rollupOptions: {
       external: ['fsevents'],
       output: {
-        manualChunks: (id) => {
-          // Core React ecosystem - keep together to prevent dependency issues
-          if (id.includes('react') || id.includes('react-dom')) {
-            return 'react-vendor';
-          }
-          
-          // Routing that depends on React
-          if (id.includes('react-router-dom')) {
-            return 'react-vendor'; // Group with React to prevent loading issues
-          }
+        manualChunks: {
+          // Group React and ALL React-dependent libraries together
+          'react-ui': [
+            'react', 
+            'react-dom', 
+            'react-router-dom', 
+            '@mantine/core', 
+            '@mantine/hooks',
+            'react-i18next'  // This depends on React hooks
+          ],
           
           // State management
-          if (id.includes('mobx')) {
-            return 'mobx';
-          }
-          
-          // Mantine UI - group core and hooks together since both depend on React
-          if (id.includes('@mantine/core') || id.includes('@mantine/hooks')) {
-            return 'mantine-ui';
-          }
+          'mobx': ['mobx', 'mobx-react-lite'],
           
           // Icons
-          if (id.includes('@tabler/icons-react')) {
-            return 'icons';
-          }
+          'icons': ['@tabler/icons-react'],
           
-          // Internationalization
-          if (id.includes('i18next') || id.includes('react-i18next')) {
-            return 'i18n';
-          }
-          
-          // Large vendor libraries
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
+          // Core internationalization (no React dependencies)
+          'i18n': ['i18next', 'i18next-browser-languagedetector'],
         },
       },
     },
@@ -60,6 +44,6 @@ export default defineConfig({
   },
   optimizeDeps: {
     exclude: ['fsevents'],
-    include: ['react', 'react-dom', '@mantine/core', '@mantine/hooks'],
+    include: ['react', 'react-dom', '@mantine/core', '@mantine/hooks', 'react-router-dom'],
   },
 })

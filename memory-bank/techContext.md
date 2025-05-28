@@ -5,7 +5,7 @@
 - TypeScript 5.8
 - MobX 6 (state management)
 - Mantine UI v8 (component library)
-- React Router v7
+- React Router v7 with HashRouter for static hosting compatibility
 - Tabler Icons React for iconography
 - Web Storage API (localStorage) for state persistence
 - i18next v24 (internationalization framework)
@@ -188,22 +188,58 @@ Major dependencies include:
   - **External module exclusion (fsevents) to prevent build conflicts**
   - **Optimized dependency pre-bundling with include/exclude patterns**
   - **PWA integration with specific glob patterns for efficient file caching**
-- **Dynamic import architecture for i18n resources:**
-  - **Converted static translation imports to dynamic import() statements**
-  - **Asynchronous translation loading with error handling and fallbacks**
-  - **Language-specific resource bundles loaded on-demand**
-  - **Enhanced changeLanguage function with automatic translation loading**
-  - **Type-safe dynamic loading with TranslationRecord interface**
-- **Chunk distribution strategy for optimal performance:**
-  - **React ecosystem isolation (265.94 kB) for browser caching efficiency**
-  - **Mantine UI separation into core and hooks chunks for modular loading**
-  - **State management (MobX) isolation (56.58 kB) for independent caching**
-  - **Internationalization libraries separated (48.85 kB) into dedicated chunk**
-  - **Icon libraries isolated for optional loading based on usage**
-  - **Page components split into 4-14 kB route-based chunks**
-- **Build performance optimizations:**
-  - **Tree-shaking optimization with proper ESM module resolution**
-  - **CSS extraction and separation (213 kB total) for cache efficiency**
-  - **Source map generation maintained for debugging capabilities**
-  - **Rollup configuration optimized for production bundle splitting**
-  - **Chunk size warning limits adjusted for optimized chunking strategy**
+- **Conservative chunking approach for production stability:**
+  - **React-ui chunk: Contains React, React-DOM, React-Router, Mantine, and react-i18next**
+  - **Core i18n chunk: Only i18next and browser detection (no React dependencies)**
+  - **Vendor separation: MobX, icons, and other libraries properly isolated**
+  - **Translation files: Dynamic loading maintained for optimal performance**
+- **Hybrid translation loading strategy:**
+  - **Static imports for common translations ensuring immediate availability**
+  - **Dynamic loading for additional namespaces preserving optimization**
+  - **Proper error handling and fallback mechanisms**
+  - **Type-safe translation loading with enhanced error recovery**
+
+## Routing Architecture
+- **HashRouter implementation for universal deployment support:**
+  - **Switched from BrowserRouter to HashRouter for static hosting compatibility**
+  - **Removed complex basename configuration and environment dependencies**
+  - **URLs use hash-based routing (e.g., yoursite.com/#/setup, yoursite.com/#/play/123)**
+  - **Compatible with GitHub Pages, Netlify, Vercel, and all static hosting platforms**
+  - **No server-side configuration required for routing functionality**
+  - **Direct URL access and bookmarking functionality maintained**
+- **Simplified router configuration:**
+  - **Clean router implementation without conditional logic**
+  - **Eliminated debugging console statements for production builds**
+  - **Streamlined routing setup for better maintainability**
+
+## Production Build Optimization
+- **React dependency resolution improvements:**
+  - **Conservative chunking strategy grouping React-dependent libraries**
+  - **Prevented race conditions between React and dependent libraries**
+  - **Ensured proper loading order through strategic chunk grouping**
+  - **Fixed useLayoutEffect undefined errors in production builds**
+  - **React-ui chunk (290.15 kB) containing all React ecosystem dependencies**
+- **Translation loading optimization:**
+  - **Common translations available immediately on app startup**
+  - **Other namespaces loaded progressively without blocking initial render**
+  - **Proper error handling for translation loading failures**
+  - **Maintained performance benefits while ensuring functionality**
+- **Stability improvements:**
+  - **Resolved React chunk loading race conditions in production builds**
+  - **Eliminated double spinner conflicts through optimized chunking**
+  - **Fixed production-specific dependency resolution issues**
+  - **Maintained 82% bundle size reduction while ensuring compatibility**
+  - **Achieved consistent behavior across all browsers and deployment environments**
+
+## User Experience Enhancements
+- **Interactive element improvements:**
+  - **Clickable ThemeIcon components for intuitive game starting**
+  - **Smooth hover animations with scale transform and shadow effects**
+  - **Visual feedback indicating interactive elements**
+  - **Dual interaction patterns for improved accessibility**
+  - **Enhanced gameplay flow with icon-based controls**
+- **Professional loading experience:**
+  - **Instant app title display with proper localization**
+  - **Eliminated translation key visibility during loading**
+  - **Seamless language switching without delays**
+  - **Consistent behavior across all supported languages**

@@ -2,7 +2,7 @@ import { createTheme, MantineProvider, AppShell, Title, Text, Flex, Container, r
 import '@mantine/core/styles.css';
 
 import React, { useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { RouteTransition } from './components/RouteTransition';
 import { InstallPrompt } from './components/InstallPrompt';
@@ -178,7 +178,7 @@ function App() {
   return (
     <StoreProvider>
       <MantineProvider theme={theme}>
-        <Router basename={import.meta.env.DEV ? '' : '/my-alias/'}>
+        <Router>
           <AppWithHeaderControl />
         </Router>
       </MantineProvider>

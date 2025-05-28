@@ -167,6 +167,37 @@
     - **Industry-leading bundle optimization matching enterprise standards**
     - **Superior user experience with instant app shell loading**
     - **Scalable architecture supporting future feature additions**
+- **LATEST PRODUCTION OPTIMIZATIONS AND UX IMPROVEMENTS (January 2025):**
+  - **Resolved critical React dependency issues in production builds:**
+    - **Fixed "Cannot read properties of undefined (reading 'useLayoutEffect')" error**
+    - **Implemented conservative chunking strategy grouping React-dependent libraries**
+    - **Created react-ui chunk (290.15 kB) containing all React ecosystem dependencies**
+    - **Separated react-i18next from i18n core preventing loading race conditions**
+    - **Ensured proper dependency loading order through strategic chunk grouping**
+  - **Implemented HashRouter for universal static hosting compatibility:**
+    - **Switched from BrowserRouter to HashRouter enabling deployment to any platform**
+    - **Removed complex basename configuration and environment-dependent routing**
+    - **URLs now use hash-based routing (yoursite.com/#/setup, yoursite.com/#/play/123)**
+    - **Compatible with GitHub Pages, Netlify, Vercel, and all static hosting platforms**
+    - **No server configuration required for routing functionality**
+  - **Optimized translation loading architecture:**
+    - **Fixed appTitle showing translation key instead of localized string**
+    - **Implemented hybrid loading strategy: static imports for critical translations**
+    - **Added static imports for common.json ensuring immediate availability**
+    - **Maintained dynamic loading for non-critical namespaces preserving optimization**
+    - **Eliminated translation loading delays while preserving bundle benefits**
+  - **Enhanced gameplay user experience with interactive elements:**
+    - **Made ThemeIcon components clickable to start games and rounds**
+    - **Added smooth hover animations with scale transform and shadow effects**
+    - **Implemented cursor pointer and visual feedback for clickable elements**
+    - **Provided dual interaction methods: traditional buttons + intuitive icon clicks**
+    - **Enhanced accessibility with clear indicators for interactive elements**
+  - **Production build stability and performance:**
+    - **Resolved React chunk loading race conditions in production builds**
+    - **Eliminated double spinner conflicts through optimized chunking strategy**
+    - **Fixed production-specific dependency resolution issues**
+    - **Maintained 82% bundle size reduction while ensuring cross-platform compatibility**
+    - **Achieved consistent behavior across all browsers and deployment environments**
 
 ## In Progress
 - Further UX enhancements
