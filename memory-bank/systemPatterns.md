@@ -9,6 +9,7 @@
 - Web Storage API (localStorage) for state persistence
 - i18next for internationalization and localization
 - react-i18next for React integration with translation hooks
+- HTML-level loading optimization for instant visual feedback
 
 ## Key Design Patterns
 - Reactive state management with MobX observables and actions
@@ -26,6 +27,8 @@
 - Namespace-based translation organization pattern
 - Translation key interpolation for dynamic content
 - Language switching with preference persistence
+- HTML-level loading with CSS isolation pattern
+- Professional loading experience with smooth transitions
 
 ## Component Relationships
 - Main application entry point: src/main.tsx
@@ -34,6 +37,7 @@
 - State management stores in src/stores/
 - Internationalization setup in src/i18n.ts
 - Translation files in src/locales/ organized by language and namespace
+- Loading spinner implementation in index.html for instant display
 - Game flow: HomePage → GameSetup → GamePlay → GameSummary
 - Store structure:
   - RootStore: Combines all stores
@@ -60,6 +64,8 @@
 - Type-safe component props and event handlers
 - useTranslation hook for accessing translations in components
 - Translation namespaces for organized content (common, home, setup, game, summary)
+- HTML-level spinner with CSS isolation for instant loading feedback
+- Professional loading transitions with opacity-based animations
 
 ## State Management
 - MobX stores with clear domain separation
@@ -98,6 +104,36 @@
 - Translation loading with React Suspense support
 - Consistent translation key naming conventions
 - Cultural adaptation of content beyond literal translation
+
+## Loading Experience Patterns
+- HTML-level immediate spinner display pattern (index.html implementation)
+- CSS isolation using !important declarations to prevent style conflicts
+- Hardware-accelerated animation with CSS keyframes (spinner-spin)
+- Smooth opacity-based transitions for professional handoff
+- React integration with class-based state management (.app-loaded/.app-ready)
+- Suspense fallback elimination pattern (fallback={null})
+- Optimized i18n initialization for faster React startup
+- Zero visual artifacts loading architecture
+
+## Bundle Optimization Patterns
+- Function-based manual chunking strategy for optimal vendor separation
+- Dynamic import() pattern for translation resources and lazy components
+- Strategic module ID analysis for intelligent chunk distribution
+- Vendor library isolation pattern for browser caching optimization
+- Route-based code splitting with lazy loading components
+- CSS extraction and separation pattern for cache efficiency
+- Tree-shaking optimization with proper ESM module resolution
+- Progressive loading architecture with optimal resource utilization
+
+## Build Configuration Patterns
+- Advanced Vite configuration with rollupOptions optimization
+- External module exclusion pattern for native dependencies (fsevents)
+- Dependency pre-bundling with include/exclude optimization
+- PWA integration with specific glob patterns for file caching
+- Source map generation maintaining debugging capabilities
+- Chunk size warning limit adjustment for production optimization
+- Function-based manualChunks replacing static object configuration
+- Build performance optimization with strategic dependency handling
 
 ## Error Handling Patterns
 - Try/catch blocks for async operations

@@ -4,9 +4,69 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <title>Alias Game</title>
+    <style>
+      /* Initial loading styles */
+      #initial-loader {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background-color: #ffffff !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        z-index: 9999 !important;
+        transition: opacity 0.3s ease-out !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        font-size: 16px !important; /* Prevent font-size inheritance issues */
+      }
+      
+      .loader-spinner {
+        width: 40px !important;
+        height: 40px !important;
+        border: 3px solid #f3f3f3 !important;
+        border-top: 3px solid #228be6 !important;
+        border-radius: 50% !important;
+        animation: spinner-spin 1s linear infinite !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        position: relative !important;
+      }
+      
+      @keyframes spinner-spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* Smooth fade out when React loads */
+      .app-loaded #initial-loader {
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
+      
+      /* Completely hide after transition */
+      .app-ready #initial-loader {
+        display: none !important;
+      }
+      
+      /* Prevent any styling conflicts during load */
+      #initial-loader * {
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+      }
+    </style>
   </head>
   <body>
+    <div id="initial-loader">
+      <div class="loader-spinner"></div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -3,7 +3,6 @@ import '@mantine/core/styles.css';
 
 import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { Center, Loader } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
 import { RouteTransition } from './components/RouteTransition';
 import { InstallPrompt } from './components/InstallPrompt';
@@ -132,11 +131,7 @@ const AppWithHeaderControl: React.FC = () => {
       <AppShell.Main>
         <Container size="sm" px={{ base: 'xs', sm: 'md' }}>
           <InstallPrompt />
-          <Suspense fallback={
-            <Center style={{ height: '50vh' }}>
-              <Loader size="xl" color="blue" />
-            </Center>
-          }>
+          <Suspense fallback={null}>
             <Routes>
               <Route path="/" element={
                 <RouteTransition transitionType="fade">
@@ -167,6 +162,19 @@ const AppWithHeaderControl: React.FC = () => {
 };
 
 function App() {
+  // Smooth transition from HTML loader to React app
+  useEffect(() => {
+    // Start fade out after React renders
+    document.body.classList.add('app-loaded');
+    
+    // Complete removal after transition
+    const timer = setTimeout(() => {
+      document.body.classList.add('app-ready');
+    }, 300);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <StoreProvider>
       <MantineProvider theme={theme}>

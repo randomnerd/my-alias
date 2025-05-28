@@ -11,6 +11,7 @@
 - i18next v24 (internationalization framework)
 - react-i18next v15 (React integration for i18next)
 - Browser language detection for automatic locale selection
+- HTML/CSS for immediate loading spinner implementation
 
 ## Development Setup
 - Node.js environment
@@ -22,6 +23,7 @@
 - ESLint for code quality assurance
 - i18next configuration with namespace-based organization
 - Translation file management in JSON format
+- HTML-level loading optimization with CSS isolation
 
 ## Technical Constraints
 - Browser storage limitations for localStorage
@@ -32,6 +34,10 @@
 - Memory management in single-page applications
 - Translation file loading performance for initial application startup
 - Language switching responsiveness requirements
+- Loading experience optimization requirements for instant visual feedback
+- CSS isolation challenges to prevent React style conflicts
+- Bundle size optimization requirements for fast initial load times
+- Code splitting complexity for optimal caching strategies
 
 ## Dependencies
 Major dependencies include:
@@ -76,6 +82,22 @@ Major dependencies include:
 - Browser language detection with English fallback
 - Dynamic language switching with immediate UI updates
 - Translation key interpolation for dynamic content (scores, time, team names)
+
+## Loading Experience Architecture
+- HTML-level spinner implementation for instant visual feedback:
+  - CSS-only animation in index.html for 0ms delay guarantee
+  - 40px x 40px spinner with locked dimensions using !important declarations
+  - Hardware-accelerated rotation animation (spinner-spin keyframe)
+  - CSS isolation preventing React style conflicts
+- React integration optimization:
+  - Simplified Suspense fallback strategy using fallback={null}
+  - Class-based state management (.app-loaded/.app-ready) for smooth transitions
+  - 300ms opacity transition for professional handoff timing
+  - Optimized i18n initialization with initImmediate: true
+- Performance optimizations:
+  - Maintained lazy loading benefits while eliminating loading delays
+  - Zero visual artifacts throughout loading process
+  - Consistent cross-browser and cross-device behavior
 
 ## Type Safety
 - TypeScript interfaces for all data models
@@ -135,6 +157,21 @@ Major dependencies include:
   - game.json: Gameplay interface, round management
   - summary.json: Results, statistics, rankings
 
+## Loading Implementation Details
+- index.html CSS architecture:
+  - Fixed positioning with z-index: 9999 for overlay
+  - Flexbox centering for perfect spinner alignment
+  - !important declarations for complete style isolation
+  - Professional 3px border with brand colors (#228be6)
+- Animation specifications:
+  - 1s linear infinite rotation for smooth movement
+  - Hardware acceleration with GPU optimization
+  - CSS keyframe animation (spinner-spin) for browser compatibility
+- React integration timing:
+  - Immediate .app-loaded class for fade start
+  - 300ms transition duration matching CSS specifications
+  - .app-ready class for complete cleanup after transition
+
 ## Error Handling
 - Try/catch blocks for async operations
 - Proper error type checking
@@ -142,3 +179,31 @@ Major dependencies include:
 - User-friendly error messages
 - Graceful degradation on error conditions
 - Fallback to default language when translations are missing
+- Loading fallback patterns for network or resource failures
+
+## Bundle Size Optimization Architecture
+- **Advanced Vite build configuration with function-based manual chunking:**
+  - **Function-based manualChunks implementation using module ID analysis**
+  - **Strategic vendor library separation based on dependency type**
+  - **External module exclusion (fsevents) to prevent build conflicts**
+  - **Optimized dependency pre-bundling with include/exclude patterns**
+  - **PWA integration with specific glob patterns for efficient file caching**
+- **Dynamic import architecture for i18n resources:**
+  - **Converted static translation imports to dynamic import() statements**
+  - **Asynchronous translation loading with error handling and fallbacks**
+  - **Language-specific resource bundles loaded on-demand**
+  - **Enhanced changeLanguage function with automatic translation loading**
+  - **Type-safe dynamic loading with TranslationRecord interface**
+- **Chunk distribution strategy for optimal performance:**
+  - **React ecosystem isolation (265.94 kB) for browser caching efficiency**
+  - **Mantine UI separation into core and hooks chunks for modular loading**
+  - **State management (MobX) isolation (56.58 kB) for independent caching**
+  - **Internationalization libraries separated (48.85 kB) into dedicated chunk**
+  - **Icon libraries isolated for optional loading based on usage**
+  - **Page components split into 4-14 kB route-based chunks**
+- **Build performance optimizations:**
+  - **Tree-shaking optimization with proper ESM module resolution**
+  - **CSS extraction and separation (213 kB total) for cache efficiency**
+  - **Source map generation maintained for debugging capabilities**
+  - **Rollup configuration optimized for production bundle splitting**
+  - **Chunk size warning limits adjusted for optimized chunking strategy**
