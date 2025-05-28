@@ -1,6 +1,8 @@
 # Active Context
 
 ## Current Focus
+- **COMPLETED: React Suspense removal and architecture simplification**
+- **COMPLETED: Theme extraction into dedicated file for better organization**
 - **COMPLETED: Comprehensive internationalization (i18n) implementation**
 - **COMPLETED: Loading spinner optimization and user experience enhancement**
 - **COMPLETED: Massive bundle size optimization reducing initial chunk by 82.2%**
@@ -11,6 +13,26 @@
 - Code quality improvements and type safety enhancements
 
 ## Recent Changes
+- **LATEST: React Suspense Removal and Theme Organization (December 2024):**
+  - **Removed React Suspense completely from App.tsx**
+    - **Eliminated lazy loading of page components (HomePage, GameSetup, GamePlay, GameSummary)**
+    - **Converted to regular synchronous imports since HTML-based instant loader handles initial loading**
+    - **Removed Suspense wrapper around Routes component**
+    - **Simplified loading architecture by removing React-level loading states**
+  - **Extracted Mantine theme into dedicated src/theme.ts file:**
+    - **Moved comprehensive theme configuration (187 lines) to separate module**
+    - **Maintained all responsive typography, component defaults, and styling**
+    - **Improved code organization and maintainability**
+    - **Simplified App.tsx by reducing complexity and focusing on routing**
+  - **Fixed linter warnings:**
+    - **Removed unused imports (createTheme, rem) from App.tsx**
+    - **Clean, warning-free build process**
+    - **Improved code quality and type safety**
+  - **Architecture benefits achieved:**
+    - **Simpler component loading model aligned with HTML instant loader**
+    - **Better separation of concerns (theme vs application logic)**
+    - **Reduced bundle complexity without losing performance benefits**
+    - **Maintained all existing functionality with cleaner codebase**
 - Migrated from Meteor collections to MobX state management:
   - Removed GamesCollection.ts and WordsCollection.ts
   - Created dedicated MobX stores (GameStore, WordStore)

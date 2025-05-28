@@ -222,3 +222,64 @@
   - **Structured configuration patterns preventing code duplication**
   - **Clear documentation patterns for future development**
   - **Backward compatibility patterns when updating dependencies**
+
+## Loading Architecture
+
+### HTML-Based Instant Loader System
+- **Immediate Loading Display**: HTML spinner in index.html provides 0ms delay loading experience
+- **CSS Isolation**: Protected styling with !important declarations prevents React conflicts
+- **Smooth Transition**: 300ms fade transition from HTML loader to React application
+- **No React Suspense**: Eliminated lazy loading in favor of synchronous imports
+- **Simplified Architecture**: Direct component imports aligned with HTML loader approach
+
+### Component Loading Strategy
+```typescript
+// Synchronous imports (no lazy loading needed with HTML instant loader)
+import { HomePage } from './pages/HomePage';
+import { GameSetup } from './pages/GameSetup';
+import { GamePlay } from './pages/GamePlay';
+import { GameSummary } from './pages/GameSummary';
+
+// Direct routing without Suspense wrapper
+<Routes>
+  <Route path="/" element={<RouteTransition><HomePage /></RouteTransition>} />
+  {/* ... other routes */}
+</Routes>
+```
+
+### Loading Transition Management
+```typescript
+// HTML loader to React app transition
+useEffect(() => {
+  document.body.classList.add('app-loaded');    // Start fade
+  setTimeout(() => {
+    document.body.classList.add('app-ready');   // Complete cleanup
+  }, 300);
+}, []);
+```
+
+## Theme Architecture
+
+### Dedicated Theme Module (src/theme.ts)
+- **Separation of Concerns**: Theme configuration isolated from application logic
+- **Comprehensive Configuration**: 187 lines of responsive design system
+- **Reusable Export**: Clean import pattern for theme consumption
+- **Maintainability**: Easier updates and modifications to design system
+
+### Theme Structure
+```typescript
+export const theme = createTheme({
+  // Typography with fluid scaling
+  fontSizes: {
+    xs: 'clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)',
+    // ... responsive scaling for all sizes
+  },
+  
+  // Component defaults with mobile-first approach
+  components: {
+    Button: { /* touch-friendly defaults */ },
+    Input: { /* iOS zoom prevention */ },
+    // ... comprehensive component system
+  }
+});
+```

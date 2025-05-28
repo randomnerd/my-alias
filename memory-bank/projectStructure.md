@@ -137,4 +137,27 @@ memory-bank/
 - **State Management:** MobX 6.13.7 with React integration
 - **Internationalization:** i18next 25.2.1 with React integration
 - **Build Tools:** Vite 6.3.5, TypeScript 5.8.3, ESLint 9.27.0
-- **PWA:** vite-plugin-pwa 1.0.0 (currently disabled for compatibility) 
+- **PWA:** vite-plugin-pwa 1.0.0 (currently disabled for compatibility)
+
+## src/ Directory (14 files, ~85KB total)
+
+### Core Application Files
+- **`App.tsx`** (3.2KB, 97 lines) - Main application component with routing, layout management, and HTML loader integration
+  - Simplified architecture with direct imports (no Suspense/lazy loading)
+  - HashRouter configuration for static hosting compatibility
+  - Theme provider integration and store provider setup
+  - HTML loader transition management
+  - Header visibility control and language switcher integration
+
+- **`theme.ts`** (5.8KB, 187 lines) - Comprehensive Mantine theme configuration
+  - Responsive typography with fluid scaling (clamp functions)
+  - Enhanced component defaults for mobile/desktop optimization
+  - Custom color palette and design system
+  - Mobile-first approach with touch-friendly targets
+  - Advanced text rendering and accessibility features
+
+- **`main.tsx`** (1.2KB, 25 lines) - React application entry point and i18n initialization
+  - i18next configuration with browser language detection
+  - Translation loading and initialization
+  - React DOM rendering setup
+  - Development mode configuration 

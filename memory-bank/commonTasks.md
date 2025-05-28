@@ -454,3 +454,29 @@ async performAction() {
 **Command:** `npm run build` (outputs chunk sizes)
 **Current optimization:** 82% reduction from original bundle size
 **Target chunks:** <1MB total, individual chunks <300KB 
+
+## Theme and Styling Tasks
+
+### Modify Application Theme
+- **Primary location:** `src/theme.ts` (187 lines of comprehensive configuration)
+- **What's included:**
+  - Responsive typography with fluid scaling (clamp functions)
+  - Component defaults for mobile/desktop optimization
+  - Custom color palette and design system
+  - Touch-friendly targets and accessibility features
+  - Advanced text rendering optimizations
+- **Import pattern:** `import { theme } from './theme'` in App.tsx
+- **To modify colors:** Edit `theme.colors.blue` array for primary color variations
+- **To adjust typography:** Modify `theme.fontSizes` with clamp functions for responsive scaling
+- **To update component defaults:** Edit `theme.components` object for specific component styling
+
+### Main Application Layout
+- **Location:** `src/App.tsx` (97 lines, simplified architecture)
+- **Responsibilities:**
+  - Routing configuration with HashRouter
+  - HTML loader transition management
+  - Header visibility control
+  - Theme and store provider setup
+  - Route transition animations
+- **No longer handles:** Theme configuration (moved to theme.ts), lazy loading (removed Suspense)
+- **Loading transition:** Uses CSS classes `app-loaded` and `app-ready` for HTML loader handoff 

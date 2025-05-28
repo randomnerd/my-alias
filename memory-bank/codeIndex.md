@@ -524,4 +524,89 @@ export const DEFAULT_SCORE_LIMIT = 50;
 // Word difficulties
 export const WORD_DIFFICULTIES = ['easy', 'medium', 'hard', 'mixed'] as const;
 export type WordDifficulty = typeof WORD_DIFFICULTIES[number];
+```
+
+## Core Application Patterns
+
+### App.tsx - Simplified Architecture (97 lines)
+```typescript
+// Synchronous imports (no Suspense needed)
+import { HomePage } from './pages/HomePage';
+import { GameSetup } from './pages/GameSetup';
+import { GamePlay } from './pages/GamePlay';
+import { GameSummary } from './pages/GameSummary';
+import { theme } from './theme';
+
+// HTML loader transition management
+function App() {
+  useEffect(() => {
+    document.body.classList.add('app-loaded');
+    const timer = setTimeout(() => {
+      document.body.classList.add('app-ready');
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <StoreProvider>
+      <MantineProvider theme={theme}>
+        <Router>
+          <AppWithHeaderControl />
+        </Router>
+      </MantineProvider>
+    </StoreProvider>
+  );
+}
+
+// Direct routing without Suspense
+<Routes>
+  <Route path="/" element={
+    <RouteTransition transitionType="fade">
+      <HomePage />
+    </RouteTransition>
+  } />
+  {/* ... other routes */}
+</Routes>
+```
+
+### Theme Configuration (src/theme.ts)
+```typescript
+import { createTheme, rem } from '@mantine/core';
+
+export const theme = createTheme({
+  // Fluid typography with clamp functions
+  fontSizes: {
+    xs: 'clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)',
+    sm: 'clamp(0.875rem, 0.8rem + 0.375vw, 1rem)',
+    md: 'clamp(1rem, 0.9rem + 0.5vw, 1.125rem)',
+    lg: 'clamp(1.125rem, 1rem + 0.625vw, 1.25rem)',
+    xl: 'clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem)',
+  },
+  
+  // Enhanced component defaults
+  components: {
+    Button: {
+      styles: {
+        root: {
+          '@media (maxWidth: 576px)': {
+            minHeight: rem(44), // Touch-friendly
+            fontSize: rem(16),   // Prevent iOS zoom
+          }
+        }
+      }
+    },
+    
+    Text: {
+      styles: {
+        root: {
+          textRendering: 'optimizeLegibility',
+          WebkitFontSmoothing: 'antialiased',
+          '@media (minWidth: 1200px)': {
+            maxWidth: '65ch', // Optimal reading width
+          }
+        }
+      }
+    }
+  }
+});
 ``` 

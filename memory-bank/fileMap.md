@@ -339,3 +339,28 @@ localStorage ← LocalStorageService ← MobX autorun ← Store state
 2. `src/stores/StoreProvider.tsx` - Used by App.tsx and provides context
 3. `src/stores/GameStore.ts` - Used by all game-related components
 4. Translation files - Used by all components with text content 
+
+## src/App.tsx Dependencies
+**Imports:**
+- `@mantine/core` → MantineProvider, AppShell, Title, Text, Flex, Container
+- `react-router-dom` → HashRouter, Routes, Route, useLocation
+- `react-i18next` → useTranslation
+- `./components/RouteTransition` → RouteTransition
+- `./components/InstallPrompt` → InstallPrompt
+- `./components/LanguageSwitcher` → LanguageSwitcher
+- `./stores/StoreProvider` → StoreProvider
+- `./pages/HomePage` → HomePage
+- `./pages/GameSetup` → GameSetup
+- `./pages/GamePlay` → GamePlay
+- `./pages/GameSummary` → GameSummary
+- `./theme` → theme
+
+**Used by:**
+- `src/main.tsx` (imports App as default)
+
+## src/theme.ts Dependencies
+**Imports:**
+- `@mantine/core` → createTheme, rem
+
+**Used by:**
+- `src/App.tsx` (imports theme) 
