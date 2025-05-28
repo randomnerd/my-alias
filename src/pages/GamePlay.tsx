@@ -348,7 +348,7 @@ export const GamePlay: React.FC = observer(() => {
                             height: rem(28),
                             padding: '0 8px',
                             minWidth: 'auto',
-                            '@media (max-width: 576px)': {
+                            '@media (maxWidth: 576px)': {
                               fontSize: rem(10),
                               height: rem(26),
                               padding: '0 6px',

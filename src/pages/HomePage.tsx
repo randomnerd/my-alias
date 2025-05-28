@@ -138,7 +138,7 @@ export const HomePage: React.FC = () => {
                 rightSection={rulesExpanded ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
                 styles={{
                   root: {
-                    '@media (min-width: 768px)': {
+                    '@media (minWidth: 768px)': {
                       display: 'none',
                     }
                   }

@@ -42,7 +42,7 @@ const theme = createTheme({
       },
       styles: {
         root: {
-          '@media (max-width: 576px)': {
+          '@media (maxWidth: 576px)': {
             minHeight: rem(42), // Larger touch targets on mobile
           }
         }
@@ -55,7 +55,7 @@ const theme = createTheme({
       },
       styles: {
         root: {
-          '@media (max-width: 576px)': {
+          '@media (maxWidth: 576px)': {
             padding: rem(16), // Adjust padding on mobile
           }
         }
@@ -67,7 +67,7 @@ const theme = createTheme({
       },
       styles: {
         root: {
-          '@media (max-width: 576px)': {
+          '@media (maxWidth: 576px)': {
             padding: `0 ${rem(12)}`, // Less horizontal padding on mobile
           }
         }
@@ -76,7 +76,7 @@ const theme = createTheme({
     Input: {
       styles: {
         input: {
-          '@media (max-width: 576px)': {
+          '@media (maxWidth: 576px)': {
             minHeight: rem(42), // Larger input height on mobile
             fontSize: rem(16), // Prevent iOS zoom on focus
           }

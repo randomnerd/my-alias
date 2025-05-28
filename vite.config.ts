@@ -18,14 +18,14 @@ export default defineConfig({
       external: ['fsevents'],
       output: {
         manualChunks: (id) => {
-          // Core React ecosystem
+          // Core React ecosystem - keep together to prevent dependency issues
           if (id.includes('react') || id.includes('react-dom')) {
             return 'react-vendor';
           }
           
-          // Routing
+          // Routing that depends on React
           if (id.includes('react-router-dom')) {
-            return 'router';
+            return 'react-vendor'; // Group with React to prevent loading issues
           }
           
           // State management
@@ -33,14 +33,9 @@ export default defineConfig({
             return 'mobx';
           }
           
-          // Mantine core components
-          if (id.includes('@mantine/core')) {
-            return 'mantine-core';
-          }
-          
-          // Mantine hooks
-          if (id.includes('@mantine/hooks')) {
-            return 'mantine-hooks';
+          // Mantine UI - group core and hooks together since both depend on React
+          if (id.includes('@mantine/core') || id.includes('@mantine/hooks')) {
+            return 'mantine-ui';
           }
           
           // Icons
