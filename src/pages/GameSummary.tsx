@@ -11,7 +11,6 @@ import {
   Paper,
   Badge,
   ThemeIcon,
-  List,
   Box,
   Divider,
   RingProgress,
@@ -95,16 +94,33 @@ export const GameSummary: React.FC = observer(() => {
   const winner = sortedTeams[0];
   const isTie = sortedTeams.length > 1 && sortedTeams[0].score === sortedTeams[1].score;
   
-  // Calculate game stats
+  // Calculate team-specific stats
+  const teamStats = game.teams.map((team, teamIndex) => {
+    const teamRounds = game.rounds.filter(round => round.teamIndex === teamIndex);
+    const totalWords = teamRounds.reduce((sum, round) => sum + round.words.length, 0);
+    const correctWords = teamRounds.reduce((sum, round) => {
+      return sum + round.words.filter(w => w.status === 'correct').length;
+    }, 0);
+    const skippedWords = teamRounds.reduce((sum, round) => {
+      return sum + round.words.filter(w => w.status === 'skipped').length;
+    }, 0);
+    const successRate = totalWords > 0 ? Math.round((correctWords / totalWords) * 100) : 0;
+    
+    return {
+      team,
+      totalWords,
+      correctWords,
+      skippedWords,
+      successRate,
+      roundsPlayed: teamRounds.length
+    };
+  });
+
+  // Calculate overall game stats for reference
   const totalWords = game.rounds.reduce((sum, round) => sum + round.words.length, 0);
   const correctWords = game.rounds.reduce((sum, round) => {
     return sum + round.words.filter(w => w.status === 'correct').length;
   }, 0);
-  const skippedWords = game.rounds.reduce((sum, round) => {
-    return sum + round.words.filter(w => w.status === 'skipped').length;
-  }, 0);
-  
-  // Calculate success rate
   const successRate = totalWords > 0 ? Math.round((correctWords / totalWords) * 100) : 0;
   
   // Start a new game
@@ -244,86 +260,108 @@ export const GameSummary: React.FC = observer(() => {
           {showStats && (
             <>
               <Divider 
-                label={<Group gap="xs"><IconChartBar size={16} />Game Statistics</Group>}
+                label={<Group gap="xs"><IconChartBar size={16} />Team Statistics</Group>}
                 labelPosition="center" 
                 size="md"
               />
               
               <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
-                <Paper p="md" radius="md" withBorder style={{ height: '100%' }}>
-                  <Stack align="center">
-                    <Title order={4} mb="xs">Success Rate</Title>
-                    <RingProgress
-                      sections={[{ value: successRate, color: 'blue' }]}
-                      label={
-                        <Center>
-                          <Text fw={700} size="xl" ta="center">
-                            {successRate}%
-                          </Text>
+                {teamStats.map((stats, index) => {
+                  const teamColor = ['blue', 'teal', 'grape', 'orange', 'pink'][index % 5];
+                  return (
+                    <Paper key={index} p="md" radius="md" withBorder style={{ height: '100%' }}>
+                      <Stack>
+                        <Group justify="space-between" align="center" mb="xs">
+                          <Title order={4}>{stats.team.name}</Title>
+                          <Badge color={teamColor} variant="light" size="lg">
+                            {stats.team.score} pts
+                          </Badge>
+                        </Group>
+                        
+                        <Center mb="md">
+                          <RingProgress
+                            sections={[{ value: stats.successRate, color: teamColor }]}
+                            label={
+                              <Center>
+                                <Text fw={700} size="lg" ta="center">
+                                  {stats.successRate}%
+                                </Text>
+                              </Center>
+                            }
+                            size={120}
+                            thickness={12}
+                            roundCaps
+                          />
                         </Center>
-                      }
-                      size={160}
-                      thickness={16}
-                      roundCaps
-                    />
-                    <Group justify="space-between" mt="xs" style={{ width: '100%' }}>
-                      <Group gap={5}>
-                        <IconCircleCheck size={16} color={theme.colors.green[6]} />
-                        <Text size="sm">Correct: {correctWords}</Text>
-                      </Group>
-                      <Group gap={5}>
-                        <IconPlayerSkipForward size={16} color={theme.colors.gray[6]} />
-                        <Text size="sm">Skipped: {skippedWords}</Text>
-                      </Group>
-                    </Group>
-                  </Stack>
-                </Paper>
-                
-                <Paper p="md" radius="md" withBorder style={{ height: '100%' }}>
-                  <Stack>
-                    <Title order={4} mb="xs">Game Overview</Title>
-                    <List spacing="sm">
-                      <List.Item icon={
-                        <ThemeIcon color="blue" size={22} radius="xl">
-                          <IconListNumbers size={14} />
-                        </ThemeIcon>
-                      }>
-                        <Text>Rounds Played: <Text span fw={500}>{game.rounds.length}</Text></Text>
-                      </List.Item>
-                      <List.Item icon={
-                        <ThemeIcon color="indigo" size={22} radius="xl">
-                          <IconChartBar size={14} />
-                        </ThemeIcon>
-                      }>
-                        <Text>Total Words: <Text span fw={500}>{totalWords}</Text></Text>
-                      </List.Item>
-                      <List.Item icon={
-                        <ThemeIcon color="green" size={22} radius="xl">
-                          <IconCircleCheck size={14} />
-                        </ThemeIcon>
-                      }>
-                        <Text>
-                          Correct Guesses: <Text span fw={500}>{correctWords}</Text>
-                          <Text size="xs" c="dimmed" mt={3}>
-                            Average {(correctWords / Math.max(1, game.rounds.length)).toFixed(1)} per round
-                          </Text>
-                        </Text>
-                      </List.Item>
-                      {game.losePointOnSkip && (
-                        <List.Item icon={
-                          <ThemeIcon color="red" size={22} radius="xl">
-                            <IconPlayerSkipForward size={14} />
-                          </ThemeIcon>
-                        }>
-                          <Text>
-                            Points Lost on Skips: <Text span fw={500}>{skippedWords}</Text>
-                          </Text>
-                        </List.Item>
-                      )}
-                    </List>
-                  </Stack>
-                </Paper>
+                        
+                        <Stack gap="xs">
+                          <Group justify="space-between">
+                            <Group gap={5}>
+                              <IconListNumbers size={16} color={theme.colors[teamColor][6]} />
+                              <Text size="sm">Rounds:</Text>
+                            </Group>
+                            <Text size="sm" fw={500}>{stats.roundsPlayed}</Text>
+                          </Group>
+                          
+                          <Group justify="space-between">
+                            <Group gap={5}>
+                              <IconChartBar size={16} color={theme.colors[teamColor][6]} />
+                              <Text size="sm">Total Words:</Text>
+                            </Group>
+                            <Text size="sm" fw={500}>{stats.totalWords}</Text>
+                          </Group>
+                          
+                          <Group justify="space-between">
+                            <Group gap={5}>
+                              <IconCircleCheck size={16} color={theme.colors.green[6]} />
+                              <Text size="sm">Correct:</Text>
+                            </Group>
+                            <Text size="sm" fw={500}>{stats.correctWords}</Text>
+                          </Group>
+                          
+                          <Group justify="space-between">
+                            <Group gap={5}>
+                              <IconPlayerSkipForward size={16} color={theme.colors.gray[6]} />
+                              <Text size="sm">Skipped:</Text>
+                            </Group>
+                            <Text size="sm" fw={500}>{stats.skippedWords}</Text>
+                          </Group>
+                          
+                          {stats.roundsPlayed > 0 && (
+                            <Group justify="space-between">
+                              <Text size="xs" c="dimmed">Avg per round:</Text>
+                              <Text size="xs" c="dimmed">
+                                {(stats.correctWords / stats.roundsPlayed).toFixed(1)} correct
+                              </Text>
+                            </Group>
+                          )}
+                        </Stack>
+                      </Stack>
+                    </Paper>
+                  );
+                })}
               </SimpleGrid>
+              
+              {/* Overall game summary */}
+              <Paper p="md" radius="md" withBorder bg="gray.0">
+                <Stack>
+                  <Title order={5} ta="center" c="dimmed">Game Overview</Title>
+                  <Group justify="space-around" wrap="nowrap">
+                    <Stack align="center" gap={2}>
+                      <Text size="lg" fw={700}>{game.rounds.length}</Text>
+                      <Text size="xs" c="dimmed" ta="center">Total Rounds</Text>
+                    </Stack>
+                    <Stack align="center" gap={2}>
+                      <Text size="lg" fw={700}>{totalWords}</Text>
+                      <Text size="xs" c="dimmed" ta="center">Total Words</Text>
+                    </Stack>
+                    <Stack align="center" gap={2}>
+                      <Text size="lg" fw={700}>{successRate}%</Text>
+                      <Text size="xs" c="dimmed" ta="center">Overall Success</Text>
+                    </Stack>
+                  </Group>
+                </Stack>
+              </Paper>
             </>
           )}
           

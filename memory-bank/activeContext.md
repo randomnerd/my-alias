@@ -58,6 +58,12 @@
   - **Added accessibility improvements with proper ARIA labels**
   - **Improved TypeScript typing with const assertions for better type safety**
   - **Fixed round summary scoring logic to properly handle skip penalty (2-point changes instead of 1)**
+  - **Improved mobile responsiveness in round summary to eliminate horizontal scrolling on iPhone 12 and similar devices**
+  - **Simplified round summary UI by removing unnecessary scoring changes hint alert**
+  - **Enhanced mobile gameplay UX by implementing bottom-sticky layout for action buttons and controls during active rounds**
+  - **Fixed horizontal scrolling issue on mobile gameplay screen by adding proper overflow constraints and width management**
+  - **Improved button positioning consistency by moving last-action feedback above action buttons with reserved space to prevent layout shifts**
+  - **Enhanced game summary statistics to show individual team performance metrics instead of combined game stats**
 
 ## Next Steps
 - Create a proper backend API (REST or GraphQL) to replace Meteor methods

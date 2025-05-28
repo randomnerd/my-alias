@@ -83,6 +83,11 @@
     - **Strengthened TypeScript typing with const assertions**
     - **Standardized error handling patterns across all services**
     - **Fixed round summary scoring bug: now properly applies 2-point changes when skip penalty is enabled**
+    - **Enhanced mobile responsiveness in round summary: eliminated horizontal scrolling on mobile devices**
+    - **Simplified round summary UI: removed unnecessary scoring changes hint for cleaner interface**
+    - **Improved mobile gameplay experience: implemented bottom-sticky layout for action buttons during active rounds**
+    - **Fixed mobile horizontal scrolling and layout shift issues: added overflow constraints and repositioned last-action feedback for consistent button placement**
+    - **Improved game summary with team-specific statistics: replaced combined game stats with individual team performance metrics including success rates, rounds played, and averages**
 
 ## In Progress
 - Further UX enhancements

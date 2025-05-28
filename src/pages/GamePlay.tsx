@@ -16,7 +16,6 @@ import {
   Box,
   Loader,
   Center,
-  Alert,
   Flex,
   rem,
   Table,
@@ -34,7 +33,6 @@ import {
   IconHome,
   IconCircleX,
   IconClock,
-  IconInfoCircle,
   IconChevronRight,
 } from '@tabler/icons-react';
 
@@ -296,67 +294,67 @@ export const GamePlay: React.FC = observer(() => {
           <Paper p="md" radius="md" withBorder style={{
             background: `linear-gradient(45deg, ${theme.colors[teamColor][0]} 0%, rgba(255, 255, 255, 0.8) 100%)`
           }}>
-            <Group justify="space-between">
-              <Text fw={500} size="lg" style={{ color: `var(--mantine-color-${teamColor}-6)` }}>
+            <Group justify="space-between" wrap="nowrap">
+              <Text 
+                fw={500} 
+                size="lg" 
+                style={{ 
+                  color: `var(--mantine-color-${teamColor}-6)`,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  minWidth: 0,
+                  flex: 1
+                }}
+              >
                 {currentTeam.name}
               </Text>
-              <Text fw={700} size="lg">
+              <Text fw={700} size="lg" style={{ flexShrink: 0 }}>
                 Score: {currentTeam.score}
               </Text>
             </Group>
           </Paper>
           
-          <div>
-            <Text ta="center" size="sm" c="dimmed" mb="xs">
-              Click on a word's status to toggle between correct and skipped
-            </Text>
-            
-            {game.losePointOnSkip && (
-              <Alert 
-                color="yellow" 
-                radius="md" 
-                mb="md"
-                icon={<IconInfoCircle size={16} />}
-                title="Scoring changes:"
-              >
-                <Text size="sm" mt="xs">
-                  • Changing from <b>correct → skipped</b> will deduct 2 points
-                </Text>
-                <Text size="sm" mt="xs">
-                  • Changing from <b>skipped → correct</b> will add 2 points
-                </Text>
-              </Alert>
-            )}
-          </div>
+          <Text ta="center" size="sm" c="dimmed" mb="md">
+            Click on a word's status to toggle between correct and skipped
+          </Text>
           
-          <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+          <div style={{ maxHeight: '300px', overflowY: 'auto', overflowX: 'hidden' }}>
             <Table striped highlightOnHover>
               <Table.Thead>
                 <Table.Tr>
-                  <Table.Th>Word</Table.Th>
-                  <Table.Th style={{ textAlign: 'center' }}>Status</Table.Th>
+                  <Table.Th style={{ width: '60%' }}>Word</Table.Th>
+                  <Table.Th style={{ textAlign: 'center', width: '40%' }}>Status</Table.Th>
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
                 {filteredWords.map((word, index) => (
                   <Table.Tr key={index}>
-                    <Table.Td>
-                      <Text fw={500}>{word.text}</Text>
+                    <Table.Td style={{ wordBreak: 'break-word', maxWidth: 0 }}>
+                      <Text fw={500} size="sm">{word.text}</Text>
                     </Table.Td>
-                    <Table.Td style={{ textAlign: 'center' }}>
+                    <Table.Td style={{ textAlign: 'center', padding: '8px 4px' }}>
                       <Button
-                        size="sm"
+                        size="xs"
                         color={word.status === 'correct' ? 'green' : 'gray'}
                         variant={word.status === 'correct' ? 'filled' : 'light'}
                         radius="lg"
-                        leftSection={
-                          word.status === 'correct' 
-                            ? <IconCircleCheck size={16} /> 
-                            : <IconPlayerSkipForward size={16} />
-                        }
                         onClick={() => toggleWordStatus(index, word.status as 'correct' | 'skipped')}
+                        styles={{
+                          root: {
+                            fontSize: rem(11),
+                            height: rem(28),
+                            padding: '0 8px',
+                            minWidth: 'auto',
+                            '@media (max-width: 576px)': {
+                              fontSize: rem(10),
+                              height: rem(26),
+                              padding: '0 6px',
+                            }
+                          }
+                        }}
                       >
-                        {word.status === 'correct' ? 'Correct' : 'Skipped'}
+                        {word.status === 'correct' ? '✓' : '✗'}
                       </Button>
                     </Table.Td>
                   </Table.Tr>
@@ -612,201 +610,236 @@ export const GamePlay: React.FC = observer(() => {
     return (
       <Transition mounted={true} transition={pageTransition} duration={300}>
         {(styles) => (
-          <Container size="sm" py="md" style={styles}>
-            <Card 
-              shadow="md" 
-              padding="md" 
-              radius="lg" 
-              withBorder 
-              mb="md"
-              style={{
-                background: `linear-gradient(45deg, ${theme.colors[teamColor][0]} 0%, rgba(255, 255, 255, 0.8) 100%)`,
-                overflow: 'hidden',
-              }}
-            >
-              <Group justify="space-between" align="center" mb="md">
-                <Stack gap={0}>
-                  <Text fw={600} size="lg" style={{ color: `var(--mantine-color-${teamColor}-6)` }}>
-                    {currentTeam.name}
-                  </Text>
-                  <Text>Score: {currentTeam.score}</Text>
-                </Stack>
-                
-                <Stack align="flex-end" gap={0}>
-                  <Text fw={700} size="xl" ta="right" style={{ color: `var(--mantine-color-${getTimerColor()}-6)` }}>
-                    {timeLeft}s
-                  </Text>
-                  <Progress 
-                    value={timerPercentage} 
-                    color={getTimerColor()} 
-                    size="lg" 
-                    radius="xl"
-                    w={150}
-                    striped={timeLeft <= 10}
-                    animated={timeLeft <= 10}
-                  />
-                </Stack>
-              </Group>
-            </Card>
-            
-            <div style={{ 
-              position: 'relative', 
-              margin: '10px 0 30px', 
-              minHeight: rem(180),
+          <div 
+            style={{
+              ...styles,
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              {showCorrectAnimation && (
-                <ThemeIcon 
-                  size={100} 
-                  radius={100} 
-                  color="green" 
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    zIndex: 10,
-                    opacity: 0.9,
-                    animation: 'pulse 0.5s infinite alternate',
-                  }}
-                >
-                  <IconCircleCheck size={60} />
-                </ThemeIcon>
-              )}
-              
-              <Transition 
-                mounted={wordTransition} 
-                transition={wordCardAnimation} 
-                duration={300}
-              >
-                {(cardStyles) => (
-                  <Card 
-                    shadow="lg" 
-                    padding="xl" 
-                    radius="lg" 
-                    
-                    withBorder 
-                    style={{ 
-                      ...cardStyles,
-                      textAlign: 'center',
-                      fontSize: rem(36),
-                      fontWeight: 700,
-                      minHeight: rem(160),
-                      paddingLeft: rem(20),
-                      paddingRight: rem(20),
-                      width: '100%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      background: `linear-gradient(135deg, ${theme.colors[teamColor][0]} 0%, white 100%)`,
-                      border: `2px solid ${theme.colors[teamColor][3]}`,
-                      boxShadow: `0 8px 20px ${theme.colors[teamColor][1]}`,
-                    }}
-                  >
-                    {currentWord.text}
-                  </Card>
-                )}
-              </Transition>
-            </div>
-            
-            <SimpleGrid cols={2} spacing="md" mb="md">
-              <Button 
-                variant="light" 
-                color="red" 
-                size="xl"
-                radius="md"
-                h={80}
-                onClick={() => handleWordResult('skipped')}
-                aria-label="Skip this word"
-                styles={{
-                  root: {
-                    borderWidth: 2,
-                    borderColor: theme.colors.red[3],
-                    ':hover': {
-                      backgroundColor: theme.colors.red[0],
-                    }
-                  }
-                }}
-              >
-                <IconCircleX size={48} />
-              </Button>
-              
-              <Button 
-                variant="light" 
-                color="teal" 
-                size="xl"
-                radius="md"
-                h={80}
-                onClick={() => handleWordResult('correct')}
-                aria-label="Mark word as correct"
-                styles={{
-                  root: {
-                    borderWidth: 2,
-                    borderColor: theme.colors.teal[3],
-                    ':hover': {
-                      backgroundColor: theme.colors.teal[0],
-                    }
-                  }
-                }}
-              >
-                <IconCircleCheck size={48} />
-              </Button>
-            </SimpleGrid>
-            
-            {lastAction && (
+              flexDirection: 'column',
+              minHeight: '100vh',
+              overflowX: 'hidden',
+              width: '100%'
+            }}
+            className="gameplay-container"
+          >
+            <Container 
+              size="sm" 
+              py="md" 
+              style={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                maxWidth: '100%',
+                margin: '0 auto'
+              }}
+              className="gameplay-inner"
+            >
               <Card 
+                shadow="md" 
+                padding="md" 
+                radius="lg" 
                 withBorder 
-                radius="md" 
-                p="md"
                 mb="md"
                 style={{
-                  backgroundColor: lastAction.type === 'correct' 
-                    ? theme.colors.teal[0]
-                    : theme.colors.red[0],
-                  borderColor: lastAction.type === 'correct' 
-                    ? theme.colors.teal[3]
-                    : theme.colors.red[3],
-                  borderWidth: 2,
+                  background: `linear-gradient(45deg, ${theme.colors[teamColor][0]} 0%, rgba(255, 255, 255, 0.8) 100%)`,
+                  overflow: 'hidden',
                 }}
               >
-                <Group align="center" gap="md">
-                  <ThemeIcon 
-                    size={42} 
-                    radius={100} 
-                    color={lastAction.type === 'correct' ? 'teal' : 'red'}
-                  >
-                    {lastAction.type === 'correct' ? 
-                      <IconCircleCheck size={24} /> : 
-                      <IconPlayerSkipForward size={24} />
-                    }
-                  </ThemeIcon>
+                <Group justify="space-between" align="center" mb="md">
                   <Stack gap={0}>
-                    <Text size="sm" c="dimmed">Last word:</Text>
-                    <Text fw={600} size="lg">{lastAction.word}</Text>
-                    <Text size="xs" c="dimmed">
-                      Marked as <b>{lastAction.type}</b>
+                    <Text fw={600} size="lg" style={{ color: `var(--mantine-color-${teamColor}-6)` }}>
+                      {currentTeam.name}
                     </Text>
+                    <Text>Score: {currentTeam.score}</Text>
+                  </Stack>
+                  
+                  <Stack align="flex-end" gap={0}>
+                    <Text fw={700} size="xl" ta="right" style={{ color: `var(--mantine-color-${getTimerColor()}-6)` }}>
+                      {timeLeft}s
+                    </Text>
+                    <Progress 
+                      value={timerPercentage} 
+                      color={getTimerColor()} 
+                      size="lg" 
+                      radius="xl"
+                      w={150}
+                      striped={timeLeft <= 10}
+                      animated={timeLeft <= 10}
+                    />
                   </Stack>
                 </Group>
               </Card>
-            )}
-            
-            <Divider my="md" />
-            
-            <Center mt="md">
-              <Button 
-                variant="light" 
-                color="red"
-                onClick={endRound}
-                leftSection={<IconClock size={18} />}
-                radius="md"
+              
+              <div style={{ 
+                position: 'relative', 
+                margin: '10px 0 30px', 
+                minHeight: rem(180),
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: '1 0 auto'
+              }}>
+                {showCorrectAnimation && (
+                  <ThemeIcon 
+                    size={100} 
+                    radius={100} 
+                    color="green" 
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      zIndex: 10,
+                      opacity: 0.9,
+                      animation: 'pulse 0.5s infinite alternate',
+                    }}
+                  >
+                    <IconCircleCheck size={60} />
+                  </ThemeIcon>
+                )}
+                
+                <Transition 
+                  mounted={wordTransition} 
+                  transition={wordCardAnimation} 
+                  duration={300}
+                >
+                  {(cardStyles) => (
+                    <Card 
+                      shadow="lg" 
+                      padding="xl" 
+                      radius="lg" 
+                      
+                      withBorder 
+                      style={{ 
+                        ...cardStyles,
+                        textAlign: 'center',
+                        fontSize: rem(36),
+                        fontWeight: 700,
+                        minHeight: rem(160),
+                        paddingLeft: rem(20),
+                        paddingRight: rem(20),
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: `linear-gradient(135deg, ${theme.colors[teamColor][0]} 0%, white 100%)`,
+                        border: `2px solid ${theme.colors[teamColor][3]}`,
+                        boxShadow: `0 8px 20px ${theme.colors[teamColor][1]}`,
+                      }}
+                    >
+                      {currentWord.text}
+                    </Card>
+                  )}
+                </Transition>
+              </div>
+              
+              {/* Bottom section that sticks to bottom on mobile */}
+              <div 
+                style={{
+                  marginTop: 'auto'
+                }}
+                className="gameplay-bottom"
               >
-                End Round Early
-              </Button>
-            </Center>
-          </Container>
+                {/* Last action card - always reserve space to prevent layout shift */}
+                <div style={{ minHeight: rem(80), marginBottom: rem(16) }}>
+                  {lastAction && (
+                    <Card 
+                      withBorder 
+                      radius="md" 
+                      p="md"
+                      style={{
+                        backgroundColor: lastAction.type === 'correct' 
+                          ? theme.colors.teal[0]
+                          : theme.colors.red[0],
+                        borderColor: lastAction.type === 'correct' 
+                          ? theme.colors.teal[3]
+                          : theme.colors.red[3],
+                        borderWidth: 2,
+                      }}
+                    >
+                      <Group align="center" gap="md">
+                        <ThemeIcon 
+                          size={42} 
+                          radius={100} 
+                          color={lastAction.type === 'correct' ? 'teal' : 'red'}
+                        >
+                          {lastAction.type === 'correct' ? 
+                            <IconCircleCheck size={24} /> : 
+                            <IconPlayerSkipForward size={24} />
+                          }
+                        </ThemeIcon>
+                        <Stack gap={0}>
+                          <Text size="sm" c="dimmed">Last word:</Text>
+                          <Text fw={600} size="lg" style={{ wordBreak: 'break-word' }}>{lastAction.word}</Text>
+                          <Text size="xs" c="dimmed">
+                            Marked as <b>{lastAction.type}</b>
+                          </Text>
+                        </Stack>
+                      </Group>
+                    </Card>
+                  )}
+                </div>
+                
+                <SimpleGrid cols={2} spacing="md" mb="md">
+                  <Button 
+                    variant="light" 
+                    color="red" 
+                    size="xl"
+                    radius="md"
+                    h={80}
+                    onClick={() => handleWordResult('skipped')}
+                    aria-label="Skip this word"
+                    styles={{
+                      root: {
+                        borderWidth: 2,
+                        borderColor: theme.colors.red[3],
+                        ':hover': {
+                          backgroundColor: theme.colors.red[0],
+                        }
+                      }
+                    }}
+                  >
+                    <IconCircleX size={48} />
+                  </Button>
+                  
+                  <Button 
+                    variant="light" 
+                    color="teal" 
+                    size="xl"
+                    radius="md"
+                    h={80}
+                    onClick={() => handleWordResult('correct')}
+                    aria-label="Mark word as correct"
+                    styles={{
+                      root: {
+                        borderWidth: 2,
+                        borderColor: theme.colors.teal[3],
+                        ':hover': {
+                          backgroundColor: theme.colors.teal[0],
+                        }
+                      }
+                    }}
+                  >
+                    <IconCircleCheck size={48} />
+                  </Button>
+                </SimpleGrid>
+                
+                <Divider my="md" />
+                
+                <Center mt="md">
+                  <Button 
+                    variant="light" 
+                    color="red"
+                    onClick={endRound}
+                    leftSection={<IconClock size={18} />}
+                    radius="md"
+                  >
+                    End Round Early
+                  </Button>
+                </Center>
+              </div>
+            </Container>
+          </div>
         )}
       </Transition>
     );
