@@ -4,7 +4,7 @@ import { Button, Menu } from '@mantine/core';
 import { IconLanguage, IconChevronDown } from '@tabler/icons-react';
 
 export const LanguageSwitcher: React.FC = () => {
-  const { i18n, t } = useTranslation('common');
+  const { i18n, t } = useTranslation();
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -28,14 +28,14 @@ export const LanguageSwitcher: React.FC = () => {
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Label>{t('language.switchLanguage')}</Menu.Label>
+        <Menu.Label>{t('common.language.switchLanguage')}</Menu.Label>
         <Menu.Item
           onClick={() => changeLanguage('en')}
           style={{
             backgroundColor: i18n.language === 'en' ? 'var(--mantine-color-blue-0)' : undefined,
           }}
         >
-          {t('language.english')}
+          {t('common.language.english')}
         </Menu.Item>
         <Menu.Item
           onClick={() => changeLanguage('ru')}
@@ -43,7 +43,7 @@ export const LanguageSwitcher: React.FC = () => {
             backgroundColor: i18n.language === 'ru' ? 'var(--mantine-color-blue-0)' : undefined,
           }}
         >
-          {t('language.russian')}
+          {t('common.language.russian')}
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

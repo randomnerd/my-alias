@@ -15,7 +15,7 @@ interface BeforeInstallPromptEvent extends Event {
 export const InstallPrompt: React.FC = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
@@ -64,21 +64,21 @@ export const InstallPrompt: React.FC = () => {
       mb="md" 
       variant="light" 
       color="blue" 
-      title={t('install.title')}
+      title={t('common.install.title')}
       withCloseButton
       onClose={() => setShowPrompt(false)}
     >
       <Text size="sm" mb="xs">
-        {t('install.description')}
+        {t('common.install.description')}
       </Text>
       <Group>
-        <Button size="xs" onClick={handleInstallClick}>{t('install.installNow')}</Button>
+        <Button size="xs" onClick={handleInstallClick}>{t('common.install.installNow')}</Button>
         <Button 
           size="xs" 
           variant="subtle" 
           onClick={() => setShowPrompt(false)}
         >
-          {t('install.maybeLater')}
+          {t('common.install.maybeLater')}
         </Button>
       </Group>
     </Alert>

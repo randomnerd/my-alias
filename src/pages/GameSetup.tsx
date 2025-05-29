@@ -33,13 +33,13 @@ interface SetupError {
 export const GameSetup: React.FC = observer(() => {
   const navigate = useNavigate();
   const { gameStore } = useStores();
-  const { t } = useTranslation(['setup', 'common']);
+  const { t } = useTranslation();
   const theme = useMantineTheme();
   
   // Team names state management
   const [teamNames, setTeamNames] = useState<string[]>([
-    t('setup:teams.placeholder', { number: 1 }),
-    t('setup:teams.placeholder', { number: 2 })
+    t('setup.teams.placeholder', { number: 1 }),
+    t('setup.teams.placeholder', { number: 2 })
   ]);
   
   // Game settings state management
@@ -51,7 +51,7 @@ export const GameSetup: React.FC = observer(() => {
   // Add team button handler
   const handleAddTeam = () => {
     if (teamNames.length < 6) {
-      setTeamNames([...teamNames, t('setup:teams.placeholder', { number: teamNames.length + 1 })]);
+      setTeamNames([...teamNames, t('setup.teams.placeholder', { number: teamNames.length + 1 })]);
     }
   };
   
@@ -81,28 +81,28 @@ export const GameSetup: React.FC = observer(() => {
       
       // Check for minimum number of teams
       if (trimmedTeamNames.length < 2) {
-        throw { message: t('setup:validation.minTeams'), field: 'teamNames' };
+        throw { message: t('setup.validation.minTeams'), field: 'teamNames' };
       }
 
       // Check for empty team names
       if (trimmedTeamNames.some(name => name === '')) {
-        throw { message: t('setup:validation.emptyTeamNames'), field: 'teamNames' };
+        throw { message: t('setup.validation.emptyTeamNames'), field: 'teamNames' };
       }
       
       // Check for duplicate team names
       const uniqueNames = new Set(trimmedTeamNames);
       if (uniqueNames.size !== trimmedTeamNames.length) {
-        throw { message: t('setup:validation.duplicateTeamNames'), field: 'teamNames' };
+        throw { message: t('setup.validation.duplicateTeamNames'), field: 'teamNames' };
       }
 
       // Validate round time range
       if (roundTime < 30 || roundTime > 300) {
-        throw { message: t('setup:validation.invalidRoundTime'), field: 'roundTime' };
+        throw { message: t('setup.validation.invalidRoundTime'), field: 'roundTime' };
       }
 
       // Validate score limit
       if (scoreLimit < 10) {
-        throw { message: t('setup:validation.invalidScoreLimit'), field: 'scoreLimit' };
+        throw { message: t('setup.validation.invalidScoreLimit'), field: 'scoreLimit' };
       }
       
       // Create the game
@@ -132,7 +132,7 @@ export const GameSetup: React.FC = observer(() => {
   return (
         <form onSubmit={handleSubmit}>
           <Stack gap="xl">
-            <Title order={2} ta="center" mt="lg">{t('setup:title')}</Title>
+            <Title order={2} ta="center" mt="lg">{t('setup.title')}</Title>
             
             <Paper withBorder p="md" radius="md" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f8faff 100%)' }}>
               <Stack gap="md">
@@ -141,9 +141,9 @@ export const GameSetup: React.FC = observer(() => {
                     <IconUsers size={24} />
                   </ThemeIcon>
                   <div>
-                    <Title order={4}>{t('setup:teams.title')}</Title>
+                    <Title order={4}>{t('setup.teams.title')}</Title>
                     <Text size="sm" c="dimmed">
-                      {t('setup:teams.description')}
+                      {t('setup.teams.description')}
                     </Text>
                   </div>
                 </Group>
@@ -154,7 +154,7 @@ export const GameSetup: React.FC = observer(() => {
                       <TextInput
                         value={teamName}
                         onChange={(e) => handleTeamNameChange(index, e.target.value)}
-                        placeholder={t('setup:teams.placeholder', { number: index + 1 })}
+                        placeholder={t('setup.teams.placeholder', { number: index + 1 })}
                         required
                         style={{ flexGrow: 1 }}
                         size="md"
@@ -186,13 +186,13 @@ export const GameSetup: React.FC = observer(() => {
                     leftSection={<IconCirclePlus size={20} />}
                     style={{ alignSelf: 'flex-start' }}
                   >
-                    {t('setup:buttons.addTeam')}
+                    {t('setup.buttons.addTeam')}
                   </Button>
                 )}
               </Stack>
             </Paper>
             
-            <Divider label={t('setup:gameSettings.title')} labelPosition="center" />
+            <Divider label={t('setup.gameSettings.title')} labelPosition="center" />
             
             <Paper withBorder p="md" radius="md" style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f8faff 100%)' }}>
               <Stack gap="lg">
@@ -202,8 +202,8 @@ export const GameSetup: React.FC = observer(() => {
                   </ThemeIcon>
                   
                   <Stack gap={5}>
-                    <Title order={4}>{t('setup:gameSettings.roundTime.title', { time: roundTime })}</Title>
-                    <Text size="sm" c="dimmed">{t('setup:gameSettings.roundTime.description')}</Text>
+                    <Title order={4}>{t('setup.gameSettings.roundTime.title', { time: roundTime })}</Title>
+                    <Text size="sm" c="dimmed">{t('setup.gameSettings.roundTime.description')}</Text>
                     
                     <Slider
                       min={30}
@@ -237,8 +237,8 @@ export const GameSetup: React.FC = observer(() => {
                   </ThemeIcon>
                   
                   <Stack gap={5}>
-                    <Title order={4}>{t('setup:gameSettings.scoreLimit.title', { score: scoreLimit })}</Title>
-                    <Text size="sm" c="dimmed">{t('setup:gameSettings.scoreLimit.description')}</Text>
+                    <Title order={4}>{t('setup.gameSettings.scoreLimit.title', { score: scoreLimit })}</Title>
+                    <Text size="sm" c="dimmed">{t('setup.gameSettings.scoreLimit.description')}</Text>
                     
                     <Slider
                       min={10}
@@ -272,15 +272,15 @@ export const GameSetup: React.FC = observer(() => {
                   </ThemeIcon>
                   
                   <div style={{ flex: 1 }}>
-                    <Title order={4}>{t('setup:difficulty.title')}</Title>
-                    <Text size="sm" c="dimmed" mb="xs">{t('setup:difficulty.description')}</Text>
+                    <Title order={4}>{t('setup.difficulty.title')}</Title>
+                    <Text size="sm" c="dimmed" mb="xs">{t('setup.difficulty.description')}</Text>
                     
                     <Select
                       data={[
-                        { value: 'easy', label: t('setup:difficulty.options.easy') },
-                        { value: 'medium', label: t('setup:difficulty.options.medium') },
-                        { value: 'hard', label: t('setup:difficulty.options.hard') },
-                        { value: 'mixed', label: t('setup:difficulty.options.mixed') },
+                        { value: 'easy', label: t('setup.difficulty.options.easy') },
+                        { value: 'medium', label: t('setup.difficulty.options.medium') },
+                        { value: 'hard', label: t('setup.difficulty.options.hard') },
+                        { value: 'mixed', label: t('setup.difficulty.options.mixed') },
                       ]}
                       value={difficulty}
                       onChange={(value) => setDifficulty(value || 'mixed')}
@@ -292,8 +292,8 @@ export const GameSetup: React.FC = observer(() => {
                 
                 <Box p="md" style={{ background: 'rgba(250, 250, 250, 0.7)', borderRadius: theme.radius.md }}>
                   <Switch
-                    label={t('setup:settings.losePointOnSkip.label')}
-                    description={t('setup:settings.losePointOnSkip.description')}
+                    label={t('setup.settings.losePointOnSkip.label')}
+                    description={t('setup.settings.losePointOnSkip.description')}
                     checked={losePointOnSkip}
                     onChange={(e) => setLosePointOnSkip(e.currentTarget.checked)}
                     size="md"
@@ -315,7 +315,7 @@ export const GameSetup: React.FC = observer(() => {
                 leftSection={<IconArrowLeft size={18} />}
                 size="lg"
               >
-                {t('setup:buttons.back')}
+                {t('setup.buttons.back')}
               </Button>
               <Button 
                 type="submit" 
@@ -328,7 +328,7 @@ export const GameSetup: React.FC = observer(() => {
                   boxShadow: '0 4px 14px rgba(34, 139, 230, 0.25)',
                 }}
               >
-                {t('setup:buttons.startGame')}
+                {t('setup.buttons.startGame')}
               </Button>
             </Group>
           </Stack>

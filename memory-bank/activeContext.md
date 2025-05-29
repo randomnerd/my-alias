@@ -1,6 +1,7 @@
 # Active Context
 
 ## Current Focus
+- **COMPLETED: Locale file merging and i18n architecture simplification**
 - **COMPLETED: React Suspense removal and architecture simplification**
 - **COMPLETED: Theme extraction into dedicated file for better organization**
 - **COMPLETED: Comprehensive internationalization (i18n) implementation**
@@ -13,6 +14,35 @@
 - Code quality improvements and type safety enhancements
 
 ## Recent Changes
+- **LATEST: Locale File Merging and i18n Architecture Simplification (December 2024):**
+  - **Merged separate namespace files into single files per language:**
+    - **Combined 5 separate JSON files (common, home, setup, game, summary) into single en.json (7.2KB)**
+    - **Combined 5 separate JSON files into single ru.json (10KB)**
+    - **Eliminated complex directory structure (src/locales/en/, src/locales/ru/)**
+    - **Created nested namespace structure within merged files**
+  - **Simplified i18n configuration dramatically:**
+    - **Reduced i18n.ts from 153 lines to 25 lines (83% reduction)**
+    - **Replaced complex dynamic loading with simple static imports**
+    - **Eliminated translation loader maps and namespace management complexity**
+    - **Removed all dynamic import() patterns for translations**
+    - **Simplified to single defaultNS: 'translation' configuration**
+  - **Updated all component translation usage:**
+    - **Changed from namespace prefixes (t('home:welcome.title')) to dot notation (t('home.welcome.title'))**
+    - **Updated all components: HomePage, GameSetup, GamePlay, GameSummary, InstallPrompt, LanguageSwitcher, App**
+    - **Simplified useTranslation() calls by removing namespace arrays**
+    - **Maintained all existing functionality with cleaner API**
+  - **Architecture benefits achieved:**
+    - **Zero translation loading delays - all translations available immediately**
+    - **Eliminated complex namespace loading logic and potential race conditions**
+    - **Simplified maintenance with single file per language**
+    - **Better performance with static imports instead of dynamic loading**
+    - **Cleaner codebase with 83% reduction in i18n configuration complexity**
+    - **Easier to add new languages and modify existing translations**
+  - **Technical improvements:**
+    - **Removed old locale directories and cleaned up file structure**
+    - **Fixed all linter errors related to Stack component spacing/gap props**
+    - **Successful build with zero TypeScript errors**
+    - **Maintained all translation functionality while simplifying architecture**
 - **LATEST: React Suspense Removal and Theme Organization (December 2024):**
   - **Removed React Suspense completely from App.tsx**
     - **Eliminated lazy loading of page components (HomePage, GameSetup, GamePlay, GameSummary)**

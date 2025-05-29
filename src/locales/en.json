@@ -1,0 +1,245 @@
+{
+  "common": {
+    "appTitle": "Alias",
+    "buttons": {
+      "start": "Start",
+      "continue": "Continue",
+      "next": "Next",
+      "back": "Back",
+      "exit": "Exit",
+      "home": "Home",
+      "returnHome": "Return Home",
+      "newGame": "New Game",
+      "startNewGame": "Start New Game",
+      "getStarted": "Get Started",
+      "show": "Show",
+      "hide": "Hide"
+    },
+    "navigation": {
+      "home": "Home",
+      "setup": "Setup",
+      "game": "Game",
+      "summary": "Summary"
+    },
+    "common": {
+      "loading": "Loading...",
+      "error": "Error",
+      "success": "Success",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "close": "Close",
+      "save": "Save",
+      "delete": "Delete",
+      "edit": "Edit",
+      "add": "Add",
+      "remove": "Remove",
+      "team": "Team",
+      "teams": "Teams",
+      "score": "Score",
+      "points": "points",
+      "round": "Round",
+      "rounds": "Rounds",
+      "time": "Time",
+      "seconds": "seconds",
+      "minutes": "minutes"
+    },
+    "language": {
+      "english": "English",
+      "russian": "Русский",
+      "switchLanguage": "Switch Language"
+    },
+    "install": {
+      "title": "Install Alias Game",
+      "description": "Install this app on your device for a better experience!",
+      "installNow": "Install Now",
+      "maybeLater": "Maybe Later"
+    }
+  },
+  "home": {
+    "welcome": {
+      "title": "Welcome to Alias",
+      "subtitle": "A word-guessing game perfect for gatherings with friends and family."
+    },
+    "rules": {
+      "title": "Game Rules",
+      "items": [
+        "Players are organized into teams",
+        "Each round, one player explains words to teammates",
+        "Teams gain points for correctly guessed words",
+        "Teams lose points for skipped words (optional setting)",
+        "Rounds are timed",
+        "The game continues until a team reaches the score limit",
+        "When a team reaches the score limit, all teams finish the current round",
+        "The team with the highest score at the end of that round wins"
+      ]
+    },
+    "features": {
+      "title": "Why Play Alias?",
+      "vocabulary": {
+        "title": "Improve Vocabulary",
+        "description": "Enhance your language skills by finding creative ways to describe words"
+      },
+      "groups": {
+        "title": "Perfect for Groups",
+        "description": "Designed for friends, family gatherings, or team-building events"
+      },
+      "quickRounds": {
+        "title": "Quick Rounds",
+        "description": "Fast-paced gameplay keeps everyone engaged and entertained"
+      }
+    }
+  },
+  "setup": {
+    "title": "Game Setup",
+    "teams": {
+      "title": "Teams",
+      "description": "Add at least 2 teams. Each team will take turns explaining words.",
+      "placeholder": "Team {{number}}",
+      "addTeam": "Add Team",
+      "removeTeam": "Remove Team"
+    },
+    "gameSettings": {
+      "title": "Game Settings",
+      "roundTime": {
+        "title": "Round Time: {{time}} seconds",
+        "description": "How long each team has to guess words"
+      },
+      "scoreLimit": {
+        "title": "Score Limit: {{score}} points",
+        "description": "Game ends when a team reaches this score"
+      }
+    },
+    "difficulty": {
+      "title": "Difficulty",
+      "description": "Choose the difficulty level of words",
+      "options": {
+        "easy": "Easy - Common everyday words",
+        "medium": "Medium - Moderate difficulty",
+        "hard": "Hard - Challenging words",
+        "mixed": "Mixed - Variety of difficulty levels"
+      }
+    },
+    "settings": {
+      "losePointOnSkip": {
+        "label": "Lose point on skipping a word",
+        "description": "Teams will lose one point each time they skip a word"
+      }
+    },
+    "validation": {
+      "minTeams": "At least 2 teams are required",
+      "emptyTeamNames": "All teams must have names",
+      "duplicateTeamNames": "Team names must be unique",
+      "invalidRoundTime": "Round time must be between 30 and 300 seconds",
+      "invalidScoreLimit": "Score limit must be at least 10"
+    },
+    "buttons": {
+      "addTeam": "Add Team",
+      "back": "Back",
+      "startGame": "Start"
+    }
+  },
+  "game": {
+    "loading": {
+      "game": "Loading game..."
+    },
+    "notFound": {
+      "title": "Game not found",
+      "message": "The game you're looking for doesn't exist or has been removed."
+    },
+    "scoreLimitBanner": {
+      "scoreLimit": "Score Limit: {{limit}} points",
+      "scoreLimitReached": "Score limit reached! Game will end after this round."
+    },
+    "roundSummary": {
+      "title": "Round Summary",
+      "score": "Score: {{score}}",
+      "instruction": "Click on a word's status to toggle between correct and skipped",
+      "continueButton": "Continue to Next Round",
+      "reviewButton": "Review Last Round",
+      "tableHeaders": {
+        "word": "Word",
+        "status": "Status"
+      }
+    },
+    "roundStart": {
+      "gameReady": "Game Ready!",
+      "roundEnded": "Round Ended",
+      "firstTeam": "First Team:",
+      "nextTeam": "Next Team:",
+      "timeInstruction": "You will have {{time}} seconds to explain as many words as possible.",
+      "getReady": "Get Ready!",
+      "teamTurn": "It's {{teamName}}'s turn",
+      "startRound": "Start Round"
+    },
+    "gameplay": {
+      "timeLeft": "{{time}}s",
+      "correct": "Correct",
+      "skip": "Skip",
+      "endRoundEarly": "End Round Early",
+      "pause": "Pause",
+      "resume": "Resume",
+      "paused": "Paused"
+    },
+    "actions": {
+      "lastWord": "Last word:",
+      "markedAs": "Marked as",
+      "correctWord": "Correct: {{word}}",
+      "skippedWord": "Skipped: {{word}}"
+    },
+    "status": {
+      "correct": "Correct",
+      "skipped": "Skipped",
+      "pending": "Pending"
+    },
+    "errors": {
+      "failedToEndRound": "Failed to end round",
+      "failedToEndRoundUnknown": "Failed to end round: Unknown error",
+      "failedToStartRound": "Failed to start round",
+      "roundNotFound": "Round not found",
+      "unexpectedState": "Unexpected game state",
+      "unexpectedStateMessage": "Something unexpected happened with the game state."
+    }
+  },
+  "summary": {
+    "title": "Game Results",
+    "notFound": {
+      "title": "Game not found",
+      "message": "The game you're looking for doesn't exist or has been removed."
+    },
+    "winner": {
+      "congratulations": "🎉 Congratulations!",
+      "winner": "{{teamName}} wins!",
+      "tie": "It's a tie!",
+      "tieMessage": "Multiple teams tied with {{score}} points!"
+    },
+    "finalScore": "Final Score",
+    "teamRanks": {
+      "1st": "1st",
+      "2nd": "2nd", 
+      "3rd": "3rd",
+      "nth": "{{rank}}th"
+    },
+    "rank": "Rank:",
+    "finalScores": "Final Scores",
+    "teamStatistics": "Team Statistics",
+    "teamStats": {
+      "rounds": "Rounds:",
+      "totalWords": "Total Words:",
+      "correct": "Correct:",
+      "skipped": "Skipped:",
+      "avgPerRound": "Avg per round:",
+      "correctAvg": "{{avg}} correct"
+    },
+    "gameOverview": {
+      "title": "Game Overview",
+      "totalRounds": "Total Rounds",
+      "totalWords": "Total Words",
+      "overallSuccess": "Overall Success"
+    },
+    "buttons": {
+      "home": "Home",
+      "newGame": "New Game",
+      "playAgain": "Play Again"
+    }
+  }
+} 

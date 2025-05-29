@@ -142,37 +142,71 @@ export const useStores = () => {
 
 ## Internationalization Patterns (`src/i18n.ts`)
 
-### i18next Configuration
+### Simplified i18n Configuration
 ```typescript
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-export const supportedLanguages = ['en', 'ru'] as const;
-export const namespaces = ['common', 'home', 'setup', 'game', 'summary'] as const;
+// Import merged translation files
+import enTranslations from './locales/en.json';
+import ruTranslations from './locales/ru.json';
 
-export type SupportedLanguage = typeof supportedLanguages[number];
-export type SupportedNamespace = typeof namespaces[number];
-
+// Initialize i18n with merged translations
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
+    // Load all translations upfront since they're merged
+    resources: {
+      en: { translation: enTranslations },
+      ru: { translation: ruTranslations },
+    },
     fallbackLng: 'en',
-    ns: namespaces,
-    defaultNS: 'common',
-    interpolation: { escapeValue: false }
+    defaultNS: 'translation',
+    detection: {
+      order: ['localStorage', 'navigator'],
+      caches: ['localStorage'],
+      lookupLocalStorage: 'i18nextLng',
+    },
+    interpolation: { escapeValue: false },
+    react: { useSuspense: false },
+    initImmediate: true,
   });
+
+export default i18n;
 ```
 
 ### Translation Usage Patterns
 ```typescript
-// In components
+// In components - simplified usage
 import { useTranslation } from 'react-i18next';
 
-const { t } = useTranslation('namespace');
-const text = t('translationKey');
-const textWithInterpolation = t('key', { variable: value });
+const { t } = useTranslation();
+const text = t('home.welcome.title');
+const textWithInterpolation = t('setup.teams.placeholder', { number: 1 });
+const arrayData = t('home.rules.items', { returnObjects: true }) as string[];
+```
+
+### Merged Locale File Structure
+```json
+// src/locales/en.json
+{
+  "common": {
+    "appTitle": "Alias",
+    "buttons": { "start": "Start", "back": "Back" },
+    "language": { "english": "English", "russian": "Русский" }
+  },
+  "home": {
+    "welcome": { "title": "Welcome to Alias" },
+    "rules": { "items": ["Rule 1", "Rule 2"] }
+  },
+  "setup": {
+    "teams": { "placeholder": "Team {{number}}" }
+  },
+  "game": { /* game translations */ },
+  "summary": { /* summary translations */ }
+}
 ```
 
 ## Router Configuration (`src/App.tsx`)

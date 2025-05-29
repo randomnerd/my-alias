@@ -19,7 +19,7 @@ import { theme } from './theme';
 const AppWithHeaderControl: React.FC = () => {
   const location = useLocation();
   const showHeader = location.pathname === '/';
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   return (
     <AppShell
@@ -31,7 +31,7 @@ const AppWithHeaderControl: React.FC = () => {
           <Flex align="center" h="100%" justify="space-between">
             <Title order={2}>
               <Text component="span" variant="gradient" gradient={{ from: 'blue', to: 'cyan' }} fw={700} inherit>
-                {t('appTitle')}
+                {t('common.appTitle')}
               </Text>
             </Title>
             <LanguageSwitcher />

@@ -24,7 +24,7 @@ import { IconVocabulary, IconUsers, IconClock, IconChevronDown, IconChevronUp } 
 export const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const theme = useMantineTheme();
-  const { t } = useTranslation(['home', 'common']);
+  const { t } = useTranslation();
   const [loadedItems, setLoadedItems] = useState<boolean[]>([false, false, false]);
   const [loadedFeatures, setLoadedFeatures] = useState<boolean[]>([false, false, false]);
   const [rulesExpanded, setRulesExpanded] = useState(true);
@@ -95,10 +95,10 @@ export const HomePage: React.FC = () => {
                   WebkitTextFillColor: 'transparent'
                 }}
               >
-                {t('home:welcome.title')}
+                {t('home.welcome.title')}
               </Title>
               <Text ta="center" size="lg" c="dimmed">
-                {t('home:welcome.subtitle')}
+                {t('home.welcome.subtitle')}
               </Text>
               
               <Group justify="center" mt="md">
@@ -118,7 +118,7 @@ export const HomePage: React.FC = () => {
                     }
                   }}
                 >
-                  {t('common:buttons.startNewGame')}
+                  {t('common.buttons.startNewGame')}
                 </Button>
               </Group>
             </Stack>
@@ -153,7 +153,7 @@ export const HomePage: React.FC = () => {
                   color: '#1a1a1a'
                 }}
               >
-                {t('home:rules.title')}
+                {t('home.rules.title')}
               </Title>
               <Button 
                 variant="subtle" 
@@ -170,7 +170,7 @@ export const HomePage: React.FC = () => {
                   }
                 }}
               >
-                {rulesExpanded ? t('common:buttons.hide') : t('common:buttons.show')}
+                {rulesExpanded ? t('common.buttons.hide') : t('common.buttons.show')}
               </Button>
             </Group>
             
@@ -202,7 +202,7 @@ export const HomePage: React.FC = () => {
                     }
                   }}
                 >
-                  {(t('home:rules.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
+                  {(t('home.rules.items', { returnObjects: true }) as string[]).map((item: string, index: number) => (
                     <List.Item 
                       key={index}
                       style={{
@@ -238,7 +238,7 @@ export const HomePage: React.FC = () => {
       <Transition mounted={loadedItems[2]} transition="fade" duration={400}>
         {(styles) => (
           <Card shadow="md" padding="md" radius="lg" withBorder style={styles}>
-            <Title order={3} mb="md" ta="center">{t('home:features.title')}</Title>
+            <Title order={3} mb="md" ta="center">{t('home.features.title')}</Title>
             <Grid>
               <Grid.Col span={{ base: 12, xs: 12, sm: 4 }}>
                 <Transition mounted={loadedFeatures[0]} transition="slide-up" duration={400}>
@@ -253,7 +253,7 @@ export const HomePage: React.FC = () => {
                           <IconVocabulary size={36} />
                         </ThemeIcon>
                         <div style={{ height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <Title order={4} ta="center">{t('home:features.vocabulary.title')}</Title>
+                          <Title order={4} ta="center">{t('home.features.vocabulary.title')}</Title>
                         </div>
                         <Text 
                           ta="center" 
@@ -266,7 +266,7 @@ export const HomePage: React.FC = () => {
                             maxWidth: '100%'
                           }}
                         >
-                          {t('home:features.vocabulary.description')}
+                          {t('home.features.vocabulary.description')}
                         </Text>
                       </Stack>
                     </Paper>
@@ -287,7 +287,7 @@ export const HomePage: React.FC = () => {
                           <IconUsers size={36} />
                         </ThemeIcon>
                         <div style={{ height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <Title order={4} ta="center">{t('home:features.groups.title')}</Title>
+                          <Title order={4} ta="center">{t('home.features.groups.title')}</Title>
                         </div>
                         <Text 
                           ta="center" 
@@ -300,7 +300,7 @@ export const HomePage: React.FC = () => {
                             maxWidth: '100%'
                           }}
                         >
-                          {t('home:features.groups.description')}
+                          {t('home.features.groups.description')}
                         </Text>
                       </Stack>
                     </Paper>
@@ -321,7 +321,7 @@ export const HomePage: React.FC = () => {
                           <IconClock size={36} />
                         </ThemeIcon>
                         <div style={{ height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <Title order={4} ta="center">{t('home:features.quickRounds.title')}</Title>
+                          <Title order={4} ta="center">{t('home.features.quickRounds.title')}</Title>
                         </div>
                         <Text 
                           ta="center" 
@@ -334,7 +334,7 @@ export const HomePage: React.FC = () => {
                             maxWidth: '100%'
                           }}
                         >
-                          {t('home:features.quickRounds.description')}
+                          {t('home.features.quickRounds.description')}
                         </Text>
                       </Stack>
                     </Paper>
@@ -355,7 +355,7 @@ export const HomePage: React.FC = () => {
                   maxWidth: '320px'
                 }}
               >
-                {t('common:buttons.getStarted')}
+                {t('common.buttons.getStarted')}
               </Button>
             </Box>
           </Card>

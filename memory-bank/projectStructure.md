@@ -31,7 +31,7 @@ src/
 ├── App.tsx                  # Main app component with routing
 ├── App.css                  # Global app styles
 ├── index.css               # Global CSS styles (1,252 lines)
-├── i18n.ts                 # Internationalization configuration
+├── i18n.ts                 # Internationalization configuration (simplified, 25 lines)
 ├── vite-env.d.ts           # Vite environment type definitions
 │
 ├── components/             # Reusable UI components
@@ -58,18 +58,8 @@ src/
 │   └── index.ts            # Core interfaces (Game, Team, Word, Round)
 │
 ├── locales/               # Internationalization translations
-│   ├── en/                # English translations
-│   │   ├── common.json    # Common UI elements (56 lines)
-│   │   ├── home.json      # Homepage content (34 lines)
-│   │   ├── setup.json     # Game setup interface (49 lines)
-│   │   ├── game.json      # Gameplay interface (62 lines)
-│   │   └── summary.json   # Game summary content (42 lines)
-│   └── ru/                # Russian translations (same structure)
-│       ├── common.json
-│       ├── home.json
-│       ├── setup.json
-│       ├── game.json
-│       └── summary.json
+│   ├── en.json            # English translations (merged, 245 lines, 7.2KB)
+│   └── ru.json            # Russian translations (merged, 245 lines, 10KB)
 │
 └── assets/                # Static assets (images, icons, etc.)
 ```
@@ -107,7 +97,7 @@ memory-bank/
   - `src/stores/GameStore.ts` - 9.1KB (303 lines) - Game state
   - `src/App.tsx` - 5.3KB (189 lines) - Main app component
   - `memory-bank/productContext.md` - 5.3KB (104 lines) - Product context
-  - `src/i18n.ts` - 5.2KB (153 lines) - Internationalization setup
+  - `src/i18n.ts` - 1.1KB (25 lines) - Simplified internationalization setup
 
 ## Key Architectural Components
 1. **Entry Points:**
@@ -121,9 +111,9 @@ memory-bank/
    - Persistence via localStorage
 
 3. **Internationalization:**
-   - 5 namespaces across 2 languages (English, Russian)
-   - Dynamic loading with React Suspense
-   - Browser language detection
+   - 2 merged locale files (English, Russian) with nested namespace structure
+   - Static imports for immediate availability
+   - Browser language detection with localStorage persistence
 
 4. **Build System:**
    - Vite with React SWC plugin

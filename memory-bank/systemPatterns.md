@@ -98,12 +98,14 @@
 - Language preference persistence in localStorage
 
 ## Internationalization Patterns
-- Namespace-based translation organization (common, home, setup, game, summary)
-- Key interpolation pattern for dynamic content: {{variable}}
-- Browser language detection with fallback to English
-- Translation loading with React Suspense support
-- Consistent translation key naming conventions
-- Cultural adaptation of content beyond literal translation
+- **Merged Locale Structure**: Single JSON file per language with nested namespace organization
+- **Static Import Strategy**: Direct imports for immediate translation availability
+- **Simplified Configuration**: Minimal i18n setup without dynamic loading complexity
+- **Dot Notation Keys**: Translation keys use nested structure (e.g., 'home.welcome.title')
+- **Browser Language Detection**: Automatic language detection with English fallback
+- **Language Preference Persistence**: User language choice saved in localStorage
+- **Key Interpolation**: Dynamic content using {{variable}} syntax
+- **Cultural Adaptation**: Content adapted beyond literal translation for Russian users
 
 ## Loading Experience Patterns
 - HTML-level immediate spinner display pattern (index.html implementation)
@@ -160,9 +162,9 @@
   - Proper loading order through strategic chunk grouping
   - Production-specific dependency resolution patterns
   - Consistency patterns across browsers and deployment environments
-- Translation optimization patterns:
-  - Immediate availability for common translations on app startup
-  - Progressive loading for additional namespaces without blocking render
+- Simplified translation architecture:
+  - Immediate availability for all translations on app startup
+  - No dynamic loading complexity or race conditions
   - Professional loading experience with instant localized content
 
 ## Build Configuration Patterns
@@ -283,3 +285,11 @@ export const theme = createTheme({
   }
 });
 ```
+
+## Simplified Translation Architecture
+- **Static Import Pattern**: Direct imports of merged locale files for immediate availability
+- **Merged Locale Structure**: Single JSON file per language with nested namespace organization
+- **Simplified i18n Configuration**: Minimal setup without dynamic loading complexity
+- **Dot Notation Access**: Translation keys use nested structure (e.g., 'home.welcome.title')
+- **Zero Loading Delays**: All translations available immediately on app startup
+- **Maintainable Structure**: Easy to add new languages and modify existing translations

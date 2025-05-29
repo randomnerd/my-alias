@@ -67,7 +67,7 @@ export const GamePlay: React.FC = observer(() => {
   const navigate = useNavigate();
   const { gameStore } = useStores();
   const theme = useMantineTheme();
-  const { t } = useTranslation(['game', 'common']);
+  const { t } = useTranslation();
   
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(0);
@@ -116,10 +116,10 @@ export const GamePlay: React.FC = observer(() => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Error ending round:', error);
-        alert(`${t('game:errors.failedToEndRound')}: ${error.message}`);
+        alert(`${t('game.errors.failedToEndRound')}: ${error.message}`);
       } else {
         console.error('Error ending round:', error);
-        alert(t('game:errors.failedToEndRoundUnknown'));
+        alert(t('game.errors.failedToEndRoundUnknown'));
       }
     }
   }, [gameId, navigate, gameStore, t]);
@@ -159,7 +159,7 @@ export const GamePlay: React.FC = observer(() => {
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error('Error starting round:', errorMessage);
-      alert(`${t('game:errors.failedToStartRound')}: ${errorMessage}`);
+      alert(`${t('game.errors.failedToStartRound')}: ${errorMessage}`);
     }
   }, [game, gameStore, t]);
 
@@ -229,8 +229,8 @@ export const GamePlay: React.FC = observer(() => {
       <Container size="sm" py="md">
         <Center style={{ height: '50vh' }}>
           <Stack align="center" gap="md">
-            <Loader size="xl" color="blue" />
-            <Text size="lg">{t('game:loading.game')}</Text>
+            <Loader size="lg" />
+            <Text size="lg">{t('game.loading.game')}</Text>
           </Stack>
         </Center>
       </Container>
@@ -245,15 +245,15 @@ export const GamePlay: React.FC = observer(() => {
             <ThemeIcon size={60} radius="xl" color="red">
               <IconAlertTriangle size={32} />
             </ThemeIcon>
-            <Title order={2}>{t('game:notFound.title')}</Title>
-            <Text mb="md">{t('game:notFound.message')}</Text>
+            <Title order={2}>{t('game.notFound.title')}</Title>
+            <Text mb="md">{t('game.notFound.message')}</Text>
             <Button 
               onClick={() => navigate('/')} 
               leftSection={<IconHome size={18} />}
               size="md"
               variant="light"
             >
-              {t('common:buttons.returnHome')}
+              {t('common.buttons.returnHome')}
             </Button>
           </Stack>
         </Card>
@@ -265,12 +265,12 @@ export const GamePlay: React.FC = observer(() => {
   const ScoreLimitBanner = () => (
     <Box mb="md" style={{ textAlign: 'center' }}>
       <Badge color="grape" size="lg" radius="md" variant="filled">
-        {t('game:scoreLimitBanner.scoreLimit', { limit: game.scoreLimit })}
+        {t('game.scoreLimitBanner.scoreLimit', { limit: game.scoreLimit })}
       </Badge>
       {game.scoreLimitReached && (
         <Box mt="xs">
           <Badge color="yellow" size="lg" radius="md" variant="filled">
-            {t('game:scoreLimitBanner.scoreLimitReached')}
+            {t('game.scoreLimitBanner.scoreLimitReached')}
           </Badge>
         </Box>
       )}
@@ -291,7 +291,7 @@ export const GamePlay: React.FC = observer(() => {
     return (
       <Card shadow="md" padding="md" radius="lg" withBorder mb="md">
         <Stack gap="md">
-          <Title order={3} ta="center">{t('game:roundSummary.title')}</Title>
+          <Title order={3} ta="center">{t('game.roundSummary.title')}</Title>
           
           <Paper p="md" radius="md" withBorder style={{
             background: `linear-gradient(45deg, ${theme.colors[teamColor][0]} 0%, rgba(255, 255, 255, 0.8) 100%)`
@@ -312,21 +312,21 @@ export const GamePlay: React.FC = observer(() => {
                 {currentTeam.name}
               </Text>
               <Text fw={700} size="lg" style={{ flexShrink: 0 }}>
-                {t('game:roundSummary.score', { score: currentTeam.score })}
+                {t('game.roundSummary.score', { score: currentTeam.score })}
               </Text>
             </Group>
           </Paper>
           
           <Text ta="center" size="sm" c="dimmed" mb="md">
-            {t('game:roundSummary.instruction')}
+            {t('game.roundSummary.instruction')}
           </Text>
           
           <div style={{ maxHeight: '300px', overflowY: 'auto', overflowX: 'hidden' }}>
             <Table striped highlightOnHover>
               <Table.Thead>
                 <Table.Tr>
-                  <Table.Th style={{ width: '60%' }}>{t('game:roundSummary.tableHeaders.word')}</Table.Th>
-                  <Table.Th style={{ textAlign: 'center', width: '40%' }}>{t('game:roundSummary.tableHeaders.status')}</Table.Th>
+                  <Table.Th style={{ width: '60%' }}>{t('game.roundSummary.tableHeaders.word')}</Table.Th>
+                  <Table.Th style={{ textAlign: 'center', width: '40%' }}>{t('game.roundSummary.tableHeaders.status')}</Table.Th>
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
@@ -375,7 +375,7 @@ export const GamePlay: React.FC = observer(() => {
               onClick={() => setShowRoundSummary(false)}
               style={{ boxShadow: '0 4px 14px rgba(34, 139, 230, 0.25)' }}
             >
-              {t('game:roundSummary.continueButton')}
+              {t('game.roundSummary.continueButton')}
             </Button>
           </Group>
         </Stack>
@@ -460,7 +460,7 @@ export const GamePlay: React.FC = observer(() => {
                 </ThemeIcon>
                 
                 <Title order={2} ta="center">
-                  {isFirstRound ? t('game:roundStart.gameReady') : t('game:roundStart.roundEnded')}
+                  {isFirstRound ? t('game.roundStart.gameReady') : t('game.roundStart.roundEnded')}
                 </Title>
 
                 {!isFirstRound && (
@@ -471,14 +471,14 @@ export const GamePlay: React.FC = observer(() => {
                       size="sm"
                       onClick={() => setShowRoundSummary(true)}
                     >
-                      {t('game:roundSummary.reviewButton')}
+                      {t('game.roundSummary.reviewButton')}
                     </Button>
                   )}
                 
                 <Paper p="md" radius="md" withBorder w="100%" shadow="sm">
                   <Flex justify="space-between" align="center">
                     <Text size="lg" fw={500}>
-                      {isFirstRound ? t('game:roundStart.firstTeam') : t('game:roundStart.nextTeam')}
+                      {isFirstRound ? t('game.roundStart.firstTeam') : t('game.roundStart.nextTeam')}
                     </Text>
                     <Badge size="xl" color={teamColor} variant="filled" radius="md">
                       {teamName}
@@ -496,7 +496,7 @@ export const GamePlay: React.FC = observer(() => {
                 >
                   <Stack gap="xs">
                     <Text ta="center">
-                      {t('game:roundStart.timeInstruction', { time: game.roundTime })}
+                      {t('game.roundStart.timeInstruction', { time: game.roundTime })}
                     </Text>
                   </Stack>
                 </Paper>
@@ -508,7 +508,7 @@ export const GamePlay: React.FC = observer(() => {
                     onClick={() => navigate('/')}
                     leftSection={<IconHome size={18} />}
                   >
-                    {t('common:buttons.exit')}
+                    {t('common.buttons.exit')}
                   </Button>
                   <Button 
                     variant="gradient" 
@@ -519,7 +519,7 @@ export const GamePlay: React.FC = observer(() => {
                     rightSection={<IconPlayerPlay size={18} />}
                     style={{ boxShadow: `0 4px 14px ${theme.colors[teamColor][3]}80` }}
                   >
-                    {t('common:buttons.start')}
+                    {t('common.buttons.start')}
                   </Button>
                 </Group>
               </Stack>
@@ -575,7 +575,7 @@ export const GamePlay: React.FC = observer(() => {
 
   if (game.status === 'playing') {
     const currentRound = game.rounds[game.currentRound];
-    if (!currentRound) return <Text>{t('game:errors.roundNotFound')}</Text>;
+    if (!currentRound) return <Text>{t('game.errors.roundNotFound')}</Text>;
     
     const currentTeam = game.teams[currentRound.teamIndex];
     const currentWord = currentRound.words[currentWordIndex];
@@ -610,8 +610,8 @@ export const GamePlay: React.FC = observer(() => {
                   >
                     <IconPlayerPlay size={40} />
                   </ThemeIcon>
-                  <Title order={2}>{t('game:roundStart.getReady')}</Title>
-                  <Title order={3} c={teamColor}>{t('game:roundStart.teamTurn', { teamName: currentTeam.name })}</Title>
+                  <Title order={2}>{t('game.roundStart.getReady')}</Title>
+                  <Title order={3} c={teamColor}>{t('game.roundStart.teamTurn', { teamName: currentTeam.name })}</Title>
                   <Button 
                     size="xl" 
                     variant="gradient" 
@@ -621,7 +621,7 @@ export const GamePlay: React.FC = observer(() => {
                     onClick={startRound}
                     style={{ boxShadow: `0 4px 14px ${theme.colors[teamColor][3]}80` }}
                   >
-                    {t('game:roundStart.startRound')}
+                    {t('game.roundStart.startRound')}
                   </Button>
                 </Stack>
               </Card>
@@ -674,12 +674,12 @@ export const GamePlay: React.FC = observer(() => {
                     <Text fw={600} size="lg" style={{ color: `var(--mantine-color-${teamColor}-6)` }}>
                       {currentTeam.name}
                     </Text>
-                    <Text>{t('game:roundSummary.score', { score: currentTeam.score })}</Text>
+                    <Text>{t('game.roundSummary.score', { score: currentTeam.score })}</Text>
                   </Stack>
                   
                   <Stack align="flex-end" gap={0}>
                     <Text fw={700} size="xl" ta="right" style={{ color: `var(--mantine-color-${getTimerColor()}-6)` }}>
-                      {t('game:gameplay.timeLeft', { time: timeLeft })}
+                      {t('game.gameplay.timeLeft', { time: timeLeft })}
                     </Text>
                     <Progress 
                       value={timerPercentage} 
@@ -793,10 +793,10 @@ export const GamePlay: React.FC = observer(() => {
                           }
                         </ThemeIcon>
                         <Stack gap={0}>
-                          <Text size="sm" c="dimmed">{t('game:actions.lastWord')}</Text>
+                          <Text size="sm" c="dimmed">{t('game.actions.lastWord')}</Text>
                           <Text fw={600} size="lg" style={{ wordBreak: 'break-word' }}>{lastAction.word}</Text>
                           <Text size="xs" c="dimmed">
-                            {t('game:actions.markedAs')} <b>{lastAction.type === 'correct' ? t('game:status.correct') : t('game:status.skipped')}</b>
+                            {t('game.actions.markedAs')} <b>{lastAction.type === 'correct' ? t('game.status.correct') : t('game.status.skipped')}</b>
                           </Text>
                         </Stack>
                       </Group>
@@ -812,7 +812,7 @@ export const GamePlay: React.FC = observer(() => {
                     radius="md"
                     h={80}
                     onClick={() => handleWordResult('skipped')}
-                    aria-label={t('game:gameplay.skip')}
+                    aria-label={t('game.gameplay.skip')}
                     styles={{
                       root: {
                         borderWidth: 2,
@@ -833,7 +833,7 @@ export const GamePlay: React.FC = observer(() => {
                     radius="md"
                     h={80}
                     onClick={() => handleWordResult('correct')}
-                    aria-label={t('game:gameplay.correct')}
+                    aria-label={t('game.gameplay.correct')}
                     styles={{
                       root: {
                         borderWidth: 2,
@@ -858,7 +858,7 @@ export const GamePlay: React.FC = observer(() => {
                     leftSection={<IconClock size={18} />}
                     radius="md"
                   >
-                    {t('game:gameplay.endRoundEarly')}
+                    {t('game.gameplay.endRoundEarly')}
                   </Button>
                 </Center>
               </div>
@@ -876,15 +876,15 @@ export const GamePlay: React.FC = observer(() => {
           <ThemeIcon size={60} radius="xl" color="yellow">
             <IconAlertTriangle size={32} />
           </ThemeIcon>
-          <Title order={2}>{t('game:errors.unexpectedState')}</Title>
-          <Text>{t('game:errors.unexpectedStateMessage')}</Text>
+          <Title order={2}>{t('game.errors.unexpectedState')}</Title>
+          <Text>{t('game.errors.unexpectedStateMessage')}</Text>
           <Button 
             onClick={() => navigate('/')} 
             leftSection={<IconHome size={18} />}
             variant="light"
             size="md"
           >
-            {t('common:buttons.returnHome')}
+            {t('common.buttons.returnHome')}
           </Button>
         </Stack>
       </Card>

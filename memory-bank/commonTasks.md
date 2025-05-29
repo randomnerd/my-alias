@@ -99,41 +99,30 @@ export const NewComponent = () => {
 
 ## Internationalization Tasks
 
-### Adding New Languages
-**Steps:**
-1. Create language folder: `src/locales/[lang]/`
-2. Copy translation files from `src/locales/en/`
-3. Translate content in new files
-4. Update `src/i18n.ts` supportedLanguages array
-5. Update LanguageSwitcher options
+### Adding New Translations
+- **Location**: `src/locales/en.json`, `src/locales/ru.json`
+- **Structure**: Nested JSON with namespace organization (common, home, setup, game, summary)
+- **Usage**: `t('namespace.key.subkey')` in components
+- **Interpolation**: Use `{{variable}}` syntax for dynamic content
 
-**Files to modify:**
-- `src/i18n.ts` - Add language to supportedLanguages
-- `src/components/LanguageSwitcher.tsx` - Add option to dropdown
-- `src/locales/[newlang]/` - Create translation files
+### Adding New Language
+1. Create new locale file: `src/locales/[lang].json`
+2. Copy structure from `en.json` and translate all values
+3. Add language to i18n resources in `src/i18n.ts`:
+   ```typescript
+   resources: {
+     en: { translation: enTranslations },
+     ru: { translation: ruTranslations },
+     [newLang]: { translation: newLangTranslations },
+   }
+   ```
+4. Update LanguageSwitcher component with new language option
 
-### Adding New Translation Keys
-**Process:**
-1. Add key to appropriate namespace file in `src/locales/en/[namespace].json`
-2. Add translations to all other language folders
-3. Use in components with `t('namespace:key')`
-
-**Namespace organization:**
-- `common.json` - Buttons, navigation, general UI
-- `home.json` - Homepage content
-- `setup.json` - Game setup interface
-- `game.json` - Gameplay interface  
-- `summary.json` - Results and statistics
-
-### Translation Usage
-**In components:**
-```typescript
-import { useTranslation } from 'react-i18next';
-
-const { t } = useTranslation('namespace');
-const text = t('key');
-const interpolated = t('key', { variable: value });
-```
+### Translation Key Management
+- **File**: Single merged file per language with nested structure
+- **Pattern**: `namespace.category.key` (e.g., 'home.welcome.title')
+- **Arrays**: Use `returnObjects: true` for list data
+- **Interpolation**: `t('key', { variable: value })`
 
 ## State Management Tasks
 
